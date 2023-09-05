@@ -14,6 +14,3 @@ phases:
   post_build:
     commands:
       - echo Build phase completed.
-artifacts:
-  files:
-    - build/libs/*.jar
