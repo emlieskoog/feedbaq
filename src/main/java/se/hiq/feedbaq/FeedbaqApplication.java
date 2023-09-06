@@ -15,7 +15,7 @@ public class FeedbaqApplication {
 	
 	@RequestMapping("/")
 	public String test() {
-		System.out.println("test");
+		System.out.println("testt");
 	}
 	
 } 
