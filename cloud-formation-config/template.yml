@@ -1,0 +1,99 @@
+Resources:
+  
+  FeedBaqRepo:
+    Type: 'AWS::CodeCommit::Repository'
+    Properties:
+      RepositoryName: 'feedbaq'
+      RepositoryDescription: 'FeedBaq - A quality ensurance web tool'
+  
+  FeedBaqCodeBuild:
+    Type: 'AWS::CodeBuild::Project'
+    Properties:
+      Artifacts:
+        Type: 'NO_ARTIFACTS'
+      Environment:
+        ComputeType: 'BUILD_GENERAL1_SMALL'
+        Image: 'aws/codebuild/standard:7.0' # DOCKER IMAGE ... se över om vi eventuellt behöver en annan image för java, gradle... ?
+        Type: 'LINUX_CONTAINER'
+      ServiceRole: !GetAtt FeedBaqCodeBuildRole.Arn
+      Source:
+        Type: 'CODECOMMIT'
+        Location: 'https://git-codecommit.eu-west-1.amazonaws.com/v1/repos/feedbaq'
+      LogsConfig:
+        CloudWatchLogs:
+          Status: 'ENABLED'
+  
+  FeedBaqEventRule:
+    Type: 'AWS::Events::Rule'
+    Properties:
+      Description: 'Rule to trigger CodeBuild on push events in CodeCommit'
+      EventPattern:
+        detail-type: 
+          - 'CodeCommit Repository State Change'
+        source:
+          - 'aws.codecommit'
+        resources:
+          - !GetAtt FeedBaqRepo.Arn
+        detail: 
+          event:
+            - 'referenceUpdated'
+          referenceType:
+            - 'branch'
+          referenceName:
+            - 'master'
+      Name: 'event-codebuild'
+      Targets:
+        - Arn: !GetAtt FeedBaqCodeBuild.Arn
+          Id: 'target-codebuild'
+          RoleArn: !GetAtt EventRuleRole.Arn
+  
+  EventRuleRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: 'Allow'
+            Principal: 
+              Service: 
+                - 'events.amazonaws.com'
+            Action: 'sts:AssumeRole'
+      Description: 'IAM Role for FeedBaqEventRule (to trigger CloudBuild StartBuild)'
+      Policies:
+        - PolicyName: 'feedbaq-codebuild-policy'
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement: 
+              - Effect: 'Allow'
+                Action: 'codebuild:StartBuild'
+                Resource: !GetAtt FeedBaqCodeBuild.Arn
+      RoleName: 'feedbaq-event-rule-role'
+  
+  FeedBaqCodeBuildRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: 'Allow'
+            Principal: 
+              Service: 
+                - 'codebuild.amazonaws.com'
+            Action: 'sts:AssumeRole'
+      Description: 'IAM Role for codebuild'
+      Policies:
+        - PolicyName: 'feedbaq-codecommit-policy'
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement: 
+              - Effect: 'Allow'
+                Action: 'codecommit:*'
+                Resource: !GetAtt FeedBaqRepo.Arn
+        - PolicyName: 'feedbaq-logs-policy'
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: 'Allow'
+                Action: 'logs:*'
+                Resource: '*' # Wildcard, se över om detta borde ändras?
+      RoleName: 'feedbaq-codebuild-role'
