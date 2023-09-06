@@ -13,9 +13,4 @@ public class FeedbaqApplication {
 		SpringApplication.run(FeedbaqApplication.class, args);
 	}
 	
-	@RequestMapping("/")
-	public String test() {
-		System.out.println("testtt");
-	}
-	
 } 
