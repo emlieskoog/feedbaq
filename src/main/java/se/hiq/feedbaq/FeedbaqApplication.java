@@ -10,4 +10,4 @@ public class FeedbaqApplication {
 		SpringApplication.run(FeedbaqApplication.class, args);
 	}
 
-} 
+}
