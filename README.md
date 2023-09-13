@@ -1,3 +1,5 @@
+Hej hej detta är gjort från min lokala /emelie :-)
+
 1. Create new EC2 instance 
 - t3medium
 - ubuntu
