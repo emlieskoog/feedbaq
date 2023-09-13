@@ -39,7 +39,7 @@ export default function LandingPage() {
                 <h4>Agnes Davidsdóttir</h4>
             </Grid>
             <Grid item xs={6} className="topRow">
-                <Button variant="contained"> Skapa ny form </Button>
+                <Button href="./formgrid" variant="contained"> Skapa ny form </Button>
             </Grid>
             {/* Second row */}
             <Grid item xs={12} className="bottomRow">
