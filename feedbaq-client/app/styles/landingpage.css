@@ -21,3 +21,8 @@
     align-items: center;
     display: flex;
 }
+
+.tableRow:hover {
+    background-color: lightgrey !important;
+    cursor: pointer;
+}
