@@ -1,0 +1,23 @@
+.outerGrid {
+    height: 100vh;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.topRow {
+    height: 20%;
+    margin: 0 !important;
+    padding: 10px 10px!important;
+}
+
+.bottomRow {
+    height: 80%;
+    margin: 0 !important;
+    padding: 10px 10px!important;
+}
+
+.centerContent {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
