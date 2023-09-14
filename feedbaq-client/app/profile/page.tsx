@@ -1,10 +1,35 @@
-import { Avatar, Button, Grid, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-import Link from 'next/link';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+'use client'
+
+import React, { useState } from "react";
+import { Avatar, Button, Grid } from '@mui/material';
+import { FormControl, MenuItem, Select } from '@mui/material';
 import '../styles/landingpage.css';
+import GenericAccordion from "./genericaccordion";
+import GenericTable from "./generictable";
 
 export default function LandingPage() {
+
+    const roleOptions = [
+        {
+          role: "salesperson",
+          menuItem: "Säljare",
+          name: "Prispress Pelle",
+          profilePicture: "sales_avatar.png",
+        },
+        {
+          role: "manager",
+          menuItem: "Konsultchef",
+          name: "Boss Bosson",
+          profilePicture: "manager_avatar.png",
+        },
+        {
+          role: "consultant",
+          menuItem: "Konsult",
+          name: "Leap Is",
+          profilePicture: "consultant_avatar.png",
+        },
+      ];
+      
     
     const qualityFollowUps = [
         {
@@ -28,51 +53,60 @@ export default function LandingPage() {
             date: "2023-09-13"
         }
     ];
+
+    const [selectedOption, setSelectedOption] = useState('salesperson');
+
+    const handleOptionChange = (event: any) => {
+        setSelectedOption(event.target.value);
+    };
+
+    const selectedRole = roleOptions.find((option) => option.role === selectedOption);
     
     return (
         <Grid container spacing={2} className="outerGrid">
             {/* First row */}
-            <Grid item xs={6} className="topRow centerContent">
+            <Grid item xs={4} className="topRow centerContent">
                 <Avatar 
-                    sx={{width: 80, height: 80, marginRight: '10px'}}
-                    src="https://skansen.se/wp-content/uploads/2022/10/Kattunge_2015_Marie_Andersson-e1666257161606.jpg"
-                />
-                <h4>Agnes Davidsdóttir</h4>
+                    sx={{width: 90, height: 90, marginRight: '10px'}}
+                    src={selectedRole?.profilePicture}  
+                    />
+                <h4>{selectedRole?.name}</h4>
             </Grid>
-            <Grid item xs={6} className="topRow centerContent">
+            <Grid item xs={8} className="topRow centerContent">
                 <Button href="/new-form" variant="contained"> Skapa ny kvalitetsuppföljning </Button>
+                <FormControl>
+                <Select value={selectedOption} onChange={handleOptionChange}>
+                    {roleOptions.map((option) => (
+                      <MenuItem key={option.role} value={option.role}>
+                        {option.menuItem}
+                      </MenuItem>
+                    ))}
+                </Select>
+                </FormControl>
+            </Grid>
+            {/* Second row */}
+            <Grid item xs={12} className="tableRow">
+                {selectedOption === 'salesperson' && (
+                    <div>
+                        <h3 className="heading">Mina Företag</h3>
+                        <GenericAccordion qualityFollowUps={qualityFollowUps} accordionType={'customer'} selectedOption={selectedOption}  />
+                    </div>
+                )}
+                {selectedOption === 'manager' && (
+                    <div>
+                        <h3 className="heading">Mina Konsulter</h3>
+                        <GenericAccordion qualityFollowUps={qualityFollowUps} accordionType={'consultant'} selectedOption={selectedOption}  />
+                    </div>
+                )}
+                {selectedOption === 'consultant' && (
+                    <GenericTable data={qualityFollowUps} selectedOption={selectedOption} />
+                )}
             </Grid>
             {/* Second row */}
             <Grid item xs={12} className="bottomRow">
-                <Accordion>
-                    <AccordionSummary expandIcon={<ExpandMoreIcon/>}>Konsult...</AccordionSummary>
-                    <AccordionDetails>
-                        <TableContainer>
-                            <Table size="small">
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell>Kund</TableCell>
-                                        <TableCell>Konsult</TableCell>
-                                        <TableCell>Datum</TableCell>
-                                        <TableCell/>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {qualityFollowUps.map((followUp, index) => {
-                                        return (
-                                            <TableRow key={index} hover>
-                                                <TableCell>{followUp.customer}</TableCell>
-                                                <TableCell>{followUp.consultant}</TableCell>
-                                                <TableCell>{followUp.date}</TableCell>
-                                                <TableCell><Link href='/form'>Öppna</Link></TableCell>
-                                            </TableRow>
-                                        );
-                                    })}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                    </AccordionDetails>
-                </Accordion>
+                <Button variant="contained" href="/">
+                    Logga ut
+                </Button>
             </Grid>
         </Grid>
     );

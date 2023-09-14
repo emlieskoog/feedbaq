@@ -1,0 +1,21 @@
+.root {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: white;
+    flex-direction: column;
+  }
+
+  .image {
+    width: 60%;
+    margin-bottom:2;
+  }
+
+  .button {
+    margin-top: 2;
+  }
+
+
+
