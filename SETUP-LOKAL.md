@@ -89,3 +89,5 @@ nvm use 16
 ```
 
 All done, yey!
+
+And if you are ever logged out just use the following command to login through sso:
