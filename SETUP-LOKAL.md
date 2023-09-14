@@ -50,7 +50,7 @@ sso_registration_scopes = sso:account:access
 
 Now identify yourself:
 ```
-aws s3 ls --profile default
+aws sso login --profile default
 ```
 ## Install codecommit
 ```
@@ -80,7 +80,7 @@ Update your terminal:
 ```
 source ~/.bashrc
 ```
-And updatera to node 16
+And update to node 16
 ```
 nvm install 16
 ```
