@@ -88,6 +88,16 @@ nvm install 16
 nvm use 16
 ```
 
+## OM DET STRULAR MED CODECOMMIT OCH GIT (403)
+Logga ut med:
+```
+aws sso logout
+```
+Och logga sedan in igen som vanligt:
+```
+aws sso login --profile <din-profil>
+```
+
 All done, yey!
 
 And if you are ever logged out just use the following command to login through sso:
