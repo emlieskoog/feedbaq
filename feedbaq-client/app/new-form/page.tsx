@@ -1,7 +1,6 @@
 'use client';
 import { useState } from 'react';
 import { Grid, Stepper, Step, StepLabel, Button, TextField } from '@mui/material'; 
-import QuestionTemplate from './questiontemplate.tsx';
 import '../styles/form.css';
 
 import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
