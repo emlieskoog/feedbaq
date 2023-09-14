@@ -1,5 +1,6 @@
 import { Avatar, Button, Grid, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import Link from 'next/link';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import '../styles/landingpage.css';
 
@@ -38,8 +39,8 @@ export default function LandingPage() {
                 />
                 <h4>Agnes Davidsdóttir</h4>
             </Grid>
-            <Grid item xs={6} className="topRow">
-                <Button variant="contained"> Skapa ny form </Button>
+            <Grid item xs={6} className="topRow centerContent">
+                <Button href="/new-form" variant="contained"> Skapa ny kvalitetsuppföljning </Button>
             </Grid>
             {/* Second row */}
             <Grid item xs={12} className="bottomRow">
@@ -53,15 +54,17 @@ export default function LandingPage() {
                                         <TableCell>Kund</TableCell>
                                         <TableCell>Konsult</TableCell>
                                         <TableCell>Datum</TableCell>
+                                        <TableCell/>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
                                     {qualityFollowUps.map((followUp, index) => {
                                         return (
-                                            <TableRow key={index}>
+                                            <TableRow key={index} hover>
                                                 <TableCell>{followUp.customer}</TableCell>
                                                 <TableCell>{followUp.consultant}</TableCell>
                                                 <TableCell>{followUp.date}</TableCell>
+                                                <TableCell><Link href='/form'>Öppna</Link></TableCell>
                                             </TableRow>
                                         );
                                     })}
