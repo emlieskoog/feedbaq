@@ -25,7 +25,7 @@ export default function LandingPage() {
         {
           role: "consultant",
           menuItem: "Konsult",
-          name: "Leap Is",
+          name: "Arbete It",
           profilePicture: "consultant_avatar.png",
         },
       ];
@@ -35,20 +35,40 @@ export default function LandingPage() {
         {
             customer: "Ica",
             consultant: "Agnes",
+            date: "2023-08-13"
+        },
+        {
+            customer: "Systembolaget",
+            consultant: "Agnes",
             date: "2023-09-13"
         },
         {
             customer: "Systembolaget",
             consultant: "Wilma",
-            date: "2023-09-13"
+            date: "2023-08-14"
         },
         {
-            customer: "Lunds uni",
+            customer: "Barebelle",
+            consultant: "Wilma",
+            date: "2023-09-14"
+        },
+        {
+            customer: "Nocco",
             consultant: "Emelie",
+            date: "2023-08-15"
+        },
+        {
+            customer: "Barebelle",
+            consultant: "Emelie",
+            date: "2023-09-15"
+        },
+        {
+            customer: "Coca-Cola",
+            consultant: "Lucas",
             date: "2023-09-13"
         },
         {
-            customer: "Lucas",
+            customer: "Nocco",
             consultant: "Lucas",
             date: "2023-09-13"
         }
