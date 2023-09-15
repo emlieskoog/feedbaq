@@ -6,7 +6,6 @@
 }
 
 .topRow {
-    height: 20%;
     margin: 0 !important;
     padding: 10px 10px!important;
 }
@@ -16,12 +15,6 @@
 }
 
 .tableRow {
-    height: 40%;
-    margin: 0 !important;
-    padding: 10px 10px!important;
-}
-
-.bottomRow {
     margin: 0 !important;
     padding: 10px 10px!important;
 }

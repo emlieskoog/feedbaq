@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from "react";
-import { Avatar, Button, Grid } from '@mui/material';
+import { Avatar, Button, Grid, Typography } from '@mui/material';
 import { FormControl, MenuItem, Select } from '@mui/material';
 import '../styles/landingpage.css';
 import GenericAccordion from "./genericaccordion";
@@ -87,14 +87,16 @@ export default function LandingPage() {
             {/* First row */}
             <Grid item xs={4} className="topRow centerContent">
                 <Avatar 
-                    sx={{width: 90, height: 90, marginRight: '10px'}}
+                    sx={{width: 90, height: 90, marginRight: '20px', objectFit: 'contain'}}
                     src={selectedRole?.profilePicture}  
                     />
-                <h4>{selectedRole?.name}</h4>
+                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                    {selectedRole?.name}                
+                </Typography>
             </Grid>
             <Grid item xs={8} className="topRow centerContent">
                 <Button href="/new-form" variant="contained"> Skapa ny kvalitetsuppföljning </Button>
-                <FormControl>
+                <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
                 <Select value={selectedOption} onChange={handleOptionChange}>
                     {roleOptions.map((option) => (
                       <MenuItem key={option.role} value={option.role}>
@@ -108,25 +110,23 @@ export default function LandingPage() {
             <Grid item xs={12} className="tableRow">
                 {selectedOption === 'salesperson' && (
                     <div>
-                        <h3 className="heading">Mina Företag</h3>
+                        <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
+                        Mina Företag
+                        </Typography>
                         <GenericAccordion qualityFollowUps={qualityFollowUps} accordionType={'customer'} selectedOption={selectedOption}  />
                     </div>
                 )}
                 {selectedOption === 'manager' && (
                     <div>
-                        <h3 className="heading">Mina Konsulter</h3>
+                        <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
+                        Mina Konsulter
+                        </Typography>
                         <GenericAccordion qualityFollowUps={qualityFollowUps} accordionType={'consultant'} selectedOption={selectedOption}  />
                     </div>
                 )}
                 {selectedOption === 'consultant' && (
                     <GenericTable data={qualityFollowUps} selectedOption={selectedOption} />
                 )}
-            </Grid>
-            {/* Second row */}
-            <Grid item xs={12} className="bottomRow">
-                <Button variant="contained" href="/">
-                    Logga ut
-                </Button>
             </Grid>
         </Grid>
     );
