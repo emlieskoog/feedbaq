@@ -1,28 +1,38 @@
-'use client'
+"use client";
 
-import { createTheme, responsiveFontSizes, Theme } from '@mui/material/styles';
+import { createTheme, responsiveFontSizes, Theme } from "@mui/material/styles";
 
 // Define your custom theme
 let theme: Theme = createTheme({
   palette: {
     primary: {
-      main: '#352c3c', 
+      main: "#353435",
     },
     secondary: {
-      main: '#ed2da6',
+      main: "#ffe4ec",
     },
     background: {
-      default: '#e6e3e5'
+      default: "white",
     },
   },
   typography: {
-    fontFamily: 'Roboto, sans-serif', // Customize the default font family
+    fontFamily: "Roboto, sans-serif", // Customize the default font family
     button: {
-      fontStyle: 'bold'
+      fontStyle: "bold",
     },
   },
 
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          "&:hover": {
+            backgroundColor: "#ff329f", // Specify your hover color
+          },
+        },
+      },
+    },
+  },
 });
-
 
 export default theme;

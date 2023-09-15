@@ -1,26 +1,25 @@
 .outerGrid {
-    height: 100vh;
-    margin: 0 !important;
-    padding: 0 !important;
-    background-color: white;
+  height: 100vh;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 .topRow {
-    margin: 0 !important;
-    padding: 10px 10px!important;
+  margin: 0 !important;
+  padding: 10px 10px !important;
 }
 
-.heading{
-    margin-bottom:2;
+.heading {
+  margin-bottom: 2;
 }
 
 .tableRow {
-    margin: 0 !important;
-    padding: 10px 10px!important;
+  margin: 0 !important;
+  padding: 10px 10px !important;
 }
 
 .centerContent {
-    justify-content: center;
-    align-items: center;
-    display: flex;
+  justify-content: center;
+  align-items: center;
+  display: flex;
 }
