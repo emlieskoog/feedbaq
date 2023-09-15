@@ -21,8 +21,9 @@ export default function Header() {
           >
             <MenuIcon />
           </IconButton>
+          <img src='HiQ_logo_white.png' alt='HiQ Logo' style={{height: '35px', marginRight: '15px'}}></img>
           <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
-            HiQ Kvalitetsuppföljning
+            Kvalitetsuppföljning
           </Typography>
           <Button color="inherit" href="/">Logga ut</Button>
         </Toolbar>
