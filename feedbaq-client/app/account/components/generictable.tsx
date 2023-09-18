@@ -6,8 +6,8 @@ export default function GenericTable(props: any) {
     const { data, selectedOption } = props;
 
     const tableHeadings = selectedOption === 'salesperson'
-    ? ["Konsult", "Datum", ""]
-    : ["Företag", "Datum", ""];
+        ? ["Konsult", "Datum", ""]
+        : ["Företag", "Datum", ""];
 
     return (
         <TableContainer>
@@ -34,7 +34,7 @@ export default function GenericTable(props: any) {
                                 </>
                             )}
                             <TableCell>
-                                <Link href="/form">Öppna</Link>
+                                <Link href="/account/formdetails">Öppna</Link>
                             </TableCell>
                         </TableRow>
                     ))}

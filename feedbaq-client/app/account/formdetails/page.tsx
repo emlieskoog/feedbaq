@@ -1,8 +1,8 @@
 import { Block } from '@mui/icons-material';
 import { Box } from '@mui/material';
-import '../styles/form.css';
+import '../../styles/form.css';
 
-export default function FormDetail() {
+export default function FormDetails() {
 
     const qualityFollowUp = [
         {
@@ -16,7 +16,7 @@ export default function FormDetail() {
 
     return (
         <Box sx={{ height: '100vh', minWidth: '100%' }}>
-            <Box sx={{ flexDirection: 'row', display: 'flex', margin: '15px 300px', justifyContent: 'space-evenly'}} >
+            <Box sx={{ flexDirection: 'row', display: 'flex', margin: '15px 300px', justifyContent: 'space-evenly' }} >
                 <h2> Ica </h2>
                 <h2> Agnes </h2>
                 <h2> 2023-09-13 </h2>
