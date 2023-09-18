@@ -4,8 +4,8 @@ import React, { useState } from "react";
 import { Avatar, Box, Button, Grid, Typography } from "@mui/material";
 import { FormControl, MenuItem, Select } from "@mui/material";
 import "../styles/landingpage.css";
-import GenericAccordion from "./genericaccordion";
-import GenericTable from "./generictable";
+import GenericAccordion from "../account/components/genericaccordion";
+import GenericTable from "../account/components/generictable";
 
 export default function LandingPage() {
   const roleOptions = [
