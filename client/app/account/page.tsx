@@ -50,10 +50,9 @@ export default function LandingPage() {
   );
 
   const [formData, setFormData] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setIsLoading(true);
     fetch("http://localhost:8080/api/forms")
       .then((response) => response.json())
       .then((data) => {
