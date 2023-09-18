@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Avatar, Button, Grid, Typography } from "@mui/material";
 import { FormControl, MenuItem, Select } from "@mui/material";
 import GenericAccordion from "./components/genericaccordion";
@@ -29,58 +29,41 @@ export default function LandingPage() {
     },
   ];
 
-  const qualityFollowUps = [
-    {
-      customer: "Ica",
-      consultant: "Agnes",
-      date: "2023-08-13",
-    },
-    {
-      customer: "Systembolaget",
-      consultant: "Agnes",
-      date: "2023-09-13",
-    },
-    {
-      customer: "Systembolaget",
-      consultant: "Wilma",
-      date: "2023-08-14",
-    },
-    {
-      customer: "Barebelle",
-      consultant: "Wilma",
-      date: "2023-09-14",
-    },
-    {
-      customer: "Nocco",
-      consultant: "Emelie",
-      date: "2023-08-15",
-    },
-    {
-      customer: "Barebelle",
-      consultant: "Emelie",
-      date: "2023-09-15",
-    },
-    {
-      customer: "Coca-Cola",
-      consultant: "Lucas",
-      date: "2023-09-13",
-    },
-    {
-      customer: "Nocco",
-      consultant: "Lucas",
-      date: "2023-09-13",
-    },
+  const sortingOptions = [
+    { role: "business", menuItem: "Företag" },
+    { role: "consultant", menuItem: "Konsult" },
   ];
 
   const [selectedOption, setSelectedOption] = useState("salesperson");
+  const [sortingOption, setSortingOption] = useState("business");
 
   const handleOptionChange = (event: any) => {
     setSelectedOption(event.target.value);
   };
 
+  const handleSortingChange = (event: any) => {
+    setSortingOption(event.target.value);
+  };
+
   const selectedRole = roleOptions.find(
     (option) => option.role === selectedOption
   );
+
+  const [formData, setFormData] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:8080/api/forms")
+      .then((response) => response.json())
+      .then((data) => {
+        setFormData(data);
+      })
+      .catch((error) => {
+        console.log(
+          "An error occured when trying to retrieve form data.",
+          error
+        );
+      });
+  }, []);
 
   return (
     <Grid container spacing={2} className="outerGrid">
@@ -118,11 +101,23 @@ export default function LandingPage() {
       <Grid item xs={12} className="tableRow">
         {selectedOption === "salesperson" && (
           <div>
-            <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
+            {/* <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
               Mina Företag
+            </Typography> */}
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              Sortera på:
             </Typography>
+            <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+              <Select value={sortingOption} onChange={handleSortingChange}>
+                {sortingOptions.map((option) => (
+                  <MenuItem key={option.role} value={option.role}>
+                    {option.menuItem}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
             <GenericAccordion
-              qualityFollowUps={qualityFollowUps}
+              formData={formData}
               accordionType={"customer"}
               selectedOption={selectedOption}
             />
@@ -134,17 +129,14 @@ export default function LandingPage() {
               Mina Konsulter
             </Typography>
             <GenericAccordion
-              qualityFollowUps={qualityFollowUps}
+              formData={formData}
               accordionType={"consultant"}
               selectedOption={selectedOption}
             />
           </div>
         )}
         {selectedOption === "consultant" && (
-          <GenericTable
-            data={qualityFollowUps}
-            selectedOption={selectedOption}
-          />
+          <GenericTable formData={formData} selectedOption={selectedOption} />
         )}
       </Grid>
     </Grid>

@@ -6,7 +6,7 @@ import { groupBy } from "lodash";
 import GenericTable from "./generictable";
 
 export default function GenericAccordion(props: any) {
-  const groupedFollowUps = groupBy(props.qualityFollowUps, props.accordionType);
+  const groupedFollowUps = groupBy(props.formData, props.accordionType);
 
   return (
     <div>
@@ -17,7 +17,7 @@ export default function GenericAccordion(props: any) {
           </AccordionSummary>
           <AccordionDetails>
             <GenericTable
-              data={groupedFollowUps[item]}
+              formData={groupedFollowUps[item]}
               selectedOption={props.selectedOption}
             />
           </AccordionDetails>
