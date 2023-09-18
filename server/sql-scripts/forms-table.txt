@@ -1,0 +1,9 @@
+CREATE TABLE forms (
+    id SERIAL PRIMARY KEY,
+    consultant VARCHAR(70),
+    customer VARCHAR(70),
+    sales VARCHAR(70),
+    date DATE,
+    created_at TIMESTAMP,
+    modified_at TIMESTAMP
+);
