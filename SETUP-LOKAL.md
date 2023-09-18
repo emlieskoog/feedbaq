@@ -101,3 +101,40 @@ aws sso login --profile <din-profil>
 All done, yey!
 
 And if you are ever logged out just use the following command to login through sso:
+
+
+# Setup database (Postgresql locally)
+```
+sudo apt update
+
+sudo apt install postgresql
+
+sudo systemctl start postgresql.service
+```
+## Connect to postgres user
+```
+sudo -i -u postgres
+
+psql
+```
+## Create user
+```
+CREATE USER admin WITH PASSWORD 'admin';
+```
+## Create database
+```
+CREATE DATABASE feedbaqdb OWNER admin;
+```
+## Exit psql
+```
+\q
+```
+## Connect to database
+```
+psql -U admin -d feedbaqdb -h localhost -p 5432
+```
+Enter password for database (located in 'application.properties' file)
+Enter SQL script to create table
+
+
+
