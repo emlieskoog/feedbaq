@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Avatar, Button, Grid, Typography } from "@mui/material";
+import { Avatar, Button, Grid, Typography, CircularProgress } from "@mui/material";
 import { FormControl, MenuItem, Select } from "@mui/material";
 import GenericAccordion from "./components/genericaccordion";
 import GenericTable from "./components/generictable";
@@ -50,20 +50,22 @@ export default function LandingPage() {
   );
 
   const [formData, setFormData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    setIsLoading(true);
     fetch("http://localhost:8080/api/forms")
       .then((response) => response.json())
       .then((data) => {
         setFormData(data);
+        setIsLoading(false);
       })
       .catch((error) => {
-        console.log(
-          "An error occured when trying to retrieve form data.",
-          error
-        );
+        console.log("An error occured when trying to retrieve form data.", error);
+        setIsLoading(false);
       });
   }, []);
+
 
   return (
     <Grid container spacing={2} className="outerGrid">
@@ -99,45 +101,49 @@ export default function LandingPage() {
       </Grid>
       {/* Second row */}
       <Grid item xs={12} className="tableRow">
-        {selectedOption === "salesperson" && (
-          <div>
-            {/* <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
-              Mina Företag
-            </Typography> */}
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              Sortera på:
-            </Typography>
-            <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-              <Select value={sortingOption} onChange={handleSortingChange}>
-                {sortingOptions.map((option) => (
-                  <MenuItem key={option.role} value={option.role}>
-                    {option.menuItem}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            <GenericAccordion
-              formData={formData}
-              accordionType={"customer"}
-              selectedOption={selectedOption}
-            />
-          </div>
-        )}
-        {selectedOption === "manager" && (
-          <div>
-            <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
-              Mina Konsulter
-            </Typography>
-            <GenericAccordion
-              formData={formData}
-              accordionType={"consultant"}
-              selectedOption={selectedOption}
-            />
-          </div>
-        )}
-        {selectedOption === "consultant" && (
-          <GenericTable formData={formData} selectedOption={selectedOption} />
-        )}
+        { isLoading ? <CircularProgress/> :
+          <>
+            {selectedOption === "salesperson" && (
+              <div>
+                {/* <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
+                  Mina Företag
+                </Typography> */}
+                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                  Sortera på:
+                </Typography>
+                <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                  <Select value={sortingOption} onChange={handleSortingChange}>
+                    {sortingOptions.map((option) => (
+                      <MenuItem key={option.role} value={option.role}>
+                        {option.menuItem}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+                <GenericAccordion
+                  formData={formData}
+                  accordionType={"customer"}
+                  selectedOption={selectedOption}
+                />
+              </div>
+            )}
+            {selectedOption === "manager" && (
+              <div>
+                <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
+                  Mina Konsulter
+                </Typography>
+                <GenericAccordion
+                  formData={formData}
+                  accordionType={"consultant"}
+                  selectedOption={selectedOption}
+                />
+              </div>
+            )}
+            {selectedOption === "consultant" && (
+              <GenericTable formData={formData} selectedOption={selectedOption} />
+            )}
+          </>
+        }
       </Grid>
     </Grid>
   );
