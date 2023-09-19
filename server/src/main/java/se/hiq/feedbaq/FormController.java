@@ -30,5 +30,18 @@ public class FormController {
             return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/consultant")
+    public ResponseEntity<Object> getFormsForConsultant(@RequestParam("id") long consultant_id) { // RequestParam: encodar URI
+        try {
+            String sql = "SELECT * FROM forms WHERE consultant_id = ?;";
+
+            List<Map<String, Object>> formList = jdbcTemplate.queryForList(sql, consultant_id);
+            return new ResponseEntity<>(formList, HttpStatus.OK);
+        } catch(DataAccessException e) {
+            String errorMessage = "An error occured while fetching forms for one consultant: " + e.getMessage();
+            return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     
 }

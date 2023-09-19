@@ -1,6 +1,7 @@
 CREATE TABLE forms (
     id SERIAL PRIMARY KEY,
-    consultant VARCHAR(70),
+    consultant_name VARCHAR(70),
+    consultant_id INT,
     customer VARCHAR(70),
     sales VARCHAR(70),
     date DATE,
@@ -20,7 +21,10 @@ BEFORE UPDATE ON forms
 FOR EACH ROW
 EXECUTE PROCEDURE update_timestamp();
 
-INSERT INTO forms (consultant, customer, sales, date) VALUES ('Agnes', 'Ica', 'Sebbe', '2023-08-13');
-INSERT INTO forms (consultant, customer, sales, date) VALUES ('Lucas', 'Nocco', 'Sebbe', '2023-08-23');
-INSERT INTO forms (consultant, customer, sales, date) VALUES ('Wilma', 'Levis', 'Sebbe', '2023-09-03');
-INSERT INTO forms (consultant, customer, sales, date) VALUES ('Emelie', 'Dell', 'Sebbe', '2023-09-13');
+INSERT INTO forms (consultant_name, consultant_id, customer, sales, date) VALUES ('Agnes', 1, 'Ica', 'Sebbe', '2023-08-13');
+INSERT INTO forms (consultant_name, consultant_id, customer, sales, date) VALUES ('Lucas', 3, 'Nocco', 'Sebbe', '2023-08-23');
+INSERT INTO forms (consultant_name, consultant_id, customer, sales, date) VALUES ('Wilma', 2, 'Levis', 'Sebbe', '2023-09-03');
+INSERT INTO forms (consultant_name, consultant_id, customer, sales, date) VALUES ('Emelie', 4, 'Dell', 'Sebbe', '2023-09-13');
+INSERT INTO forms (consultant_name, consultant_id, customer, sales, date) VALUES ('Agnes', 1, 'IKEA', 'Anna', '2023-09-20');
+INSERT INTO forms (consultant_name, consultant_id, customer, sales, date) VALUES ('Wilma', 2, 'Coop', 'Anna', '2023-09-24');
+INSERT INTO forms (consultant_name, consultant_id, customer, sales, date) VALUES ('Emelie', 4, 'Hemköp', 'Anna', '2023-09-22');
