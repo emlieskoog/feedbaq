@@ -22,7 +22,7 @@ public class FormController {
     
     @GetMapping("/forms")
     public ResponseEntity<Object> getForms() {
-        try{
+        try {
             List<Map<String, Object>> res = jdbcTemplate.queryForList("SELECT * FROM forms;");
             return new ResponseEntity<>(res, HttpStatus.OK);
         } catch (DataAccessException e) {
