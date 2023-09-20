@@ -1,0 +1,17 @@
+CREATE TABLE consultants (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(90),
+    password VARCHAR(90),
+    role VARCHAR(90),
+    name VARCHAR(90),
+    manager_id INT,
+    created_at TIMESTAMP DEFAULT current_timestamp,
+    updated_at TIMESTAMP DEFAULT current_timestamp
+);
+
+SELECT * FROM forms WHERE consultant_id IN (1, 2, 3);
+
+INSERT INTO consultants (username, password, role, name, manager_id) VALUES ('usernam1', 'passwrd', 'consultant', 'Agnes', 2);
+INSERT INTO consultants (username, password, role, name, manager_id) VALUES ('usernam2', 'passwrd', 'consultant', 'Lucas', 2);
+INSERT INTO consultants (username, password, role, name, manager_id) VALUES ('usernam3', 'passwrd', 'consultant', 'Wilma', 3);
+INSERT INTO consultants (username, password, role, name, manager_id) VALUES ('usernam4', 'passwrd', 'consultant', 'Emelie', 1);

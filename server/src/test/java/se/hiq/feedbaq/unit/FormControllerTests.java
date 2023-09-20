@@ -124,7 +124,7 @@ public class FormControllerTests {
         assertEquals("An error occured while fetching form with ID " + id + ": Test DataAccessException", response.getBody());
         
     }
-    
+
     @Test
     public void testSaveFormSuccess() {
         // Create a mock body and SQL query
@@ -160,8 +160,53 @@ public class FormControllerTests {
         // Assert
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
         assertEquals("Error saving answers", response.getBody());
+        
     }
+    
+    @Test
+    public void testGetFormsByConsultantSuccess() {
+        
+        // Create a query and mock id
+        String query = "SELECT * FROM forms WHERE consultant_id = ?;";
+        long consultant_id = 1L;
 
+        // Create mock data
+        List<Map<String, Object>> mockData = new ArrayList<>();
+        Map<String, Object> form1 = new HashMap<String, Object>();
+        form1.put("consultant_id", consultant_id);
+        form1.put("name", "form1");
+        mockData.add(form1);
+        
+        // Mock the behavior of jdbcTemplate.queryForList to return mock data above
+        when(jdbcTemplate.queryForList(query, consultant_id)).thenReturn(mockData);
+        
+        // Act
+        ResponseEntity<Object> response = formController.getFormsByConsultant(consultant_id);
+        
+        // Assert
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(mockData, response.getBody());
+    }
+    
+    @Test
+    public void testGetFormsByConsultantThrowsException() {
+        
+        // Create a query and mock id
+        String query = "SELECT * FROM forms WHERE consultant_id = ?;";
+        long consultant_id = 1L;
+        
+        // Mock the behavior of jdbcTemplate.queryForList to throw a DataAccessException
+        doThrow(new DataAccessException("Test DataAccessException") {}).when(jdbcTemplate).queryForList(query, consultant_id);
+
+        // Act
+        ResponseEntity<Object> response = formController.getFormsByConsultant(consultant_id);
+
+        // Assert
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+        assertEquals("An error occured while fetching form for consultant with ID " + consultant_id + ": Test DataAccessException", response.getBody());
+    }
+    
     @Test
     public void testGetFormsForSalesSuccess() {
         
