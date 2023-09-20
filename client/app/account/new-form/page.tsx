@@ -8,76 +8,89 @@ import {
   LinearProgressProps,
   Box,
   Rating,
+  Typography,
 } from "@mui/material";
 import "../../styles/form.css";
 
 export default function FormGrid() {
   const questions = [
     {
+      id: "1",
       question: "Uppstart",
       description:
         "Förståelse, startsträcka, rätt förutsättningar för att klara uppdraget, dator och miljöer...",
       inputType: "text",
-      emelie: "ded",
     },
     {
+      id: "2",
       question: "Resultat",
       description: "Kompetens, levererar, kvalitet, tid...",
       inputType: "text",
     },
     {
+      id: "3",
       question: "Ansvar",
       description:
         "Samarbete, hjälper & frågar, står för åtaganden, flaggar...",
       inputType: "text",
     },
     {
+      id: "4",
       question: "Enkelhet",
       description: "Göra det svåra enkelt, enkel kommunikation...",
       inputType: "text",
     },
     {
+      id: "5",
       question: "Glädje",
       description: "Tillför energi, kul att jobba med...",
       inputType: "text",
     },
     {
+      id: "6",
       question: "Innovation",
       description: "Kreativ, kommer med förslag och idéer, kliver fram...",
       inputType: "text",
     },
     {
+      id: "7",
       question: "Nöjdhet (konsult)",
       description: "Hur nöjd är kunden med konsulten på en skala 1-10?",
       inputType: "rating",
     },
     {
+      id: "8",
       question: "Nöjdhet (HiQ)",
       description: "Hur nöjd är kunden med HiQ på en skala 1-10?",
       inputType: "rating",
     },
     {
+      id: "9",
       question: "Förbättringar",
       description: "Vad kan förbättras?",
       inputType: "text",
     },
     {
+      id: "10",
       question: "Värdeomdömen (positivt)",
       description: "Positiv feedback och beröm från kunder eller användare...",
       inputType: "text",
     },
     {
+      id: "11",
       question: "Värdeomdömen (negativt)",
       description: "Negativ feedback och kritik från kunder eller användare...",
       inputType: "text",
     },
     {
+      id: "12",
       question: "Övrigt",
       description:
         "Allmänt utrymme för ytterligare kommentarer eller ämnen som inte täcks av andra frågor...",
       inputType: "text",
     },
     {
+      id: "13",
       question: "Nästa uppföljning",
       description:
         "Planerad tidpunkt eller åtgärder för den nästa uppföljningen...",
@@ -113,41 +126,63 @@ export default function FormGrid() {
 
   const handleInputChange = (event: any) => {
     const newInputValues = [...inputValues];
-    newInputValues[activeStep] = event.target.value;
+    const inputValue = event.target.value;
+
+    if (questions[activeStep].inputType === "rating") {
+      newInputValues[activeStep] = parseFloat(inputValue);
+    } else {
+      newInputValues[activeStep] = inputValue;
+    }
+
     setInputValues(newInputValues);
   };
 
-  const sendForm = () => {
-    inputValues.forEach((value, index) => {
-      console.log(
-        `Answer for subject ${questions[
-          index
-        ].question.toUpperCase()}: ${value}, with type "${typeof value}"`
-      );
-    });
+  const [isLoading, setIsLoading] = useState(false);
+
+  const sendJsonForm = () => {
+    console.log(JSON.stringify(inputValues));
+
+    setIsLoading(true);
+
+    fetch('http://localhost:8080/api/save-form', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(inputValues),
+    })
+      .then(response => response.text())
+      .then(data => {
+        console.log("Response from server:", data);
+      })
+      .catch(error => {
+        console.error("Error:", error);
+      });
   };
 
   return (
     <Grid container spacing={2} className="outerGrid">
       {/* First row */}
       <Grid item xs={12} className="topRow centerContent">
-        <h1>Kvalitetsuppföljning</h1>
+        <Typography variant="h3">Kvalitetsuppföljning</Typography>
       </Grid>
 
       {/* Second row */}
       <Grid item xs={3} sx={{ flexDirection: "column" }} className="middleRow">
-        <h3>Kapitel</h3>
+        <Typography variant="h6">Kapitel</Typography>
         {questions.map((q, index) => {
           return (
             <div
-              key={index}
+              key={q.id}
               className="formChapterList"
               onClick={() => setActiveStep(index)}
             >
               {index === activeStep ? (
-                <p className="selectedChapter">{q.question}</p>
+                <Typography variant="overline" sx={{
+                  color: '#ff329f'
+                }}>{q.question}</Typography>
               ) : (
-                <p>{q.question}</p>
+                <Typography variant="overline" >{q.question}</Typography>
               )}
             </div>
           );
@@ -161,10 +196,8 @@ export default function FormGrid() {
       >
         {activeStep < questions.length ? (
           <>
-            <h2 className="questionTitle">{questions[activeStep].question}</h2>
-            <p className="questionDescription">
-              {questions[activeStep].description}
-            </p>
+            <Typography variant="h5" sx={{ textAlign: 'center' }}>{questions[activeStep].question}</Typography>
+            <Typography variant="subtitle1">{questions[activeStep].description}</Typography>
             <Box className="centerContent">
               {questions[activeStep].inputType === "text" && (
                 <TextField
@@ -236,11 +269,11 @@ export default function FormGrid() {
           </Button>
         )}
         {activeStep == questions.length && (
-          <Button variant="contained" onClick={sendForm}>
+          <Button variant="contained" onClick={sendJsonForm}>
             Skicka
           </Button>
         )}
       </Grid>
-    </Grid>
+    </Grid >
   );
 }

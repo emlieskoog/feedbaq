@@ -15,9 +15,11 @@ let theme: Theme = createTheme({
       default: "white",
     },
   },
+
   typography: {
-    fontFamily: "Roboto, sans-serif", // Customize the default font family
+    fontFamily: "MDPrimerBlack",
     button: {
+      fontFamily: "TrimWebLight",
       fontStyle: "bold",
     },
   },
@@ -27,7 +29,7 @@ let theme: Theme = createTheme({
       styleOverrides: {
         root: {
           "&:hover": {
-            backgroundColor: "#ff329f", // Specify your hover color
+            backgroundColor: "#ff329f",
           },
         },
       },

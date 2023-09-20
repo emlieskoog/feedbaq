@@ -29,7 +29,7 @@
 }
 
 .selectedChapter {
-    font-weight: bold;
+    color:'#ff329f';
 }
 
 .formChapterList:hover {
