@@ -12,6 +12,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.Map;
@@ -35,7 +36,7 @@ public class FormController {
         }
     }
     
-    
+
     @GetMapping("/forms/{id}")
     public ResponseEntity<Object> getFormById(@PathVariable int id) {
         try {
@@ -64,7 +65,19 @@ public class FormController {
             e.printStackTrace(); 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error saving answers");
         }
-        
+    }
+    
+    @GetMapping("/{id}/forms")
+    public ResponseEntity<Object> getFormsByConsultant(@PathVariable("id") long consultant_id) { // RequestParam: encodar URI
+        try {
+            String sql = "SELECT * FROM forms WHERE consultant_id = ?;";
+
+            List<Map<String, Object>> formList = jdbcTemplate.queryForList(sql, consultant_id);
+            return new ResponseEntity<>(formList, HttpStatus.OK);
+        } catch(DataAccessException e) {
+            String errorMessage = "An error occured while fetching form for consultant with ID " + consultant_id + ": " + e.getMessage();
+            return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     
 }
