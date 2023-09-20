@@ -1,7 +1,13 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Avatar, Button, Grid, Typography, CircularProgress } from "@mui/material";
+import {
+  Avatar,
+  Button,
+  Grid,
+  Typography,
+  CircularProgress,
+} from "@mui/material";
 import { FormControl, MenuItem, Select } from "@mui/material";
 import GenericAccordion from "./components/genericaccordion";
 import GenericTable from "./components/generictable";
@@ -52,6 +58,8 @@ export default function LandingPage() {
   const [formData, setFormData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  const [consultantData, setConsultantData] = useState([]);
+
   useEffect(() => {
     fetch("http://localhost:8080/api/forms")
       .then((response) => response.json())
@@ -60,11 +68,29 @@ export default function LandingPage() {
         setIsLoading(false);
       })
       .catch((error) => {
-        console.log("An error occured when trying to retrieve form data.", error);
+        console.log(
+          "An error occured when trying to retrieve form data.",
+          error
+        );
         setIsLoading(false);
       });
   }, []);
 
+  useEffect(() => {
+    fetch("http://localhost:8080/api/1/forms")
+      .then((response) => response.json())
+      .then((data) => {
+        setConsultantData(data);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.log(
+          "An error occured when trying to retrieve consultant data.",
+          error
+        );
+        setIsLoading(false);
+      });
+  }, []);
 
   return (
     <Grid container spacing={2} className="outerGrid">
@@ -100,7 +126,9 @@ export default function LandingPage() {
       </Grid>
       {/* Second row */}
       <Grid item xs={12} className="tableRow">
-        { isLoading ? <CircularProgress/> :
+        {isLoading ? (
+          <CircularProgress />
+        ) : (
           <>
             {selectedOption === "salesperson" && (
               <div>
@@ -133,16 +161,19 @@ export default function LandingPage() {
                 </Typography>
                 <GenericAccordion
                   formData={formData}
-                  accordionType={"consultant"}
+                  accordionType={"consultant_name"}
                   selectedOption={selectedOption}
                 />
               </div>
             )}
             {selectedOption === "consultant" && (
-              <GenericTable formData={formData} selectedOption={selectedOption} />
+              <GenericTable
+                formData={consultantData}
+                selectedOption={selectedOption}
+              />
             )}
           </>
-        }
+        )}
       </Grid>
     </Grid>
   );
