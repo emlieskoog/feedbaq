@@ -65,6 +65,8 @@ public class FormController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error saving answers");
         }
         
+    }
+    
     @GetMapping("/forms/managers/{managerId}")
     public ResponseEntity<Object> getFormsForManagers(@PathVariable int managerId) {
         try {

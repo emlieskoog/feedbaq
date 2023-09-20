@@ -160,6 +160,7 @@ public class FormControllerTests {
         // Assert
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
         assertEquals("Error saving answers", response.getBody());
+    }
 
     @Test
     public void testGetFormsForSalesSuccess() {
