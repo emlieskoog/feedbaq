@@ -25,7 +25,7 @@ public class FormController {
     private JdbcTemplate jdbcTemplate;
     
     @GetMapping("/forms")
-    public ResponseEntity<Object> getForms() {
+    public ResponseEntity<Object> getAllForms() {
         try {
             List<Map<String, Object>> result = jdbcTemplate.queryForList("SELECT * FROM forms;");
             return new ResponseEntity<>(result, HttpStatus.OK);
@@ -50,7 +50,7 @@ public class FormController {
             return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    
     @PostMapping("/save-form")
     public ResponseEntity<Object> postForm(@RequestBody List<String> request) {
         try {
@@ -65,6 +65,37 @@ public class FormController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error saving answers");
         }
         
+    @GetMapping("/forms/managers/{managerId}")
+    public ResponseEntity<Object> getFormsForManagers(@PathVariable int managerId) {
+        try {
+            String query = "SELECT * FROM forms WHERE manager_id=?";
+            List<Map<String, Object>> result = jdbcTemplate.queryForList(query, managerId);
+            if (result.isEmpty()) {
+                String message = "No forms found for manager with ID " + managerId + ".";
+                return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (DataAccessException e) {
+            String errorMessage = "An error occurred while fetching forms for manager with ID " + managerId + ": " + e.getMessage();
+            return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
+
+    @GetMapping("/forms/sales/{salesId}")
+    public ResponseEntity<Object> getFormsForSales(@PathVariable int salesId) {
+        try {
+            String query = "SELECT * FROM forms WHERE sales_id=?";
+            List<Map<String, Object>> result = jdbcTemplate.queryForList(query, salesId);
+            if (result.isEmpty()) {
+                String message = "No forms found for sales with ID " + salesId + ".";
+                return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (DataAccessException e) {
+            String errorMessage = "An error occurred while fetching forms for sales with ID " + salesId + ": " + e.getMessage();
+            return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     
 }

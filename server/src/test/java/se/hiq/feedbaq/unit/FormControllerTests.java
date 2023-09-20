@@ -33,7 +33,7 @@ public class FormControllerTests {
     private FormController formController;
     
     @Test
-    public void testGetFormsSuccess() {
+    public void testGetAllFormsSuccess() {
         
         // Create mock data
         List<Map<String, Object>> mockData = new ArrayList<>();
@@ -46,7 +46,7 @@ public class FormControllerTests {
         when(jdbcTemplate.queryForList("SELECT * FROM forms;")).thenReturn(mockData);
         
         // Act
-        ResponseEntity<Object> response = formController.getForms();
+        ResponseEntity<Object> response = formController.getAllForms();
         
         // Assert
         assertNotNull(response);
@@ -55,13 +55,13 @@ public class FormControllerTests {
     }
     
     @Test
-    public void testGetFormsThrowsException() {
+    public void testGetAllFormsThrowsException() {
         
         // Mock the behavior of jdbcTemplate.queryForList to throw a DataAccessException
         doThrow(new DataAccessException("Test DataAccessException") {}).when(jdbcTemplate).queryForList("SELECT * FROM forms;");
 
         // Act
-        ResponseEntity<Object> response = formController.getForms();
+        ResponseEntity<Object> response = formController.getAllForms();
 
         // Assert
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
@@ -124,7 +124,7 @@ public class FormControllerTests {
         assertEquals("An error occured while fetching form with ID " + id + ": Test DataAccessException", response.getBody());
         
     }
-
+    
     @Test
     public void testSaveFormSuccess() {
         // Create a mock body and SQL query
@@ -160,6 +160,124 @@ public class FormControllerTests {
         // Assert
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
         assertEquals("Error saving answers", response.getBody());
+
+    @Test
+    public void testGetFormsForSalesSuccess() {
+        
+        // Create mock data
+        List<Map<String, Object>> mockData = new ArrayList<>();
+        Map<String, Object> form1 = new HashMap<String, Object>();
+        form1.put("id", 1);
+        form1.put("name", "form1");
+        mockData.add(form1);
+        
+        // Mock the behavior of jdbcTemplate.queryForList to return mock data above
+        String query = "SELECT * FROM forms WHERE sales_id=?";
+        int salesId = 1;
+        when(jdbcTemplate.queryForList(query, salesId)).thenReturn(mockData);
+        
+        // Act
+        ResponseEntity<Object> response = formController.getFormsForSales(salesId);
+        
+        // Assert        
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(mockData, response.getBody());
+        
+    }
+    
+    @Test
+    public void testGetFormsForSalesThrowsException() {
+        
+        // Mock the behavior of jdbcTemplate.queryForList to throw a DataAccessException
+        String query = "SELECT * FROM forms WHERE sales_id=?";
+        int salesId = 1;
+        doThrow(new DataAccessException("Test DataAccessException") {}).when(jdbcTemplate).queryForList(query, salesId);
+
+        // Act
+        ResponseEntity<Object> response = formController.getFormsForSales(salesId);
+
+        // Assert
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+        assertEquals("An error occurred while fetching forms for sales with ID " + salesId + ": Test DataAccessException", response.getBody());
+        
+    }
+    
+    @Test
+    public void testGetFormsForSalesNotFound() {
+        
+        // Mock the behavior of jdbcTemplate.queryForList to return an empty list
+        String query = "SELECT * FROM forms WHERE sales_id=?";
+        int salesId = 1;
+        when(jdbcTemplate.queryForList(query, salesId)).thenReturn(new ArrayList<>());
+        
+        // Act
+        ResponseEntity<Object> response = formController.getFormsForSales(salesId);
+
+        // Assert
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals("No forms found for sales with ID " + salesId + ".", response.getBody());
+        
+    }
+    
+    
+    @Test
+    public void testGetFormsForManagersSuccess() {
+        
+        // Create mock data
+        List<Map<String, Object>> mockData = new ArrayList<>();
+        Map<String, Object> form1 = new HashMap<String, Object>();
+        form1.put("id", 1);
+        form1.put("name", "form1");
+        mockData.add(form1);
+        
+        // Mock the behavior of jdbcTemplate.queryForList to return mock data above
+        String query = "SELECT * FROM forms WHERE manager_id=?";
+        int managerId = 1;
+        when(jdbcTemplate.queryForList(query, managerId)).thenReturn(mockData);
+        
+        // Act
+        ResponseEntity<Object> response = formController.getFormsForManagers(managerId);
+        
+        // Assert        
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(mockData, response.getBody());
+        
+    }
+    
+    @Test
+    public void testGetFormsForManagersThrowsException() {
+        
+        // Mock the behavior of jdbcTemplate.queryForList to throw a DataAccessException
+        String query = "SELECT * FROM forms WHERE manager_id=?";
+        int managerId = 1;
+        doThrow(new DataAccessException("Test DataAccessException") {}).when(jdbcTemplate).queryForList(query, managerId);
+
+        // Act
+        ResponseEntity<Object> response = formController.getFormsForManagers(managerId);
+
+        // Assert
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+        assertEquals("An error occurred while fetching forms for manager with ID " + managerId + ": Test DataAccessException", response.getBody());
+        
+    }
+    
+    @Test
+    public void testGetFormsForManagersNotFound() {
+        
+        // Mock the behavior of jdbcTemplate.queryForList to return an empty list
+        String query = "SELECT * FROM forms WHERE manager_id=?";
+        int managerId = 1;
+        when(jdbcTemplate.queryForList(query, managerId)).thenReturn(new ArrayList<>());
+        
+        // Act
+        ResponseEntity<Object> response = formController.getFormsForManagers(managerId);
+
+        // Assert
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals("No forms found for manager with ID " + managerId + ".", response.getBody());
+        
     }
     
 }
