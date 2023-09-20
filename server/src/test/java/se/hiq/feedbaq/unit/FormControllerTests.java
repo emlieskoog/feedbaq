@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Arrays;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -123,6 +124,42 @@ public class FormControllerTests {
         assertEquals("An error occured while fetching form with ID " + id + ": Test DataAccessException", response.getBody());
         
     }
+
+    @Test
+    public void testSaveFormSuccess() {
+        // Create a mock body and SQL query
+        List<String> requestBody = Arrays.asList("r1", "r2", "r3","r4","r5","r6","r7","r8","r9","r10","r11","r12");
+        String query = "INSERT INTO form_responses (q0, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12) " 
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        // Mock a successful jdbcTemplate.update 
+        when(jdbcTemplate.update(query, requestBody.toArray())).thenReturn(1);
+
+        // Act
+        ResponseEntity<Object> response = formController.postForm(requestBody);
+
+        // Assert
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Data saved successfully", response.getBody());
+    }
     
+    @Test
+    public void testSaveFormThrowsException() {
+        // Create a mock body and SQL query
+        List<String> requestBody = Arrays.asList("r1", "r2", "r3","r4","r5","r6","r7","r8","r9","r10","r11","r12");
+        String query = "INSERT INTO form_responses (q0, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12) " 
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        // Mock a database update failure
+        when(jdbcTemplate.update(query, requestBody.toArray())).thenThrow(new DataAccessException("Database error") {});
+
+        // Act
+        ResponseEntity<Object> response = formController.postForm(requestBody);
+
+        // Assert
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+        assertEquals("Error saving answers", response.getBody());
+    }
     
 }

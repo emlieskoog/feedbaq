@@ -1,0 +1,16 @@
+CREATE TABLE form_responses (
+    id SERIAL PRIMARY KEY,
+    q0 VARCHAR(200),
+    q1 VARCHAR(200),
+    q2 VARCHAR(200),
+    q3 VARCHAR(200),
+    q4 VARCHAR(200),
+    q5 VARCHAR(200),
+    q6 VARCHAR(200),
+    q7 VARCHAR(200),
+    q8 VARCHAR(200),
+    q9 VARCHAR(200),
+    q10 VARCHAR(200),
+    q11 VARCHAR(200),
+    q12 VARCHAR(200)
+);
