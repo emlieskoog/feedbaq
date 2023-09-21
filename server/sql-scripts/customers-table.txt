@@ -2,7 +2,7 @@ DROP TABLE customers;
 
 CREATE TABLE customers (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(100),
+    customer_name VARCHAR(100),
     created_at TIMESTAMP DEFAULT current_timestamp,
     updated_at TIMESTAMP DEFAULT current_timestamp
 );
@@ -19,11 +19,10 @@ BEFORE UPDATE ON customers
 FOR EACH ROW
 EXECUTE PROCEDURE update_timestamp();
 
-INSERT INTO customers (name) VALUES ('Coca-Cola');
-INSERT INTO customers (name) VALUES ('SEB');
-INSERT INTO customers (name) VALUES ('Scania');
-INSERT INTO customers (name) VALUES ('Handelsbanken');
-INSERT INTO customers (name) VALUES ('Nocco');
-INSERT INTO customers (name) VALUES ('Ica');
+INSERT INTO customers (customer_name) VALUES ('Apoteket');
+INSERT INTO customers (customer_name) VALUES ('Scania');
+INSERT INTO customers (customer_name) VALUES ('Handelsbanken');
+INSERT INTO customers (customer_name) VALUES ('Alstom');
+
 
 SELECT * FROM customers;

@@ -2,8 +2,7 @@ DROP TABLE consultants;
 
 CREATE TABLE consultants (
     id SERIAL PRIMARY KEY,
-    first_name VARCHAR(25),
-    last_name VARCHAR(25),
+    consultant_name VARCHAR(100),
     manager_id INT,
     created_at TIMESTAMP DEFAULT current_timestamp,
     updated_at TIMESTAMP DEFAULT current_timestamp
@@ -21,10 +20,10 @@ BEFORE UPDATE ON consultants
 FOR EACH ROW
 EXECUTE PROCEDURE update_timestamp();
 
-INSERT INTO consultants (first_name, last_name, manager_id) VALUES ('Agnes', 'Davidsdottir', 1);
-INSERT INTO consultants (first_name, last_name, manager_id) VALUES ('Emelie', 'Skoog', 2);
-INSERT INTO consultants (first_name, last_name, manager_id) VALUES ('Wilma', 'Axelsson', 3);
-INSERT INTO consultants (first_name, last_name, manager_id) VALUES ('Lucas', 'Hultqvist', 4);
-INSERT INTO consultants (first_name, last_name, manager_id) VALUES ('Anders', 'Lundkvist', 5);
+INSERT INTO consultants (consultant_name, manager_id) VALUES ('Agnes Davidsdottir', 5);
+INSERT INTO consultants (consultant_name, manager_id) VALUES ('Wilma Axelsson', 4);
+INSERT INTO consultants (consultant_name, manager_id) VALUES ('Lucas Hultqvist', 1);
+INSERT INTO consultants (consultant_name, manager_id) VALUES ('Emelie Skoog', 3);
+
 
 SELECT * FROM consultants;

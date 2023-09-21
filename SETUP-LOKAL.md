@@ -131,7 +131,7 @@ CREATE DATABASE feedbaqdb OWNER admin;
 ```
 ## Connect to database
 ```
-psql -U admin -d feedbaqdb -h localhost -p 5432
+psql -U postgres -d feedbaqdb -h wale-feedbaq-db.cu1mlv6squhu.eu-west-1.rds.amazonaws.com -p 5432
 ```
 Enter password for database (located in 'application.properties' file)
 Enter SQL script to create table
