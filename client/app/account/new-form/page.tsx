@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Grid,
   Button,
@@ -14,27 +14,31 @@ import {
   MenuItem,
   SelectChangeEvent,
 } from "@mui/material";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import "../../styles/form.css";
 
 export default function FormGrid() {
-  const infoQuestions = [
-    {
-      question: "Konsult",
-      inputType: "dropdown",
-    },
-    {
-      question: "Säljare",
-      inputType: "dropdown",
-    },
-    {
-      question: "Kund",
-      inputType: "dropdown",
-    },
-    {
-      question: "Datum",
-      inputType: "select",
-    },
-  ];
+  // const infoQuestions = [
+  //   {
+  //     question: "Konsult",
+  //     inputType: "dropdown",
+  //   },
+  //   {
+  //     question: "Säljare",
+  //     inputType: "dropdown",
+  //   },
+  //   {
+  //     question: "Kund",
+  //     inputType: "dropdown",
+  //   },
+  //   {
+  //     question: "Datum",
+  //     inputType: "select",
+  //   },
+  // ];
 
   const questions = [
     {
@@ -132,12 +136,14 @@ export default function FormGrid() {
     Array(questions.length).fill("")
   );
 
-  const [infoInputValues, setInfoInputValues] = useState(
-    Array(infoQuestions.length).fill("")
-  );
-
   const [consultants, setConsultants] = useState([]);
-  const [selectedConsultant, setSelectedConsultant] = useState(''); 
+  const [selectedConsultant, setSelectedConsultant] = useState("");
+
+  const [sales, setSales] = useState([]);
+  const [selectedSales, setSelectedSales] = useState("");
+
+  const [customers, setCustomers] = useState([]);
+  const [selectedCustomer, setSelectedCustomer] = useState("");
 
   function LinearProgressWithLabel(
     props: LinearProgressProps & { value: number }
@@ -173,11 +179,12 @@ export default function FormGrid() {
     setInputValues(newInputValues);
   };
 
-  const handleInfoInputChange = (event: SelectChangeEvent, index: number) => {
-    const newInfoInputValues = [...infoInputValues];
-    const inputValue = event.target.value;
-    newInfoInputValues[index] = inputValue;
-    setInfoInputValues(newInfoInputValues);
+  const handleConsultantChange = (event: any) => {
+    setSelectedConsultant(event.target.value);
+  };
+
+  const handleCustomerChange = (event: any) => {
+    setSelectedCustomer(event.target.value);
   };
 
   const [isLoading, setIsLoading] = useState(false);
@@ -203,24 +210,56 @@ export default function FormGrid() {
       });
   };
 
-  const fetchConsultants = () => {
+  useEffect(() => {
     fetch("http://localhost:8080/api/consultants", {
-      method: "GET", 
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
-      }
+      },
     })
       .then((response) => response.json())
       .then((data) => {
         setConsultants(data);
-        console.log("Data received", data); 
+        console.log("Data received", data);
       })
       .catch((error) => {
-        console.error("Error:", error); 
-      }); 
-  }; 
+        console.error("Error:", error);
+      });
+  }, []);
 
-  
+  //  useEffect(() => {
+  //   fetch("http://localhost:8080/api/sales", {
+  //     method: "GET",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     }
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       setSales(data);
+  //       console.log("Data received", data);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error:", error);
+  //     });
+  //    } );
+
+  useEffect(() => {
+    fetch("http://localhost:8080/api/customers", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setCustomers(data);
+        console.log("Data received", data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }, []);
 
   return (
     <Grid container spacing={2} className="outerGrid">
@@ -291,55 +330,62 @@ export default function FormGrid() {
               )}
               {questions[activeStep].inputType === "info" && (
                 <Box>
-                      <div
-                        style={{
-                          width: "45vh",
-                          margin: "15px",
-                        }}
+                  <div
+                    style={{
+                      width: "45vh",
+                      margin: "20px",
+                    }}
+                  >
+                    <InputLabel id="select-label-consultant">
+                      Konsult
+                    </InputLabel>
+                    <Box>
+                      <Select
+                        labelId="select-label-consultant"
+                        fullWidth
+                        value={selectedConsultant}
+                        onChange={handleConsultantChange}
+                        sx={{ width: "20vh" }}
                       >
-                        <InputLabel id="demo-simple-select-label">
-                        </InputLabel>
-                        <Box>
-                          <Select
-                            labelId="demo-simple-select-label"
-                            fullWidth
-                            value={selectedConsultant}
-                            onChange={handleSelectedConsultantChange
-                            }
-                            sx={{ width: "20vh" }}
-                          >
-                            <MenuItem value="Agnes">Agnes</MenuItem>
-                            <MenuItem value="Lucas">Lucas</MenuItem>
-                            <MenuItem value="Emelie">Emelie</MenuItem>
-                          </Select>
-                          <Select
-                            labelId="demo-simple-select-label"
-                            fullWidth
-                            value={infoInputValues[index]}
-                            onChange={(event) =>
-                              handleInfoInputChange(event, index)
-                            }
-                            sx={{ width: "20vh" }}
-                          >
-                            <MenuItem value="Sebbe">Sebbe</MenuItem>
-                            <MenuItem value="Anna">Anna</MenuItem>
-                            <MenuItem value="Emelie">Emelie</MenuItem>
-                          </Select>
-                          <Select
-                            labelId="demo-simple-select-label"
-                            fullWidth
-                            value={infoInputValues[index]}
-                            onChange={(event) =>
-                              handleInfoInputChange(event, index)
-                            }
-                            sx={{ width: "20vh" }}
-                          >
-                            <MenuItem value="Levis">Levis</MenuItem>
-                            <MenuItem value="Handelsbanken">Handelsbanken</MenuItem>
-                            <MenuItem value="Hemmakväll">Hemmakväll</MenuItem>
-                          </Select>
-                        </Box>
-                        {/* 
+                        {consultants.map((consultant: any) => (
+                          <MenuItem value={consultant.id} key={consultant.id}>
+                            {consultant.first_name}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                      {/* <Select
+                        labelId="demo-simple-select-label"
+                        fullWidth
+                        value={selectedSales}
+                        onChange={handleSalesChange}
+                        sx={{ width: "20vh" }}
+                      >
+                        <MenuItem value="Sebbe">Sebbe</MenuItem>
+                        <MenuItem value="Anna">Anna</MenuItem>
+                        <MenuItem value="Emelie">Emelie</MenuItem>
+                      </Select> */}
+                      <InputLabel id="select-label-customer">Kund</InputLabel>
+                      <Select
+                        labelId="select-label-customer"
+                        fullWidth
+                        value={selectedCustomer}
+                        onChange={handleCustomerChange}
+                        sx={{ width: "20vh" }}
+                      >
+                        {customers.map((customer: any) => (
+                          <MenuItem value={customer.id} key={customer.id}>
+                            {customer.name}
+                          </MenuItem>
+                        ))}
+                      </Select>
+
+                      <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DemoContainer components={["DatePicker"]}>
+                          <DatePicker label="Datum" />
+                        </DemoContainer>
+                      </LocalizationProvider>
+                    </Box>
+                    {/* 
                         <TextField
                           value={infoInputValues[index]}
                           onChange={(event) =>
@@ -351,7 +397,7 @@ export default function FormGrid() {
                           maxRows={2}
                           variant="outlined"
                         /> */}
-                      </div>
+                  </div>
                 </Box>
               )}
             </Box>
