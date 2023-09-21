@@ -18,6 +18,7 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { Dayjs } from "dayjs";
 import "../../styles/form.css";
 
 export default function FormGrid() {
@@ -137,13 +138,15 @@ export default function FormGrid() {
   );
 
   const [consultants, setConsultants] = useState([]);
-  const [selectedConsultant, setSelectedConsultant] = useState("");
+  const [consultantId, setConsulantId] = useState("");
 
   const [sales, setSales] = useState([]);
-  const [selectedSales, setSelectedSales] = useState("");
+  const [salesId, setSalesId] = useState("");
 
   const [customers, setCustomers] = useState([]);
-  const [selectedCustomer, setSelectedCustomer] = useState("");
+  const [customerId, setCustomerId] = useState("");
+
+  const [createdDate, setCreatedDate] = useState<Dayjs | null>(null);
 
   function LinearProgressWithLabel(
     props: LinearProgressProps & { value: number }
@@ -180,11 +183,15 @@ export default function FormGrid() {
   };
 
   const handleConsultantChange = (event: any) => {
-    setSelectedConsultant(event.target.value);
+    setConsulantId(event.target.value);
+  };
+
+  const handleSalesChange = (event: any) => {
+    setSalesId(event.target.value);
   };
 
   const handleCustomerChange = (event: any) => {
-    setSelectedCustomer(event.target.value);
+    setCustomerId(event.target.value);
   };
 
   const [isLoading, setIsLoading] = useState(false);
@@ -227,22 +234,22 @@ export default function FormGrid() {
       });
   }, []);
 
-  //  useEffect(() => {
-  //   fetch("http://localhost:8080/api/sales", {
-  //     method: "GET",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     }
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       setSales(data);
-  //       console.log("Data received", data);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error:", error);
-  //     });
-  //    } );
+  useEffect(() => {
+    fetch("http://localhost:8080/api/sales", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setSales(data);
+        console.log("Data received", data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }, []);
 
   useEffect(() => {
     fetch("http://localhost:8080/api/customers", {
@@ -343,45 +350,54 @@ export default function FormGrid() {
                       <Select
                         labelId="select-label-consultant"
                         fullWidth
-                        value={selectedConsultant}
+                        value={consultantId}
                         onChange={handleConsultantChange}
                         sx={{ width: "20vh" }}
                       >
                         {consultants.map((consultant: any) => (
                           <MenuItem value={consultant.id} key={consultant.id}>
-                            {consultant.first_name}
+                            {consultant.consultant_name}
                           </MenuItem>
                         ))}
                       </Select>
-                      {/* <Select
-                        labelId="demo-simple-select-label"
+
+                      <InputLabel id="select-label-sales">Säljare</InputLabel>
+                      <Select
+                        labelId="select-label-sales"
                         fullWidth
-                        value={selectedSales}
+                        value={salesId}
                         onChange={handleSalesChange}
                         sx={{ width: "20vh" }}
                       >
-                        <MenuItem value="Sebbe">Sebbe</MenuItem>
-                        <MenuItem value="Anna">Anna</MenuItem>
-                        <MenuItem value="Emelie">Emelie</MenuItem>
-                      </Select> */}
+                        {sales.map((salesperson: any) => (
+                          <MenuItem value={salesperson.id} key={salesperson.id}>
+                            {salesperson.sales_name}
+                          </MenuItem>
+                        ))}
+                      </Select>
+
                       <InputLabel id="select-label-customer">Kund</InputLabel>
                       <Select
                         labelId="select-label-customer"
                         fullWidth
-                        value={selectedCustomer}
+                        value={customerId}
                         onChange={handleCustomerChange}
                         sx={{ width: "20vh" }}
                       >
                         {customers.map((customer: any) => (
                           <MenuItem value={customer.id} key={customer.id}>
-                            {customer.name}
+                            {customer.customer_name}
                           </MenuItem>
                         ))}
                       </Select>
 
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DemoContainer components={["DatePicker"]}>
-                          <DatePicker label="Datum" />
+                          <DatePicker
+                            value={createdDate}
+                            label="Datum"
+                            onChange={(newDate) => setCreatedDate(newDate)}
+                          />
                         </DemoContainer>
                       </LocalizationProvider>
                     </Box>
