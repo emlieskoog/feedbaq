@@ -58,12 +58,12 @@ export default function LandingPage() {
   const [formData, setFormData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const [consultantData, setConsultantData] = useState([]);
-  const [managerData, setManagerData] = useState([]);
-
-
   useEffect(() => {
-    fetch("http://localhost:8080/api/forms")
+
+    setIsLoading(true);
+
+    if (selectedOption === "salesperson") {
+      fetch("http://localhost:8080/api/forms/sales/1")
       .then((response) => response.json())
       .then((data) => {
         setFormData(data);
@@ -71,42 +71,49 @@ export default function LandingPage() {
       })
       .catch((error) => {
         console.log(
-          "An error occured when trying to retrieve form data.",
+          "An error occured when trying to retrieve forms for sales.",
           error
         );
         setIsLoading(false);
       });
-  }, []);
+    }
 
-  useEffect(() => {
-    fetch("http://localhost:8080/api/forms/consultants/1")
+    if (selectedOption === "manager") {
+      fetch("http://localhost:8080/api/forms/managers/3")
       .then((response) => response.json())
       .then((data) => {
-        setConsultantData(data);
+        setFormData(data);
         setIsLoading(false);
       })
       .catch((error) => {
         console.log(
-          "An error occured when trying to retrieve consultant data.",
+          "An error occured when trying to retrieve forms for manager.",
           error
         );
         setIsLoading(false);
       });
-  }, []);
+    }
 
-
-  useEffect(() => {
-    fetch("http://localhost:8080/api/forms/managers/5")
+    if (selectedOption === "consultant") {
+      fetch("http://localhost:8080/api/forms/consultants/4")
       .then((response) => response.json())
       .then((data) => {
-        setManagerData(data);
+        setFormData(data);
+        setIsLoading(false);
       })
       .catch((error) => {
-        console.log("An error occured when trying to retrieve manager data.", error);
+        console.log(
+          "An error occured when trying to retrieve forms for consultant.",
+          error
+        );
+        setIsLoading(false);
       });
-  }, []);
+    }
+  }, [selectedOption]);
 
-
+  useEffect(() => {
+    console.log(formData);
+  }, [formData]);
 
   return (
     <Grid container spacing={2} className="outerGrid">
@@ -165,7 +172,7 @@ export default function LandingPage() {
                 </FormControl>
                 <GenericAccordion
                   formData={formData}
-                  accordionType={"customer"}
+                  accordionType={"customer_name"}
                   selectedOption={selectedOption}
                 />
               </div>
@@ -176,7 +183,7 @@ export default function LandingPage() {
                   Mina Konsulter
                 </Typography>
                 <GenericAccordion
-                  formData={managerData}
+                  formData={formData}
                   accordionType={"consultant_name"}
                   selectedOption={selectedOption}
                 />
@@ -184,7 +191,7 @@ export default function LandingPage() {
             )}
             {selectedOption === "consultant" && (
               <GenericTable
-                formData={consultantData}
+                formData={formData}
                 selectedOption={selectedOption}
               />
             )}

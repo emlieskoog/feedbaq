@@ -37,7 +37,7 @@ export default function GenericTable(props: any) {
                 </>
               ) : (
                 <>
-                  <TableCell>{form.customer}</TableCell>
+                  <TableCell>{form.customer_name}</TableCell>
                   <TableCell>{form.date}</TableCell>
                 </>
               )}
