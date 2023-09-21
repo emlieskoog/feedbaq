@@ -18,29 +18,10 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { Dayjs } from "dayjs";
+//import { Dayjs } from "dayjs";
 import "../../styles/form.css";
 
 export default function FormGrid() {
-  // const infoQuestions = [
-  //   {
-  //     question: "Konsult",
-  //     inputType: "dropdown",
-  //   },
-  //   {
-  //     question: "Säljare",
-  //     inputType: "dropdown",
-  //   },
-  //   {
-  //     question: "Kund",
-  //     inputType: "dropdown",
-  //   },
-  //   {
-  //     question: "Datum",
-  //     inputType: "select",
-  //   },
-  // ];
-
   const questions = [
     {
       id: "0",
@@ -146,7 +127,10 @@ export default function FormGrid() {
   const [customers, setCustomers] = useState([]);
   const [customerId, setCustomerId] = useState("");
 
-  const [createdDate, setCreatedDate] = useState<Dayjs | null>(null);
+  // Day.js is a minimalist JavaScript library that parses, validates, manipulates, and displays dates and times for modern browsers with a largely Moment.js-compatible API.
+  const dayjs = require("dayjs");
+
+  const [createdDate, setCreatedDate] = useState(dayjs()); // dayjs() = get the current time and date. Could be changed using .format("YYYY-MM-DD") if we need date to be string
 
   function LinearProgressWithLabel(
     props: LinearProgressProps & { value: number }
@@ -192,6 +176,10 @@ export default function FormGrid() {
 
   const handleCustomerChange = (event: any) => {
     setCustomerId(event.target.value);
+  };
+
+  const handleDateChange = (event: any) => {
+    setCreatedDate(event.toDate());
   };
 
   const [isLoading, setIsLoading] = useState(false);
@@ -396,23 +384,11 @@ export default function FormGrid() {
                           <DatePicker
                             value={createdDate}
                             label="Datum"
-                            onChange={(newDate) => setCreatedDate(newDate)}
+                            onChange={handleDateChange}
                           />
                         </DemoContainer>
                       </LocalizationProvider>
                     </Box>
-                    {/* 
-                        <TextField
-                          value={infoInputValues[index]}
-                          onChange={(event) =>
-                            handleInfoInputChange(event, index)
-                          }
-                          placeholder="Skriv ditt svar här ..."
-                          multiline
-                          fullWidth
-                          maxRows={2}
-                          variant="outlined"
-                        /> */}
                   </div>
                 </Box>
               )}
