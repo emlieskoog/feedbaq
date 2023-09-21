@@ -85,7 +85,8 @@ public class FormController {
     @GetMapping("/forms/managers/{managerId}")
     public ResponseEntity<Object> getFormsForManagers(@PathVariable int managerId) {
         try {
-            String query = "SELECT * FROM forms WHERE manager_id=?";
+            //String query = "SELECT * FROM forms WHERE manager_id=?";
+            String query = "SELECT f.id, c.first_name, c.last_name, f.customer, f.date FROM forms f JOIN consultants c ON f.consultant_id=c.id WHERE c.manager_id=?";
             List<Map<String, Object>> result = jdbcTemplate.queryForList(query, managerId);
             if (result.isEmpty()) {
                 String message = "No forms found for manager with ID " + managerId + ".";
