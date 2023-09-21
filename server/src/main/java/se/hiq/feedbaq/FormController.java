@@ -69,7 +69,8 @@ public class FormController {
     @GetMapping("/forms/consultants/{consultantId}")
     public ResponseEntity<Object> getFormsForConsultants(@PathVariable int consultantId) { // RequestParam: encodar URI
         try {
-            String query = "SELECT * FROM forms WHERE consultant_id=?";
+            //String query = "SELECT  FROM forms WHERE consultant_id=?";
+            String query = "SELECT f.id, c.customer_name, f.date FROM forms f JOIN customers c ON f.customer_id=c.id WHERE f.consultant_id=?";
             List<Map<String, Object>> result = jdbcTemplate.queryForList(query, consultantId);
             if (result.isEmpty()) {
                 String message = "No forms found for consultant with ID " + consultantId + ".";
@@ -86,7 +87,7 @@ public class FormController {
     public ResponseEntity<Object> getFormsForManagers(@PathVariable int managerId) {
         try {
             //String query = "SELECT * FROM forms WHERE manager_id=?";
-            String query = "SELECT f.id, c.first_name, c.last_name, f.customer, f.date FROM forms f JOIN consultants c ON f.consultant_id=c.id WHERE c.manager_id=?";
+            String query = "SELECT f.id, co.consultant_name, cu.customer_name, f.date FROM forms f JOIN consultants co ON f.consultant_id=co.id JOIN customers cu ON f.customer_id=cu.id WHERE co.manager_id=?";
             List<Map<String, Object>> result = jdbcTemplate.queryForList(query, managerId);
             if (result.isEmpty()) {
                 String message = "No forms found for manager with ID " + managerId + ".";
@@ -103,7 +104,7 @@ public class FormController {
     @GetMapping("/forms/sales/{salesId}")
     public ResponseEntity<Object> getFormsForSales(@PathVariable int salesId) {
         try {
-            String query = "SELECT * FROM forms WHERE sales_id=?";
+            String query = "SELECT f.id, cu.customer_name, co.consultant_name, f.date FROM forms f JOIN customers cu ON f.customer_id=cu.id JOIN consultants co ON f.consultant_id=co.id WHERE f.sales_id=?";
             List<Map<String, Object>> result = jdbcTemplate.queryForList(query, salesId);
             if (result.isEmpty()) {
                 String message = "No forms found for sales with ID " + salesId + ".";

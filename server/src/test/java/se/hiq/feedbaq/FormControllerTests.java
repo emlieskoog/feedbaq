@@ -173,7 +173,7 @@ public class FormControllerTests {
         mockData.add(form1);
         
         // Mock the behavior of jdbcTemplate.queryForList to return mock data above
-        String query = "SELECT * FROM forms WHERE sales_id=?";
+        String query = "SELECT f.id, cu.customer_name, co.consultant_name, f.date FROM forms f JOIN customers cu ON f.customer_id=cu.id JOIN consultants co ON f.consultant_id=co.id WHERE f.sales_id=?";
         int salesId = 1;
         when(jdbcTemplate.queryForList(query, salesId)).thenReturn(mockData);
         
@@ -191,7 +191,7 @@ public class FormControllerTests {
     public void testGetFormsForSalesThrowsException() {
         
         // Mock the behavior of jdbcTemplate.queryForList to throw a DataAccessException
-        String query = "SELECT * FROM forms WHERE sales_id=?";
+        String query = "SELECT f.id, cu.customer_name, co.consultant_name, f.date FROM forms f JOIN customers cu ON f.customer_id=cu.id JOIN consultants co ON f.consultant_id=co.id WHERE f.sales_id=?";
         int salesId = 1;
         doThrow(new DataAccessException("Test DataAccessException") {}).when(jdbcTemplate).queryForList(query, salesId);
 
@@ -208,7 +208,7 @@ public class FormControllerTests {
     public void testGetFormsForSalesNotFound() {
         
         // Mock the behavior of jdbcTemplate.queryForList to return an empty list
-        String query = "SELECT * FROM forms WHERE sales_id=?";
+        String query = "SELECT f.id, cu.customer_name, co.consultant_name, f.date FROM forms f JOIN customers cu ON f.customer_id=cu.id JOIN consultants co ON f.consultant_id=co.id WHERE f.sales_id=?";
         int salesId = 1;
         when(jdbcTemplate.queryForList(query, salesId)).thenReturn(new ArrayList<>());
         
@@ -233,7 +233,7 @@ public class FormControllerTests {
         mockData.add(form1);
         
         // Mock the behavior of jdbcTemplate.queryForList to return mock data above
-        String query = "SELECT f.id, c.first_name, c.last_name, f.customer, f.date FROM forms f JOIN consultants c ON f.consultant_id=c.id WHERE c.manager_id=?";
+        String query = "SELECT f.id, co.consultant_name, cu.customer_name, f.date FROM forms f JOIN consultants co ON f.consultant_id=co.id JOIN customers cu ON f.customer_id=cu.id WHERE co.manager_id=?";
         int managerId = 1;
         when(jdbcTemplate.queryForList(query, managerId)).thenReturn(mockData);
         
@@ -251,7 +251,7 @@ public class FormControllerTests {
     public void testGetFormsForManagersThrowsException() {
         
         // Mock the behavior of jdbcTemplate.queryForList to throw a DataAccessException
-        String query = "SELECT f.id, c.first_name, c.last_name, f.customer, f.date FROM forms f JOIN consultants c ON f.consultant_id=c.id WHERE c.manager_id=?";
+        String query = "SELECT f.id, co.consultant_name, cu.customer_name, f.date FROM forms f JOIN consultants co ON f.consultant_id=co.id JOIN customers cu ON f.customer_id=cu.id WHERE co.manager_id=?";
         int managerId = 1;
         doThrow(new DataAccessException("Test DataAccessException") {}).when(jdbcTemplate).queryForList(query, managerId);
 
@@ -268,7 +268,7 @@ public class FormControllerTests {
     public void testGetFormsForManagersNotFound() {
         
         // Mock the behavior of jdbcTemplate.queryForList to return an empty list
-        String query = "SELECT f.id, c.first_name, c.last_name, f.customer, f.date FROM forms f JOIN consultants c ON f.consultant_id=c.id WHERE c.manager_id=?";
+        String query = "SELECT f.id, co.consultant_name, cu.customer_name, f.date FROM forms f JOIN consultants co ON f.consultant_id=co.id JOIN customers cu ON f.customer_id=cu.id WHERE co.manager_id=?";
         int managerId = 1;
         when(jdbcTemplate.queryForList(query, managerId)).thenReturn(new ArrayList<>());
         
@@ -292,7 +292,7 @@ public class FormControllerTests {
         mockData.add(form1);
         
         // Mock the behavior of jdbcTemplate.queryForList to return mock data above
-        String query = "SELECT * FROM forms WHERE consultant_id=?";
+        String query = "SELECT f.id, c.customer_name, f.date FROM forms f JOIN customers c ON f.customer_id=c.id WHERE f.consultant_id=?";
         int consultantId = 1;
         when(jdbcTemplate.queryForList(query, consultantId)).thenReturn(mockData);
         
@@ -310,7 +310,7 @@ public class FormControllerTests {
     public void testGetFormsForConsultantsThrowsException() {
         
         // Mock the behavior of jdbcTemplate.queryForList to throw a DataAccessException
-        String query = "SELECT * FROM forms WHERE consultant_id=?";
+        String query = "SELECT f.id, c.customer_name, f.date FROM forms f JOIN customers c ON f.customer_id=c.id WHERE f.consultant_id=?";
         int consultantId = 1;
         doThrow(new DataAccessException("Test DataAccessException") {}).when(jdbcTemplate).queryForList(query, consultantId);
 
@@ -327,7 +327,7 @@ public class FormControllerTests {
     public void testGetFormsForConsultantsNotFound() {
         
         // Mock the behavior of jdbcTemplate.queryForList to return an empty list
-        String query = "SELECT * FROM forms WHERE consultant_id=?";
+        String query = "SELECT f.id, c.customer_name, f.date FROM forms f JOIN customers c ON f.customer_id=c.id WHERE f.consultant_id=?";
         int consultantId = 1;
         when(jdbcTemplate.queryForList(query, consultantId)).thenReturn(new ArrayList<>());
         
