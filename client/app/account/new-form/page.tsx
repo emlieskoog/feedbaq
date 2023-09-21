@@ -9,11 +9,40 @@ import {
   Box,
   Rating,
   Typography,
+  InputLabel,
+  Select,
+  MenuItem,
+  SelectChangeEvent,
 } from "@mui/material";
 import "../../styles/form.css";
 
 export default function FormGrid() {
+  const infoQuestions = [
+    {
+      question: "Konsult",
+      inputType: "dropdown",
+    },
+    {
+      question: "Säljare",
+      inputType: "dropdown",
+    },
+    {
+      question: "Kund",
+      inputType: "dropdown",
+    },
+    {
+      question: "Datum",
+      inputType: "select",
+    },
+  ];
+
   const questions = [
+    {
+      id: "0",
+      question: "Info",
+      description: "",
+      inputType: "info",
+    },
     {
       id: "1",
       question: "Uppstart",
@@ -103,6 +132,10 @@ export default function FormGrid() {
     Array(questions.length).fill("")
   );
 
+  const [infoInputValues, setInfoInputValues] = useState(
+    Array(infoQuestions.length).fill("")
+  );
+
   function LinearProgressWithLabel(
     props: LinearProgressProps & { value: number }
   ) {
@@ -137,6 +170,13 @@ export default function FormGrid() {
     setInputValues(newInputValues);
   };
 
+  const handleInfoInputChange = (event: SelectChangeEvent, index: number) => {
+    const newInfoInputValues = [...infoInputValues];
+    const inputValue = event.target.value;
+    newInfoInputValues[index] = inputValue;
+    setInfoInputValues(newInfoInputValues);
+  };
+
   const [isLoading, setIsLoading] = useState(false);
 
   const sendJsonForm = () => {
@@ -144,18 +184,18 @@ export default function FormGrid() {
 
     setIsLoading(true);
 
-    fetch('http://localhost:8080/api/save-form', {
-      method: 'POST',
+    fetch("http://localhost:8080/api/save-form", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(inputValues),
     })
-      .then(response => response.text())
-      .then(data => {
+      .then((response) => response.text())
+      .then((data) => {
         console.log("Response from server:", data);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error("Error:", error);
       });
   };
@@ -178,11 +218,16 @@ export default function FormGrid() {
               onClick={() => setActiveStep(index)}
             >
               {index === activeStep ? (
-                <Typography variant="overline" sx={{
-                  color: '#ff329f'
-                }}>{q.question}</Typography>
+                <Typography
+                  variant="overline"
+                  sx={{
+                    color: "#ff329f",
+                  }}
+                >
+                  {q.question}
+                </Typography>
               ) : (
-                <Typography variant="overline" >{q.question}</Typography>
+                <Typography variant="overline">{q.question}</Typography>
               )}
             </div>
           );
@@ -196,8 +241,12 @@ export default function FormGrid() {
       >
         {activeStep < questions.length ? (
           <>
-            <Typography variant="h5" sx={{ textAlign: 'center' }}>{questions[activeStep].question}</Typography>
-            <Typography variant="subtitle1">{questions[activeStep].description}</Typography>
+            <Typography variant="h5" sx={{ textAlign: "center" }}>
+              {questions[activeStep].question}
+            </Typography>
+            <Typography variant="subtitle1">
+              {questions[activeStep].description}
+            </Typography>
             <Box className="centerContent">
               {questions[activeStep].inputType === "text" && (
                 <TextField
@@ -217,6 +266,52 @@ export default function FormGrid() {
                   max={10}
                   size="large"
                 />
+              )}
+              {questions[activeStep].inputType === "info" && (
+                <Box>
+                  {infoQuestions.map((q, index) => {
+                    return (
+                      <div
+                        key={index}
+                        style={{
+                          width: "45vh",
+                          margin: "15px",
+                        }}
+                      >
+                        <InputLabel id="demo-simple-select-label">
+                          {q.question}
+                        </InputLabel>
+                        <Box>
+                          <Select
+                            labelId="demo-simple-select-label"
+                            fullWidth
+                            value={infoInputValues[index]}
+                            onChange={(event) =>
+                              handleInfoInputChange(event, index)
+                            }
+                            sx={{ width: "20vh" }}
+                          >
+                            <MenuItem value="Agnes">Agnes</MenuItem>
+                            <MenuItem value="Lucas">Lucas</MenuItem>
+                            <MenuItem value="Emelie">Emelie</MenuItem>
+                          </Select>
+                        </Box>
+                        {/* 
+                        <TextField
+                          value={infoInputValues[index]}
+                          onChange={(event) =>
+                            handleInfoInputChange(event, index)
+                          }
+                          placeholder="Skriv ditt svar här ..."
+                          multiline
+                          fullWidth
+                          maxRows={2}
+                          variant="outlined"
+                        /> */}
+                      </div>
+                    );
+                  })}
+                </Box>
               )}
             </Box>
           </>
@@ -274,6 +369,6 @@ export default function FormGrid() {
           </Button>
         )}
       </Grid>
-    </Grid >
+    </Grid>
   );
 }
