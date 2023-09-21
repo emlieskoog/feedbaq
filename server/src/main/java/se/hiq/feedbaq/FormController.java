@@ -12,7 +12,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.Map;
@@ -67,15 +66,18 @@ public class FormController {
         }
     }
         
-    @GetMapping("/{id}/forms")
-    public ResponseEntity<Object> getFormsByConsultant(@PathVariable("id") long consultant_id) { // RequestParam: encodar URI
+    @GetMapping("/forms/consultants/{consultantId}")
+    public ResponseEntity<Object> getFormsForConsultants(@PathVariable int consultantId) { // RequestParam: encodar URI
         try {
-            String sql = "SELECT * FROM forms WHERE consultant_id = ?;";
-
-            List<Map<String, Object>> formList = jdbcTemplate.queryForList(sql, consultant_id);
-            return new ResponseEntity<>(formList, HttpStatus.OK);
-        } catch(DataAccessException e) {
-            String errorMessage = "An error occured while fetching form for consultant with ID " + consultant_id + ": " + e.getMessage();
+            String query = "SELECT * FROM forms WHERE consultant_id=?";
+            List<Map<String, Object>> result = jdbcTemplate.queryForList(query, consultantId);
+            if (result.isEmpty()) {
+                String message = "No forms found for consultant with ID " + consultantId + ".";
+                return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (DataAccessException e) {
+            String errorMessage = "An error occured while fetching forms for consultant with ID " + consultantId + ": " + e.getMessage();
             return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

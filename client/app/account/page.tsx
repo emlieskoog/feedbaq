@@ -59,6 +59,8 @@ export default function LandingPage() {
   const [isLoading, setIsLoading] = useState(true);
 
   const [consultantData, setConsultantData] = useState([]);
+  const [managerData, setManagerData] = useState([]);
+
 
   useEffect(() => {
     fetch("http://localhost:8080/api/forms")
@@ -77,7 +79,7 @@ export default function LandingPage() {
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/1/forms")
+    fetch("http://localhost:8080/api/forms/consultants/1")
       .then((response) => response.json())
       .then((data) => {
         setConsultantData(data);
@@ -91,6 +93,20 @@ export default function LandingPage() {
         setIsLoading(false);
       });
   }, []);
+
+
+  useEffect(() => {
+    fetch("http://localhost:8080/api/forms/managers/5")
+      .then((response) => response.json())
+      .then((data) => {
+        setManagerData(data);
+      })
+      .catch((error) => {
+        console.log("An error occured when trying to retrieve manager data.", error);
+      });
+  }, []);
+
+
 
   return (
     <Grid container spacing={2} className="outerGrid">
@@ -160,7 +176,7 @@ export default function LandingPage() {
                   Mina Konsulter
                 </Typography>
                 <GenericAccordion
-                  formData={formData}
+                  formData={managerData}
                   accordionType={"consultant_name"}
                   selectedOption={selectedOption}
                 />

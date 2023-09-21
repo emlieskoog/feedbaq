@@ -24,12 +24,12 @@ BEFORE UPDATE ON forms
 FOR EACH ROW
 EXECUTE PROCEDURE update_timestamp();
 
-INSERT INTO forms (consultant_name, consultant_id, customer, sales, date) VALUES ('Agnes', 1, 'Ica', 'Sebbe', '2023-08-13');
-INSERT INTO forms (consultant_name, consultant_id, customer, sales, date) VALUES ('Lucas', 3, 'Nocco', 'Sebbe', '2023-08-23');
-INSERT INTO forms (consultant_name, consultant_id, customer, sales, date) VALUES ('Wilma', 2, 'Levis', 'Sebbe', '2023-09-03');
-INSERT INTO forms (consultant_name, consultant_id, customer, sales, date) VALUES ('Emelie', 4, 'Dell', 'Sebbe', '2023-09-13');
-INSERT INTO forms (consultant_name, consultant_id, customer, sales, date) VALUES ('Agnes', 1, 'IKEA', 'Anna', '2023-09-20');
-INSERT INTO forms (consultant_name, consultant_id, customer, sales, date) VALUES ('Wilma', 2, 'Coop', 'Anna', '2023-09-24');
-INSERT INTO forms (consultant_name, consultant_id, customer, sales, date) VALUES ('Emelie', 4, 'Hemköp', 'Anna', '2023-09-22');
+INSERT INTO forms (consultant_name, consultant_id, customer, sales_id, manager_id, date) VALUES ('Agnes', 1, 'Ica', 5, 6, '2023-08-13');
+INSERT INTO forms (consultant_name, consultant_id, customer, sales_id, manager_id, date) VALUES ('Lucas', 3, 'Nocco', 7, 5, '2023-08-23');
+INSERT INTO forms (consultant_name, consultant_id, customer, sales_id, manager_id, date) VALUES ('Wilma', 2, 'Levis', 1, 3, '2023-09-03');
+INSERT INTO forms (consultant_name, consultant_id, customer, sales_id, manager_id, date) VALUES ('Emelie', 4, 'Dell', 4, 5, '2023-09-13');
+INSERT INTO forms (consultant_name, consultant_id, customer, sales_id, manager_id, date) VALUES ('Agnes', 1, 'IKEA', 5, 1, '2023-09-20');
+INSERT INTO forms (consultant_name, consultant_id, customer, sales_id, manager_id, date) VALUES ('Wilma', 2, 'Coop', 1, 5, '2023-09-24');
+INSERT INTO forms (consultant_name, consultant_id, customer, sales_id, manager_id, date) VALUES ('Emelie', 4, 'Hemköp', 4, 5, '2023-09-22');
 
 SELECT * FROM forms;
