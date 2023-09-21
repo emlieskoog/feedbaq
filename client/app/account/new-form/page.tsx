@@ -136,6 +136,9 @@ export default function FormGrid() {
     Array(infoQuestions.length).fill("")
   );
 
+  const [consultants, setConsultants] = useState([]);
+  const [selectedConsultant, setSelectedConsultant] = useState(''); 
+
   function LinearProgressWithLabel(
     props: LinearProgressProps & { value: number }
   ) {
@@ -199,6 +202,25 @@ export default function FormGrid() {
         console.error("Error:", error);
       });
   };
+
+  const fetchConsultants = () => {
+    fetch("http://localhost:8080/api/consultants", {
+      method: "GET", 
+      headers: {
+        "Content-Type": "application/json",
+      }
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setConsultants(data);
+        console.log("Data received", data); 
+      })
+      .catch((error) => {
+        console.error("Error:", error); 
+      }); 
+  }; 
+
+  
 
   return (
     <Grid container spacing={2} className="outerGrid">
@@ -269,19 +291,27 @@ export default function FormGrid() {
               )}
               {questions[activeStep].inputType === "info" && (
                 <Box>
-                  {infoQuestions.map((q, index) => {
-                    return (
                       <div
-                        key={index}
                         style={{
                           width: "45vh",
                           margin: "15px",
                         }}
                       >
                         <InputLabel id="demo-simple-select-label">
-                          {q.question}
                         </InputLabel>
                         <Box>
+                          <Select
+                            labelId="demo-simple-select-label"
+                            fullWidth
+                            value={selectedConsultant}
+                            onChange={handleSelectedConsultantChange
+                            }
+                            sx={{ width: "20vh" }}
+                          >
+                            <MenuItem value="Agnes">Agnes</MenuItem>
+                            <MenuItem value="Lucas">Lucas</MenuItem>
+                            <MenuItem value="Emelie">Emelie</MenuItem>
+                          </Select>
                           <Select
                             labelId="demo-simple-select-label"
                             fullWidth
@@ -291,9 +321,22 @@ export default function FormGrid() {
                             }
                             sx={{ width: "20vh" }}
                           >
-                            <MenuItem value="Agnes">Agnes</MenuItem>
-                            <MenuItem value="Lucas">Lucas</MenuItem>
+                            <MenuItem value="Sebbe">Sebbe</MenuItem>
+                            <MenuItem value="Anna">Anna</MenuItem>
                             <MenuItem value="Emelie">Emelie</MenuItem>
+                          </Select>
+                          <Select
+                            labelId="demo-simple-select-label"
+                            fullWidth
+                            value={infoInputValues[index]}
+                            onChange={(event) =>
+                              handleInfoInputChange(event, index)
+                            }
+                            sx={{ width: "20vh" }}
+                          >
+                            <MenuItem value="Levis">Levis</MenuItem>
+                            <MenuItem value="Handelsbanken">Handelsbanken</MenuItem>
+                            <MenuItem value="Hemmakväll">Hemmakväll</MenuItem>
                           </Select>
                         </Box>
                         {/* 
@@ -309,8 +352,6 @@ export default function FormGrid() {
                           variant="outlined"
                         /> */}
                       </div>
-                    );
-                  })}
                 </Box>
               )}
             </Box>
