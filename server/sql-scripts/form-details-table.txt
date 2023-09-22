@@ -12,5 +12,6 @@ CREATE TABLE form_responses (
     q9 VARCHAR(200),
     q10 VARCHAR(200),
     q11 VARCHAR(200),
-    q12 VARCHAR(200)
+    q12 VARCHAR(200),
+    q13 VARCHAR(200)
 );
