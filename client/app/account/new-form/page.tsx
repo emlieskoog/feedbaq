@@ -308,10 +308,10 @@ export default function FormGrid() {
             <Typography variant="h5" sx={{ textAlign: "center" }}>
               {questions[activeStep].question}
             </Typography>
-            <Typography variant="subtitle1">
+            <Typography variant="subtitle1" sx={{ textAlign: "center", margin: "8px" }}>
               {questions[activeStep].description}
             </Typography>
-            <Box className="centerContent">
+            <Box className="centerContent" >
               {questions[activeStep].inputType === "text" && (
                 <TextField
                   value={inputValues[activeStep]}
