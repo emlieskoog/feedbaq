@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Grid,
   Button,
@@ -9,11 +9,27 @@ import {
   Box,
   Rating,
   Typography,
+  InputLabel,
+  Select,
+  MenuItem,
+  SelectChangeEvent,
 } from "@mui/material";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+//import { Dayjs } from "dayjs";
 import "../../styles/form.css";
+import Link from 'next/link';
 
 export default function FormGrid() {
   const questions = [
+    {
+      id: "0",
+      question: "Info",
+      description: "",
+      inputType: "info",
+    },
     {
       id: "1",
       question: "Uppstart",
@@ -103,6 +119,20 @@ export default function FormGrid() {
     Array(questions.length).fill("")
   );
 
+  const [consultants, setConsultants] = useState([]);
+  const [consultantId, setConsulantId] = useState("");
+
+  const [sales, setSales] = useState([]);
+  const [salesId, setSalesId] = useState("");
+
+  const [customers, setCustomers] = useState([]);
+  const [customerId, setCustomerId] = useState("");
+
+  // Day.js is a minimalist JavaScript library that parses, validates, manipulates, and displays dates and times for modern browsers with a largely Moment.js-compatible API.
+  const dayjs = require("dayjs");
+
+  const [createdDate, setCreatedDate] = useState(dayjs()); // dayjs() = get the current time and date. Could be changed using .format("YYYY-MM-DD") if we need date to be string
+
   function LinearProgressWithLabel(
     props: LinearProgressProps & { value: number }
   ) {
@@ -137,28 +167,102 @@ export default function FormGrid() {
     setInputValues(newInputValues);
   };
 
+  const handleConsultantChange = (event: any) => {
+    setConsulantId(event.target.value);
+  };
+
+  const handleSalesChange = (event: any) => {
+    setSalesId(event.target.value);
+  };
+
+  const handleCustomerChange = (event: any) => {
+    setCustomerId(event.target.value);
+  };
+
+  const handleDateChange = (event: any) => {
+    setCreatedDate(event);
+  };
+
   const [isLoading, setIsLoading] = useState(false);
 
   const sendJsonForm = () => {
-    console.log(JSON.stringify(inputValues));
+    const requestBody = {
+      consultantId: consultantId,
+      customerId: customerId,
+      salesId: salesId,
+      date: createdDate.format('YYYY-MM-DD'),
+      formResponseValues: inputValues,
+    };
+    console.log(JSON.stringify(requestBody));
 
     setIsLoading(true);
 
-    fetch('http://localhost:8080/api/save-form', {
-      method: 'POST',
+    fetch("http://localhost:8080/api/save-form", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(inputValues),
+      body: JSON.stringify(requestBody),
     })
-      .then(response => response.text())
-      .then(data => {
+      .then((response) => response.text())
+      .then((data) => {
         console.log("Response from server:", data);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error("Error:", error);
       });
   };
+
+  useEffect(() => {
+    fetch("http://localhost:8080/api/consultants", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setConsultants(data);
+        console.log("Data received", data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }, []);
+
+  useEffect(() => {
+    fetch("http://localhost:8080/api/sales", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setSales(data);
+        console.log("Data received", data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }, []);
+
+  useEffect(() => {
+    fetch("http://localhost:8080/api/customers", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setCustomers(data);
+        console.log("Data received", data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }, []);
 
   return (
     <Grid container spacing={2} className="outerGrid">
@@ -178,11 +282,16 @@ export default function FormGrid() {
               onClick={() => setActiveStep(index)}
             >
               {index === activeStep ? (
-                <Typography variant="overline" sx={{
-                  color: '#ff329f'
-                }}>{q.question}</Typography>
+                <Typography
+                  variant="overline"
+                  sx={{
+                    color: "#ff329f",
+                  }}
+                >
+                  {q.question}
+                </Typography>
               ) : (
-                <Typography variant="overline" >{q.question}</Typography>
+                <Typography variant="overline">{q.question}</Typography>
               )}
             </div>
           );
@@ -196,8 +305,12 @@ export default function FormGrid() {
       >
         {activeStep < questions.length ? (
           <>
-            <Typography variant="h5" sx={{ textAlign: 'center' }}>{questions[activeStep].question}</Typography>
-            <Typography variant="subtitle1">{questions[activeStep].description}</Typography>
+            <Typography variant="h5" sx={{ textAlign: "center" }}>
+              {questions[activeStep].question}
+            </Typography>
+            <Typography variant="subtitle1">
+              {questions[activeStep].description}
+            </Typography>
             <Box className="centerContent">
               {questions[activeStep].inputType === "text" && (
                 <TextField
@@ -217,6 +330,76 @@ export default function FormGrid() {
                   max={10}
                   size="large"
                 />
+              )}
+              {questions[activeStep].inputType === "info" && (
+                <Box>
+                  <div
+                    style={{
+                      width: "45vh",
+                      margin: "20px",
+                    }}
+                  >
+                    <InputLabel id="select-label-consultant">
+                      Konsult
+                    </InputLabel>
+                    <Box>
+                      <Select
+                        labelId="select-label-consultant"
+                        fullWidth
+                        value={consultantId}
+                        onChange={handleConsultantChange}
+                        sx={{ width: "20vh" }}
+                      >
+                        {consultants.map((consultant: any) => (
+                          <MenuItem value={consultant.id} key={consultant.id}>
+                            {consultant.consultant_name}
+                          </MenuItem>
+                        ))}
+                      </Select>
+
+                      <InputLabel id="select-label-sales">Säljare</InputLabel>
+                      <Select
+                        labelId="select-label-sales"
+                        fullWidth
+                        value={salesId}
+                        onChange={handleSalesChange}
+                        sx={{ width: "20vh" }}
+                      >
+                        {sales.map((salesperson: any) => (
+                          <MenuItem value={salesperson.id} key={salesperson.id}>
+                            {salesperson.sales_name}
+                          </MenuItem>
+                        ))}
+                      </Select>
+
+                      <InputLabel id="select-label-customer">Kund</InputLabel>
+                      <Select
+                        labelId="select-label-customer"
+                        fullWidth
+                        value={customerId}
+                        onChange={handleCustomerChange}
+                        sx={{ width: "20vh" }}
+                      >
+                        {customers.map((customer: any) => (
+                          <MenuItem value={customer.id} key={customer.id}>
+                            {customer.customer_name}
+                          </MenuItem>
+                        ))}
+                      </Select>
+
+                      <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DemoContainer components={["DatePicker"]}>
+                          <DatePicker
+                            value={createdDate}
+                            label="Datum"
+                            format="YYYY-MM-DD"
+                            onChange={handleDateChange}
+                          />
+                        </DemoContainer>
+                      </LocalizationProvider>
+                    </Box>
+                  </div>
+                </Box>
               )}
             </Box>
           </>
@@ -269,11 +452,13 @@ export default function FormGrid() {
           </Button>
         )}
         {activeStep == questions.length && (
-          <Button variant="contained" onClick={sendJsonForm}>
-            Skicka
-          </Button>
+          <Link href={'/account'}>
+            <Button variant="contained" onClick={sendJsonForm}>
+              Skicka
+            </Button>
+          </Link>
         )}
       </Grid>
-    </Grid >
+    </Grid>
   );
 }
