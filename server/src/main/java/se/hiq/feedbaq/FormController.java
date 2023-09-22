@@ -24,6 +24,34 @@ public class FormController {
     @Autowired
     private JdbcTemplate jdbcTemplate;
     
+    @PostMapping("/save-form")
+    public ResponseEntity<Object> saveForm(@RequestBody Map<String, Object> requestBody) {
+
+        try {
+
+
+            //Create a new entity in the form_responses table and return the row id
+            String responseQuery = "INSERT INTO form_responses (q0, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13) " 
+            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id";
+
+            List<Object> formResponseValues = (List<Object>) requestBody.get("formResponseValues");
+            Long generatedResponseId = jdbcTemplate.queryForObject(responseQuery, Long.class, formResponseValues.toArray());
+
+            //Create a new entity in the form table
+            String formQuery = "INSERT INTO forms (consultant_id, customer_id, sales_id, date, form_response_id) " 
+                + "VALUES (?::int,?::int,?::int,?::date,?::int)";
+
+            jdbcTemplate.update(formQuery, requestBody.get("consultantId"), requestBody.get("customerId"), 
+                requestBody.get("salesId"), requestBody.get("date"), generatedResponseId);
+            
+            return ResponseEntity.ok("Data saved successfully");
+
+        } catch (DataAccessException e) {
+            e.printStackTrace(); 
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error saving answers");
+        }
+    }
+
     @GetMapping("/forms")
     public ResponseEntity<Object> getAllForms() {
         try {
@@ -34,7 +62,7 @@ public class FormController {
             return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    
+
     
     @GetMapping("/forms/{id}")
     public ResponseEntity<Object> getFormById(@PathVariable int id) {
@@ -48,21 +76,6 @@ public class FormController {
         } catch (DataAccessException e) {
             String errorMessage = "An error occured while fetching form with ID " + id + ": " + e.getMessage();
             return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @PostMapping("/save-form")
-    public ResponseEntity<Object> postForm(@RequestBody List<String> request) {
-        try {
-            String query = "INSERT INTO form_responses (q0, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12) " 
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-            jdbcTemplate.update(query, request.toArray());
-
-            return ResponseEntity.ok("Data saved successfully");
-        } catch (DataAccessException e) {
-            e.printStackTrace(); 
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error saving answers");
         }
     }
         

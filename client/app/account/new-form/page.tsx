@@ -20,6 +20,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 //import { Dayjs } from "dayjs";
 import "../../styles/form.css";
+import Link from 'next/link';
 
 export default function FormGrid() {
   const questions = [
@@ -179,13 +180,20 @@ export default function FormGrid() {
   };
 
   const handleDateChange = (event: any) => {
-    setCreatedDate(event.toDate());
+    setCreatedDate(event);
   };
 
   const [isLoading, setIsLoading] = useState(false);
 
   const sendJsonForm = () => {
-    console.log(JSON.stringify(inputValues));
+    const requestBody = {
+      consultantId: consultantId,
+      customerId: customerId,
+      salesId: salesId,
+      date: createdDate.format('YYYY-MM-DD'),
+      formResponseValues: inputValues,
+    };
+    console.log(JSON.stringify(requestBody));
 
     setIsLoading(true);
 
@@ -194,7 +202,7 @@ export default function FormGrid() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(inputValues),
+      body: JSON.stringify(requestBody),
     })
       .then((response) => response.text())
       .then((data) => {
@@ -384,6 +392,7 @@ export default function FormGrid() {
                           <DatePicker
                             value={createdDate}
                             label="Datum"
+                            format="YYYY-MM-DD"
                             onChange={handleDateChange}
                           />
                         </DemoContainer>
@@ -443,9 +452,11 @@ export default function FormGrid() {
           </Button>
         )}
         {activeStep == questions.length && (
-          <Button variant="contained" onClick={sendJsonForm}>
-            Skicka
-          </Button>
+          <Link href={'/account'}>
+            <Button variant="contained" onClick={sendJsonForm}>
+              Skicka
+            </Button>
+          </Link>
         )}
       </Grid>
     </Grid>
