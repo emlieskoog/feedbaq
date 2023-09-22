@@ -17,7 +17,7 @@ let theme: Theme = createTheme({
   },
 
   typography: {
-    fontFamily: "MDPrimerBlack",
+    fontFamily: "Trebuchet MS",
     button: {
       fontFamily: "TrimWebLight",
       fontStyle: "bold",
