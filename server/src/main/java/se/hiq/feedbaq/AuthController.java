@@ -35,7 +35,7 @@ public class AuthController {
             String actPassword = result.get("password").toString();
             
             // KOLLA ATT LÖSEN MATCHAR
-            if (reqPassword != actPassword) {
+            if (!reqPassword.equals(actPassword)) {
                 // Returnera ett fel som beskriver att det är fel lösenord...
                 String errorMessage = "Incorrect password.";
                 return new ResponseEntity<>(errorMessage, HttpStatus.UNAUTHORIZED);
@@ -48,7 +48,7 @@ public class AuthController {
             
         } catch (IncorrectResultSizeDataAccessException e) {
             // HANTERA ATT ANVÄNDARE EJ EXISTERAR...
-            String errorMessage = "User with email: " + email + " does not exist.";
+            String errorMessage = "User with email " + email + " does not exist.";
             return new ResponseEntity<>(errorMessage, HttpStatus.NOT_FOUND);
         } catch (DataAccessException e) {
             String errorMessage = "An error occured while trying to sign in: " + e.getMessage();
