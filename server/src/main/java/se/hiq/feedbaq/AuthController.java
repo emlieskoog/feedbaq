@@ -20,7 +20,7 @@ public class AuthController {
     @Autowired
     private JdbcTemplate jdbcTemplate;
     
-    @PostMapping("/sign-in")
+    @PostMapping("/auth/sign-in")
     public ResponseEntity<Object> signIn(@RequestBody Map<String, String> requestBody) {
         
         String email = requestBody.get("email");
