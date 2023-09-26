@@ -149,8 +149,6 @@ public class FormController {
     @GetMapping("/names/{consultantId}/{salesId}/{customerId}")
     public ResponseEntity<Object> getFormNames(@PathVariable int consultantId, @PathVariable int salesId, @PathVariable int customerId) {
         try {
-
-
             String consultantQuery = "SELECT consultant_name FROM consultants WHERE id=?";
             String salesQuery = "SELECT sales_name FROM sales WHERE id=?";
             String customerQuery = "SELECT customer_name FROM customers WHERE id=?";
@@ -158,7 +156,6 @@ public class FormController {
             String consultantName = jdbcTemplate.queryForObject(consultantQuery, String.class, consultantId);
             String salesName = jdbcTemplate.queryForObject(salesQuery, String.class, salesId);
             String customerName = jdbcTemplate.queryForObject(customerQuery, String.class, customerId);
-
 
             Map<String, Object> result = new HashMap<>();
             result.put("consultantName", consultantName);
