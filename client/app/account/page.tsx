@@ -12,6 +12,7 @@ import { FormControl, MenuItem, Select } from "@mui/material";
 import GenericAccordion from "./components/genericaccordion";
 import GenericTable from "./components/generictable";
 import "../styles/landingpage.css";
+import "../styles/form.css";
 
 export default function LandingPage() {
   const roleOptions = [
@@ -59,55 +60,54 @@ export default function LandingPage() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-
     setIsLoading(true);
 
     if (selectedOption === "salesperson") {
       fetch("http://localhost:8080/api/forms/sales/1")
-      .then((response) => response.json())
-      .then((data) => {
-        setFormData(data);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.log(
-          "An error occured when trying to retrieve forms for sales.",
-          error
-        );
-        setIsLoading(false);
-      });
+        .then((response) => response.json())
+        .then((data) => {
+          setFormData(data);
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          console.log(
+            "An error occured when trying to retrieve forms for sales.",
+            error
+          );
+          setIsLoading(false);
+        });
     }
 
     if (selectedOption === "manager") {
       fetch("http://localhost:8080/api/forms/managers/3")
-      .then((response) => response.json())
-      .then((data) => {
-        setFormData(data);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.log(
-          "An error occured when trying to retrieve forms for manager.",
-          error
-        );
-        setIsLoading(false);
-      });
+        .then((response) => response.json())
+        .then((data) => {
+          setFormData(data);
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          console.log(
+            "An error occured when trying to retrieve forms for manager.",
+            error
+          );
+          setIsLoading(false);
+        });
     }
 
     if (selectedOption === "consultant") {
       fetch("http://localhost:8080/api/forms/consultants/4")
-      .then((response) => response.json())
-      .then((data) => {
-        setFormData(data);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.log(
-          "An error occured when trying to retrieve forms for consultant.",
-          error
-        );
-        setIsLoading(false);
-      });
+        .then((response) => response.json())
+        .then((data) => {
+          setFormData(data);
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          console.log(
+            "An error occured when trying to retrieve forms for consultant.",
+            error
+          );
+          setIsLoading(false);
+        });
     }
   }, [selectedOption]);
 
@@ -150,7 +150,9 @@ export default function LandingPage() {
       {/* Second row */}
       <Grid item xs={12} className="tableRow">
         {isLoading ? (
-          <CircularProgress />
+          <div className="centerCircularProgress">
+            <CircularProgress size="4rem" />
+          </div>
         ) : (
           <>
             {selectedOption === "salesperson" && (
