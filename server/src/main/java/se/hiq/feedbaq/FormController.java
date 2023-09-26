@@ -78,21 +78,6 @@ public class FormController {
             return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-    @GetMapping("/form_responses/{id}")
-    public ResponseEntity<Object> getFormResponseById(@PathVariable int id) {
-        try {
-            String query = "SELECT * FROM form_responses WHERE id=?";
-            Map<String, Object> result = jdbcTemplate.queryForMap(query, id);
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch (IncorrectResultSizeDataAccessException e) {
-            String errorMessage = "Form with ID " + id + " not found.";
-            return new ResponseEntity<>(errorMessage, HttpStatus.NOT_FOUND);
-        } catch (DataAccessException e) {
-            String errorMessage = "An error occured while fetching form with ID " + id + ": " + e.getMessage();
-            return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
         
     @GetMapping("/forms/consultants/{consultantId}")
     public ResponseEntity<Object> getFormsForConsultants(@PathVariable int consultantId) { // RequestParam: encodar URI
@@ -144,7 +129,21 @@ public class FormController {
             return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    
+    @GetMapping("/form_responses/{id}")
+    public ResponseEntity<Object> getFormResponseById(@PathVariable int id) {
+        try {
+            String query = "SELECT * FROM form_responses WHERE id=?";
+            Map<String, Object> result = jdbcTemplate.queryForMap(query, id);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (IncorrectResultSizeDataAccessException e) {
+            String errorMessage = "Form response with ID " + id + " not found.";
+            return new ResponseEntity<>(errorMessage, HttpStatus.NOT_FOUND);
+        } catch (DataAccessException e) {
+            String errorMessage = "An error occured while fetching form response with ID " + id + ": " + e.getMessage();
+            return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     
     @GetMapping("/names/{consultantId}/{salesId}/{customerId}")
     public ResponseEntity<Object> getFormNames(@PathVariable int consultantId, @PathVariable int salesId, @PathVariable int customerId) {
@@ -164,7 +163,7 @@ public class FormController {
 
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (DataAccessException e) {
-            String errorMessage = "An error occurred while fetching consultants: " + e.getMessage();
+            String errorMessage = "An error occured while fetching names with ids " + consultantId + ", " + salesId + ", " + customerId + ": " + e.getMessage();
             return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
