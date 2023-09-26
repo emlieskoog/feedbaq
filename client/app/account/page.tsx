@@ -9,52 +9,48 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { FormControl, MenuItem, Select } from "@mui/material";
-import GenericAccordion from "./components/genericaccordion";
-import GenericTable from "./components/generictable";
+import GenericAccordion from "../components/genericaccordion";
+import GenericTable from "../components/generictable";
 import "../styles/landingpage.css";
+import { API_BASE_URL, appRoutes } from '../constants';
 
 export default function LandingPage() {
-  const roleOptions = [
-    {
-      role: "salesperson",
-      menuItem: "Säljare",
-      name: "Prispress Pelle",
-      profilePicture: "sales_avatar.png",
-    },
-    {
-      role: "manager",
-      menuItem: "Konsultchef",
-      name: "Boss Bosson",
-      profilePicture: "manager_avatar.png",
-    },
-    {
-      role: "consultant",
-      menuItem: "Konsult",
-      name: "Arbete It",
-      profilePicture: "consultant_avatar.png",
-    },
-  ];
 
+  // Get local storage data
+  const myDataString = localStorage.getItem('myData');
+  const myData = myDataString ? JSON.parse(myDataString) : null;
+
+  // Check if myData exists and contains an email and role
+  const email = myData?.email || 'Email not found';
+  const userId = myData?.id || 'Id not found';
+  const role = myData?.role || 'No role';
+  const userName = email
+    .split('@')[0]
+    .split('.')
+    .map((part: string) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ');
+
+
+  //Profile picture for different type of users
+  const profilePicture = {
+    SALES: "sales_avatar.png",
+    MANAGER: "manager_avatar.png",
+    CONSULTANT: "consultant_avatar.png",
+  };
+
+  // Sort by company or consultant
   const sortingOptions = [
-    { role: "business", menuItem: "Företag" },
-    { role: "consultant", menuItem: "Konsult" },
+    { type: "business", menuItem: "Företag", accordianType: 'customer_name', accordianRole: 'SALES' },
+    { type: "consultant", menuItem: "Konsult", accordianType: 'consultant_name', accordianRole: 'MANAGER' },
   ];
 
-  const [selectedOption, setSelectedOption] = useState("salesperson");
-  const [sortingOption, setSortingOption] = useState("business");
+  const [sortingIndex, setSortingIndex] = useState(0);
 
-  const handleOptionChange = (event: any) => {
-    setSelectedOption(event.target.value);
+  const handleSortingIndexChange = (event: any) => {
+    setSortingIndex(event.target.value);
   };
 
-  const handleSortingChange = (event: any) => {
-    setSortingOption(event.target.value);
-  };
-
-  const selectedRole = roleOptions.find(
-    (option) => option.role === selectedOption
-  );
-
+  // Load data to form
   const [formData, setFormData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -62,90 +58,104 @@ export default function LandingPage() {
 
     setIsLoading(true);
 
-    if (selectedOption === "salesperson") {
-      fetch("http://localhost:8080/api/forms/sales/1")
-      .then((response) => response.json())
-      .then((data) => {
-        setFormData(data);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.log(
-          "An error occured when trying to retrieve forms for sales.",
-          error
-        );
-        setIsLoading(false);
-      });
+    if (role === "SALES") {
+      fetch(`${API_BASE_URL}/forms/sales/1`)
+        .then((response) => response.json())
+        .then((data) => {
+          setFormData(data);
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          console.log(
+            "An error occured when trying to retrieve forms for sales.",
+            error
+          );
+          setIsLoading(false);
+        });
     }
 
-    if (selectedOption === "manager") {
-      fetch("http://localhost:8080/api/forms/managers/3")
-      .then((response) => response.json())
-      .then((data) => {
-        setFormData(data);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.log(
-          "An error occured when trying to retrieve forms for manager.",
-          error
-        );
-        setIsLoading(false);
-      });
+    if (role === "MANAGER") {
+      fetch(`${API_BASE_URL}/forms/managers/${userId}`)
+        .then((response) => response.json())
+        .then((data) => {
+          setFormData(data);
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          console.log(
+            "An error occured when trying to retrieve forms for manager.",
+            error
+          );
+          setIsLoading(false);
+        });
     }
 
-    if (selectedOption === "consultant") {
-      fetch("http://localhost:8080/api/forms/consultants/4")
-      .then((response) => response.json())
-      .then((data) => {
-        setFormData(data);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.log(
-          "An error occured when trying to retrieve forms for consultant.",
-          error
-        );
-        setIsLoading(false);
-      });
+    if (role === "CONSULTANT") {
+      fetch(`${API_BASE_URL}/forms/consultants/${userId}`)
+        .then((response) => response.json())
+        .then((data) => {
+          setFormData(data);
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          console.log(
+            "An error occured when trying to retrieve forms for consultant.",
+            error
+          );
+          setIsLoading(false);
+        });
     }
-  }, [selectedOption]);
+  }, [role]);
 
-  useEffect(() => {
-    console.log(formData);
-  }, [formData]);
+  // useEffect(() => {
+  //   console.log(formData);
+  // }, [formData]);
 
   return (
     <Grid container spacing={2} className="outerGrid">
       {/* First row */}
-      <Grid item xs={4} className="topRow centerContent">
-        <Avatar
-          sx={{
-            width: 90,
-            height: 90,
-            marginRight: "20px",
-            objectFit: "contain",
-          }}
-          src={selectedRole?.profilePicture}
-        />
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          {selectedRole?.name}
-        </Typography>
+      <Grid
+        item
+        xs={12}
+        sm={6}
+        md={6}
+        lg={6}
+        className="centerContent"
+        style={{ justifyContent: "flex" }}
+      >
+        <div style={{ width: "100px", marginRight: "10px" }}>
+          <Avatar
+            sx={{
+              width: 90,
+              height: 90,
+              objectFit: "contain",
+            }}
+            src={profilePicture[role as keyof typeof profilePicture]}
+          />
+        </div>
+        <div>
+          <Typography variant="h5" component="div">
+            {userName}
+          </Typography>
+          <Typography variant="caption" component="div">
+            {role}
+          </Typography>
+        </div>
       </Grid>
-      <Grid item xs={8} className="topRow centerContent">
-        <Button href="/account/new-form" variant="contained">
-          {" "}
-          Skapa ny kvalitetsuppföljning{" "}
-        </Button>
-        <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-          <Select value={selectedOption} onChange={handleOptionChange}>
-            {roleOptions.map((option) => (
-              <MenuItem key={option.role} value={option.role}>
-                {option.menuItem}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+      <Grid
+        item
+        xs={12}
+        sm={6}
+        md={6}
+        lg={6}
+        className="centerContent"
+        style={{ justifyContent: "flex-end" }}
+      >
+        {(role === "SALES" || role === "MANAGER") && (
+          <Button href={appRoutes.NEW_FORM} variant="contained">
+            Skapa ny kvalitetsuppföljning
+          </Button>
+        )}
       </Grid>
       {/* Second row */}
       <Grid item xs={12} className="tableRow">
@@ -153,18 +163,18 @@ export default function LandingPage() {
           <CircularProgress />
         ) : (
           <>
-            {selectedOption === "salesperson" && (
+            {role === "SALES" && (
               <div>
-                {/* <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
-                  Mina Företag
-                </Typography> */}
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                   Sortera på:
                 </Typography>
                 <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                  <Select value={sortingOption} onChange={handleSortingChange}>
-                    {sortingOptions.map((option) => (
-                      <MenuItem key={option.role} value={option.role}>
+                  <Select
+                    value={sortingIndex}
+                    onChange={handleSortingIndexChange}
+                  >
+                    {sortingOptions.map((option, index) => (
+                      <MenuItem key={index} value={index}>
                         {option.menuItem}
                       </MenuItem>
                     ))}
@@ -172,12 +182,12 @@ export default function LandingPage() {
                 </FormControl>
                 <GenericAccordion
                   formData={formData}
-                  accordionType={"customer_name"}
-                  selectedOption={selectedOption}
+                  accordionType={sortingOptions[sortingIndex].accordianType}
+                  selectedOption={sortingOptions[sortingIndex].accordianRole}
                 />
               </div>
             )}
-            {selectedOption === "manager" && (
+            {role === "MANAGER" && (
               <div>
                 <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
                   Mina Konsulter
@@ -185,14 +195,14 @@ export default function LandingPage() {
                 <GenericAccordion
                   formData={formData}
                   accordionType={"consultant_name"}
-                  selectedOption={selectedOption}
+                  selectedOption={role}
                 />
               </div>
             )}
-            {selectedOption === "consultant" && (
+            {role === "CONSULTANT" && (
               <GenericTable
                 formData={formData}
-                selectedOption={selectedOption}
+                selectedOption={role}
               />
             )}
           </>

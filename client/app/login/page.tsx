@@ -1,10 +1,15 @@
 "use client";
+
 import * as React from 'react';
 import { Button, Avatar, TextField, Link, Paper, Box, Grid, Typography } from "@mui/material";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import RegisterDialog from './registerdialog';
+import { API_BASE_URL, appRoutes } from '../constants';
+import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
+
+  const router = useRouter();
 
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
 
@@ -25,23 +30,40 @@ export default function LoginPage() {
       password: passwordValue,
     };
 
-    fetch("http://localhost:8080/api/auth/sign-in", {
+
+    fetch(`${API_BASE_URL}/auth/sign-in`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(requestBody),
     })
-      .then((response) => {
-        if (response.status === 404) {
+      .then(async (response) => {
+        if (response.status === 404)
           console.error('Det finns ingen användare med den emailen :-( ');
-        } else if (response.status === 401) {
+        else if (response.status === 401)
           console.error('Lösenordet som du angav är fel :-( ');
-        } else if (!response.ok) {
+        else if (!response.ok)
           console.error('HTTP error! Status:', response.status);
+        else
+          console.log('Woho du angav rätt mail och lösenord :-D');
+
+        // Parse the response data (assuming it's in JSON format)
+        const responseData = await response.json();
+
+        // Store the data in sessionStorage
+        sessionStorage.setItem('sessionData', JSON.stringify(responseData));
+        const sessionData = sessionStorage.getItem('sessionData');
+
+        if (sessionData !== null) {
+          const parsedSessionData = JSON.parse(sessionData) as { id: number, email: string, role?: string };
+          console.log("Session Data:", sessionData);
+          localStorage.setItem('myData', JSON.stringify({ id: parsedSessionData.id, email: parsedSessionData.email, role: parsedSessionData.role }));
+          router.push(`/account?email=${encodeURIComponent(parsedSessionData.email)}`);
         } else {
-          console.error('Woho du angav rätt mail och lösenord :-D');
+          console.error('Session data is null.');
         }
+
       });
 
   };
@@ -92,7 +114,7 @@ export default function LoginPage() {
               margin="normal"
               required
               fullWidth
-              name="psw"
+              name="password"
               label="Lösenord"
               type="password"
               id="password"

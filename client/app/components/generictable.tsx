@@ -13,7 +13,7 @@ export default function GenericTable(props: any) {
   const { formData, selectedOption } = props;
 
   const tableHeadings =
-    selectedOption === "salesperson"
+    selectedOption === "SALES"
       ? ["Konsult", "Datum", ""]
       : ["Företag", "Datum", ""];
 
@@ -30,7 +30,7 @@ export default function GenericTable(props: any) {
         <TableBody>
           {formData.map((form: any, innerIndex: number) => (
             <TableRow key={innerIndex} hover>
-              {selectedOption === "salesperson" ? (
+              {selectedOption === "SALES" ? (
                 <>
                   <TableCell>{form.consultant_name}</TableCell>
                   <TableCell>{form.date}</TableCell>
