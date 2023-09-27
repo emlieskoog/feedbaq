@@ -13,21 +13,20 @@ import { FormControl, MenuItem, Select } from "@mui/material";
 import GenericAccordion from "../components/genericaccordion";
 import GenericTable from "../components/generictable";
 import "../styles/landingpage.css";
-import { API_BASE_URL, appRoutes } from '../constants';
-
+import { API_BASE_URL, appRoutes } from "../constants";
+import "../styles/form.css";
 export default function LandingPage() {
-
   // Get local storage data
-  const myDataString = localStorage.getItem('myData');
+  const myDataString = localStorage.getItem("myData");
   const myData = myDataString ? JSON.parse(myDataString) : null;
 
   // Check if myData exists and contains an email and role
-  const email = myData?.email || 'Email not found';
-  const userId = myData?.id || 'Id not found';
-  const role = myData?.role || 'No role';
+  const email = myData?.email || "Email not found";
+  const userId = myData?.id || "Id not found";
+  const role = myData?.role || "No role";
   const userName = email
-    .split('@')[0]
-    .split('.')
+    .split("@")[0]
+    .split(".")
     .map((part: string) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(' ');
 
@@ -52,8 +51,18 @@ export default function LandingPage() {
 
   // Sort by company or consultant
   const sortingOptions = [
-    { type: "business", menuItem: "Företag", accordianType: 'customer_name', accordianRole: 'SALES' },
-    { type: "consultant", menuItem: "Konsult", accordianType: 'consultant_name', accordianRole: 'MANAGER' },
+    {
+      type: "business",
+      menuItem: "Företag",
+      accordianType: "customer_name",
+      accordianRole: "SALES",
+    },
+    {
+      type: "consultant",
+      menuItem: "Konsult",
+      accordianType: "consultant_name",
+      accordianRole: "MANAGER",
+    },
   ];
 
   const handleSortingIndexChange = (event: any) => {
