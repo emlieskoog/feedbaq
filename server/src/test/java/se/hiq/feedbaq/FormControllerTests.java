@@ -342,4 +342,115 @@ public class FormControllerTests {
         
     }
     
+    @Test
+    public void testGetFormResponseByIdSuccess() {
+        
+        // Create mock data
+        Map<String, Object> mockData = new HashMap<String, Object>();
+        mockData.put("id", 1);
+        mockData.put("name", "form_response1");
+        
+        // Mock the behavior of jdbcTemplate.queryForMap to return mock data above
+        String query = "SELECT * FROM form_responses WHERE id=?";
+        int id = 1;
+        when(jdbcTemplate.queryForMap(query, id)).thenReturn(mockData);
+        
+        // Act
+        ResponseEntity<Object> response = formController.getFormResponseById(id);
+
+        // Assert        
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(mockData, response.getBody());
+    }
+
+    @Test
+    public void testGetFormResponseByIdNotFound() {
+        
+        // Mock the behavior of jdbcTemplate.queryForMap to throw a IncorrectResultSizeDataAccessException
+        String query = "SELECT * FROM form_responses WHERE id=?";
+        int id = 1;
+        IncorrectResultSizeDataAccessException exception = new IncorrectResultSizeDataAccessException("Form response with ID " + id + " not found.", id);
+        doThrow(exception).when(jdbcTemplate).queryForMap(query, id);
+        
+        // Act
+        ResponseEntity<Object> response = formController.getFormResponseById(id);
+        
+        // Assert
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals("Form response with ID " + id + " not found.", response.getBody());
+        
+    }
+        @Test
+        public void testGetFormResponseByIdThrowsDataAccessException() {
+        
+        // Mock the behavior of jdbcTemplate.queryForMap to throw a DataAccessException
+        String query = "SELECT * FROM form_responses WHERE id=?";
+        int id = 1;
+        doThrow(new DataAccessException("Test DataAccessException") {}).when(jdbcTemplate).queryForMap(query, id);
+
+        // Act
+        ResponseEntity<Object> response = formController.getFormResponseById(id);
+        
+        // Assert
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+        assertEquals("An error occured while fetching form response with ID " + id + ": Test DataAccessException", response.getBody());
+        
+    }
+    
+    @Test
+    public void testGetFormNamesSuccess() {
+        
+        int id = 1; 
+        String mockData1 = "test1";
+        String mockData2 = "test2";
+        String mockData3 = "test3";
+
+        String consultantQuery = "SELECT consultant_name FROM consultants WHERE id=?";
+        String salesQuery = "SELECT sales_name FROM sales WHERE id=?";
+        String customerQuery = "SELECT customer_name FROM customers WHERE id=?";
+
+        when(jdbcTemplate.queryForObject(consultantQuery, String.class, id)).thenReturn(mockData1);
+        when(jdbcTemplate.queryForObject(salesQuery, String.class, id)).thenReturn(mockData2);
+        when(jdbcTemplate.queryForObject(customerQuery, String.class, id)).thenReturn(mockData3);
+
+        Map<String, Object> mockData = new HashMap<>();
+        mockData.put("consultantName", mockData1);
+        mockData.put("salesName", mockData2);
+        mockData.put("customerName", mockData3);
+
+        // Act
+        ResponseEntity<Object> response = formController.getFormNames(id, id, id);
+        
+        // Assert        
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(mockData, response.getBody());
+    }
+
+    // @Test
+    // public void testGetNamesThrowsDataAccessException() {
+        
+    //     //doThrow(new DataAccessException("Test DataAccessException") {}).when(jdbcTemplate).queryForMap(query, id);
+        
+    //     int id = 1; 
+
+    //     String consultantQuery = "SELECT consultant_name FROM consultants WHERE id=?";
+    //     String salesQuery = "SELECT sales_name FROM sales WHERE id=?";
+    //     String customerQuery = "SELECT customer_name FROM customers WHERE id=?";
+
+    //     doThrow(new DataAccessException("Test DataAccessException") {}).when(jdbcTemplate).queryForObject(consultantQuery, String.class, id)
+    //     .queryForObject(salesQuery, String.class, id)
+    //     .queryForObject(customerQuery, String.class, id);
+    //     //doThrow(new DataAccessException("Test DataAccessException") {}).when(jdbcTemplate).queryForObject(salesQuery, String.class, id);
+    //     //doThrow(new DataAccessException("Test DataAccessException") {}).when(jdbcTemplate).queryForObject(customerQuery, String.class, id);
+
+    //     // Act
+    //     ResponseEntity<Object> response = formController.getFormNames(id, id, id);
+        
+    //     // Assert
+    //     assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+    //     assertEquals("An error occured while fetching names with ids " + id + ", " + id + ", " + id + ": Test DataAccessException", response.getBody());
+        
+    // }
 }

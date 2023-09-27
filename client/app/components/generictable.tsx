@@ -17,6 +17,14 @@ export default function GenericTable(props: any) {
       ? ["Konsult", "Datum", ""]
       : ["Företag", "Datum", ""];
 
+  const handleOpenClick = (event: any, formId: number) => {
+    // Prevent the default behavior of the link
+    event.preventDefault();
+
+    // Navigate to the form details page with the selected form's ID
+    window.location.href = `/account/formdetails?id=${formId}`;
+  };
+
   return (
     <TableContainer>
       <Table size="small">
@@ -42,7 +50,12 @@ export default function GenericTable(props: any) {
                 </>
               )}
               <TableCell>
-                <Link href="/account/formdetails">Öppna</Link>
+                <Link
+                  href="/account/formdetails"
+                  onClick={(event) => handleOpenClick(event, form.id)}
+                >
+                  Öppna
+                </Link>
               </TableCell>
             </TableRow>
           ))}

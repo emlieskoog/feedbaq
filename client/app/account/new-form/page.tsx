@@ -16,7 +16,7 @@ import {
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { DatePicker, DemoItem } from "@mui/x-date-pickers/DatePicker";
 import "../../styles/form.css";
 import Link from 'next/link';
 import { API_BASE_URL, appRoutes } from '../../constants';
@@ -269,7 +269,7 @@ export default function FormGrid() {
       </Grid>
 
       {/* Second row */}
-      <Grid item xs={3} sx={{ flexDirection: "column" }} className="middleRow">
+      <Grid item xs={false} sm={3} md={3} sx={{ flexDirection: "column" }} className="middleRow">
         <Typography variant="h6">Kapitel</Typography>
         {questions.map((q, index) => {
           return (
@@ -296,7 +296,7 @@ export default function FormGrid() {
       </Grid>
       <Grid
         item
-        xs={6}
+        xs={12} sm={9} md={6}
         sx={{ flexDirection: "column", overflowY: "auto" }}
         className="middleRow"
       >
@@ -304,9 +304,6 @@ export default function FormGrid() {
           <>
             <Typography variant="h5" sx={{ textAlign: "center" }}>
               {questions[activeStep].question}
-            </Typography>
-            <Typography variant="subtitle1" sx={{ textAlign: "center", margin: "8px" }}>
-              {questions[activeStep].description}
             </Typography>
             <Box className="centerContent" >
               {questions[activeStep].inputType === "text" && (
@@ -345,7 +342,6 @@ export default function FormGrid() {
                         fullWidth
                         value={consultantId}
                         onChange={handleConsultantChange}
-                        sx={{ width: "20vh" }}
                       >
                         {consultants.map((consultant: any) => (
                           <MenuItem value={consultant.id} key={consultant.id}>
@@ -360,7 +356,6 @@ export default function FormGrid() {
                         fullWidth
                         value={salesId}
                         onChange={handleSalesChange}
-                        sx={{ width: "20vh" }}
                       >
                         {sales.map((salesperson: any) => (
                           <MenuItem value={salesperson.id} key={salesperson.id}>
@@ -375,7 +370,6 @@ export default function FormGrid() {
                         fullWidth
                         value={customerId}
                         onChange={handleCustomerChange}
-                        sx={{ width: "20vh" }}
                       >
                         {customers.map((customer: any) => (
                           <MenuItem value={customer.id} key={customer.id}>
@@ -384,11 +378,11 @@ export default function FormGrid() {
                         ))}
                       </Select>
 
+                      <InputLabel id="select-date">Datum</InputLabel>
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DemoContainer components={["DatePicker"]}>
                           <DatePicker
                             value={createdDate}
-                            label="Datum"
                             format="YYYY-MM-DD"
                             onChange={handleDateChange}
                           />
@@ -420,7 +414,11 @@ export default function FormGrid() {
           </>
         )}
       </Grid>
-      <Grid item xs={3} className="middleRow centerContent"></Grid>
+      <Grid item xs={false} sm={false} md={3} className="middleRow centerContent">
+        <Typography variant="subtitle1" sx={{ textAlign: "center" }}>
+          {questions[activeStep].description}
+        </Typography>
+      </Grid>
 
       {/* Third row */}
       <Grid item xs={4} className="bottomRow centerContent">

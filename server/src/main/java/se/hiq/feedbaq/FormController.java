@@ -15,7 +15,7 @@ import org.springframework.dao.IncorrectResultSizeDataAccessException;
 
 import java.util.List;
 import java.util.Map;
-
+import java.util.HashMap;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -126,6 +126,44 @@ public class FormController {
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (DataAccessException e) {
             String errorMessage = "An error occurred while fetching forms for sales with ID " + salesId + ": " + e.getMessage();
+            return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
+    @GetMapping("/form_responses/{id}")
+    public ResponseEntity<Object> getFormResponseById(@PathVariable int id) {
+        try {
+            String query = "SELECT * FROM form_responses WHERE id=?";
+            Map<String, Object> result = jdbcTemplate.queryForMap(query, id);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (IncorrectResultSizeDataAccessException e) {
+            String errorMessage = "Form response with ID " + id + " not found.";
+            return new ResponseEntity<>(errorMessage, HttpStatus.NOT_FOUND);
+        } catch (DataAccessException e) {
+            String errorMessage = "An error occured while fetching form response with ID " + id + ": " + e.getMessage();
+            return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
+    @GetMapping("/names/{consultantId}/{salesId}/{customerId}")
+    public ResponseEntity<Object> getFormNames(@PathVariable int consultantId, @PathVariable int salesId, @PathVariable int customerId) {
+        try {
+            String consultantQuery = "SELECT consultant_name FROM consultants WHERE id=?";
+            String salesQuery = "SELECT sales_name FROM sales WHERE id=?";
+            String customerQuery = "SELECT customer_name FROM customers WHERE id=?";
+
+            String consultantName = jdbcTemplate.queryForObject(consultantQuery, String.class, consultantId);
+            String salesName = jdbcTemplate.queryForObject(salesQuery, String.class, salesId);
+            String customerName = jdbcTemplate.queryForObject(customerQuery, String.class, customerId);
+
+            Map<String, Object> result = new HashMap<>();
+            result.put("consultantName", consultantName);
+            result.put("salesName", salesName);
+            result.put("customerName", customerName);
+
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (DataAccessException e) {
+            String errorMessage = "An error occured while fetching names with ids " + consultantId + ", " + salesId + ", " + customerId + ": " + e.getMessage();
             return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

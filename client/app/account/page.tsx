@@ -12,24 +12,22 @@ import { FormControl, MenuItem, Select } from "@mui/material";
 import GenericAccordion from "../components/genericaccordion";
 import GenericTable from "../components/generictable";
 import "../styles/landingpage.css";
-import { API_BASE_URL, appRoutes } from '../constants';
-
+import { API_BASE_URL, appRoutes } from "../constants";
+import "../styles/form.css";
 export default function LandingPage() {
-
   // Get local storage data
-  const myDataString = localStorage.getItem('myData');
+  const myDataString = localStorage.getItem("myData");
   const myData = myDataString ? JSON.parse(myDataString) : null;
 
   // Check if myData exists and contains an email and role
-  const email = myData?.email || 'Email not found';
-  const userId = myData?.id || 'Id not found';
-  const role = myData?.role || 'No role';
+  const email = myData?.email || "Email not found";
+  const userId = myData?.id || "Id not found";
+  const role = myData?.role || "No role";
   const userName = email
-    .split('@')[0]
-    .split('.')
+    .split("@")[0]
+    .split(".")
     .map((part: string) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join(' ');
-
+    .join(" ");
 
   //Profile picture for different type of users
   const profilePicture = {
@@ -40,8 +38,18 @@ export default function LandingPage() {
 
   // Sort by company or consultant
   const sortingOptions = [
-    { type: "business", menuItem: "Företag", accordianType: 'customer_name', accordianRole: 'SALES' },
-    { type: "consultant", menuItem: "Konsult", accordianType: 'consultant_name', accordianRole: 'MANAGER' },
+    {
+      type: "business",
+      menuItem: "Företag",
+      accordianType: "customer_name",
+      accordianRole: "SALES",
+    },
+    {
+      type: "consultant",
+      menuItem: "Konsult",
+      accordianType: "consultant_name",
+      accordianRole: "MANAGER",
+    },
   ];
 
   const [sortingIndex, setSortingIndex] = useState(0);
@@ -55,7 +63,6 @@ export default function LandingPage() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-
     setIsLoading(true);
 
     if (role === "SALES") {
@@ -160,7 +167,9 @@ export default function LandingPage() {
       {/* Second row */}
       <Grid item xs={12} className="tableRow">
         {isLoading ? (
-          <CircularProgress />
+          <div className="centerCircularProgress">
+            <CircularProgress size="4rem" />
+          </div>
         ) : (
           <>
             {role === "SALES" && (
@@ -200,10 +209,7 @@ export default function LandingPage() {
               </div>
             )}
             {role === "CONSULTANT" && (
-              <GenericTable
-                formData={formData}
-                selectedOption={role}
-              />
+              <GenericTable formData={formData} selectedOption={role} />
             )}
           </>
         )}
