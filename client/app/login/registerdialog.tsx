@@ -1,43 +1,68 @@
 import * as React from 'react';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+import { Grid, Typography, Avatar, Button, Box, Dialog, TextField, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 import SendIcon from '@mui/icons-material/Send';
+import { API_BASE_URL } from '../constants';
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+
 
 export default function RegisterDialog(props: any) {
     const { isOpen, onClose } = props;
+    const [role, setRole] = React.useState('SALES');
+
+    const handleRoleChange = (event: any) => {
+        setRole(event.target.value as string);
+    };
 
     const handleRegister = async (event: any) => {
         event.preventDefault();
-        const registerFormData = new FormData(event.target);
-        const registerEmailValue = registerFormData.get('newEmail');
-        const registerPasswordValue = registerFormData.get('newPsw');
+        const formData = new FormData(event.target);
+        const { email, password, role } = Object.fromEntries(formData.entries());
 
-        console.log({ message: 'Registrerad som:', email: registerEmailValue, password: registerPasswordValue });
+        const requestBody = { email, password, role };
+        console.log(requestBody);
+
+        fetch(`${API_BASE_URL}/auth/register`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(requestBody),
+        })
+            .then(async (response) => {
+                if (response.status === 400)
+                    console.error('Det finns redan en användare med den emailen :-( ');
+                else if (!response.ok)
+                    console.error('HTTP error! Status:', response.status);
+                else
+                    console.log('Woho du är nu registrerad :-D');
+            });
     }
 
     return (
-
         <Dialog open={isOpen}
             onClose={onClose}
-            maxWidth="md"
+            maxWidth="sm"
             fullWidth>
             <form onSubmit={handleRegister}>
-                <DialogTitle>Registrera ny användare</DialogTitle>
                 <DialogContent>
-                    <DialogContentText>
-                        Kul att du vill bli en del av FeedbaQ gänget ;-D
-                    </DialogContentText>
+                    <Grid container spacing={3} alignItems="center" sx={{ mt: 1, mb: 2 }}>
+                        <Grid item>
+                            <Avatar sx={{ bgcolor: 'secondary.main' }}>
+                                <PersonAddIcon />
+                            </Avatar>
+                        </Grid>
+                        <Grid item xs>
+                            <Typography variant="h5">Registrera ny användare</Typography>
+                        </Grid>
+                    </Grid>
                     <TextField
                         autoFocus
                         required
                         autoComplete="email"
                         margin="dense"
-                        id="newEmail"
+                        id="email"
+                        name="email"
                         label="Email"
                         type="email"
                         fullWidth
@@ -46,18 +71,36 @@ export default function RegisterDialog(props: any) {
                         required
                         autoComplete="current-password"
                         margin="dense"
-                        id="newPsw"
+                        id="password"
+                        name="password"
                         label="Lösenord"
                         type="password"
                         fullWidth
+                        sx={{ mb: 2 }}
                     />
+                    <FormControl fullWidth>
+                        <InputLabel >Roll</InputLabel>
+                        <Select
+                            labelId="role-select"
+                            id="role"
+                            name="role"
+                            label="Roll"
+                            value={role}
+                            onChange={handleRoleChange}
+                            sx={{ mb: 2 }}
+                        >
+                            <MenuItem value="SALES">Säljare</MenuItem>
+                            <MenuItem value="MANAGER">Konsultchef</MenuItem>
+                            <MenuItem value="CONSULTANT">Konsult</MenuItem>
+                        </Select>
+                    </FormControl>
                     <DialogActions>
                         <Button onClick={onClose} variant="outlined" color="primary">Avbryt</Button>
                         <Button type="submit" variant="contained" endIcon={<SendIcon />}>Registrera</Button>
                     </DialogActions>
                 </DialogContent>
             </form>
-        </Dialog>
+        </Dialog >
 
     );
 }

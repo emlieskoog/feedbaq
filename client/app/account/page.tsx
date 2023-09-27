@@ -7,6 +7,7 @@ import {
   Grid,
   Typography,
   CircularProgress,
+  Box,
 } from "@mui/material";
 import { FormControl, MenuItem, Select } from "@mui/material";
 import GenericAccordion from "../components/genericaccordion";
@@ -30,13 +31,24 @@ export default function LandingPage() {
     .map((part: string) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(' ');
 
+  // Define the role mapping
+  const roleMapping: Record<string, string> = {
+    SALES: "Säljare",
+    MANAGER: "Konsultchef",
+    CONSULTANT: "Konsult",
+  };
 
   //Profile picture for different type of users
-  const profilePicture = {
+  const profilePicture: Record<string, string> = {
     SALES: "sales_avatar.png",
     MANAGER: "manager_avatar.png",
     CONSULTANT: "consultant_avatar.png",
   };
+
+  // Load data to form
+  const [sortingIndex, setSortingIndex] = useState(0);
+  const [formData, setFormData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Sort by company or consultant
   const sortingOptions = [
@@ -44,170 +56,153 @@ export default function LandingPage() {
     { type: "consultant", menuItem: "Konsult", accordianType: 'consultant_name', accordianRole: 'MANAGER' },
   ];
 
-  const [sortingIndex, setSortingIndex] = useState(0);
-
   const handleSortingIndexChange = (event: any) => {
     setSortingIndex(event.target.value);
   };
 
-  // Load data to form
-  const [formData, setFormData] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-
+  // Load form data for different roles
   useEffect(() => {
-
     setIsLoading(true);
 
+    let endpoint = "";
+
+    // Anväder 1 nu för att ladda så många forms som möjligt för en säljare
     if (role === "SALES") {
-      fetch(`${API_BASE_URL}/forms/sales/1`)
-        .then((response) => response.json())
-        .then((data) => {
-          setFormData(data);
-          setIsLoading(false);
-        })
-        .catch((error) => {
-          console.log(
-            "An error occured when trying to retrieve forms for sales.",
-            error
-          );
-          setIsLoading(false);
-        });
+      endpoint = `${API_BASE_URL}/forms/sales/1`;
+    } else if (role === "MANAGER") {
+      endpoint = `${API_BASE_URL}/forms/managers/${userId}`;
+    } else if (role === "CONSULTANT") {
+      endpoint = `${API_BASE_URL}/forms/consultants/${userId}`;
     }
 
-    if (role === "MANAGER") {
-      fetch(`${API_BASE_URL}/forms/managers/${userId}`)
-        .then((response) => response.json())
-        .then((data) => {
-          setFormData(data);
-          setIsLoading(false);
-        })
-        .catch((error) => {
-          console.log(
-            "An error occured when trying to retrieve forms for manager.",
-            error
-          );
-          setIsLoading(false);
-        });
-    }
+    fetch(endpoint)
+      .then((response) => response.json())
+      .then((data) => {
+        setFormData(data);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.log(
+          `An error occurred when trying to retrieve forms for ${role}.`,
+          error
+        );
+        setIsLoading(false);
+      });
 
-    if (role === "CONSULTANT") {
-      fetch(`${API_BASE_URL}/forms/consultants/${userId}`)
-        .then((response) => response.json())
-        .then((data) => {
-          setFormData(data);
-          setIsLoading(false);
-        })
-        .catch((error) => {
-          console.log(
-            "An error occured when trying to retrieve forms for consultant.",
-            error
-          );
-          setIsLoading(false);
-        });
-    }
-  }, [role]);
-
-  // useEffect(() => {
-  //   console.log(formData);
-  // }, [formData]);
+  }, [role, userId]);
 
   return (
-    <Grid container spacing={2} className="outerGrid">
-      {/* First row */}
-      <Grid
-        item
-        xs={12}
-        sm={6}
-        md={6}
-        lg={6}
-        className="centerContent"
-        style={{ justifyContent: "flex" }}
-      >
-        <div style={{ width: "100px", marginRight: "10px" }}>
+    <Grid container component="main" sx={{ overflowX: 'auto ' }}>
+      {/* Profile section */}
+      <Grid container sx={{ height: '30vh', mt: '40px' }}>
+        {/* First column (left) */}
+        <Grid
+          item
+          xs={6}
+          sm={6}
+          md={6}
+          lg={6}
+          sx={{
+            display: 'flex',
+            justifyContent: 'flex',
+            alignItems: 'center',
+          }}
+        >
           <Avatar
-            sx={{
-              width: 90,
-              height: 90,
-              objectFit: "contain",
-            }}
-            src={profilePicture[role as keyof typeof profilePicture]}
+            src={profilePicture[role]}
+            sx={{ width: 90, height: 90 }}
           />
-        </div>
-        <div>
-          <Typography variant="h5" component="div">
-            {userName}
-          </Typography>
-          <Typography variant="caption" component="div">
-            {role}
-          </Typography>
-        </div>
+          <Box
+            sx={{
+              mx: 2,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'left',
+            }}
+          >
+            <Typography variant="h5" component="div">
+              {userName}
+            </Typography>
+            <Typography variant="caption" component="div">
+              {roleMapping[role]}
+            </Typography>
+          </Box>
+        </Grid>
+        {/* Second column (right) */}
+        <Grid
+          item
+          xs={6}
+          sm={6}
+          md={6}
+          lg={6}
+          sx={{
+            display: 'flex',
+            justifyContent: 'flex-end', // Align content to the right
+            alignItems: 'center', // Center content vertically
+          }}
+        >
+          {(role === "SALES" || role === "MANAGER") && (
+            <Button href={appRoutes.NEW_FORM} variant="contained" className="qualityButton">
+              Skapa ny kvalitetsuppföljning
+            </Button>
+          )}
+        </Grid>
       </Grid>
-      <Grid
-        item
-        xs={12}
-        sm={6}
-        md={6}
-        lg={6}
-        className="centerContent"
-        style={{ justifyContent: "flex-end" }}
-      >
-        {(role === "SALES" || role === "MANAGER") && (
-          <Button href={appRoutes.NEW_FORM} variant="contained">
-            Skapa ny kvalitetsuppföljning
-          </Button>
-        )}
-      </Grid>
-      {/* Second row */}
-      <Grid item xs={12} className="tableRow">
-        {isLoading ? (
-          <CircularProgress />
-        ) : (
-          <>
-            {role === "SALES" && (
-              <div>
-                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                  Sortera på:
-                </Typography>
-                <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                  <Select
-                    value={sortingIndex}
-                    onChange={handleSortingIndexChange}
-                  >
-                    {sortingOptions.map((option, index) => (
-                      <MenuItem key={index} value={index}>
-                        {option.menuItem}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-                <GenericAccordion
+
+      {/* Form section */}
+      <Grid container>
+        <Grid item xs={12} sm={12} md={12} lg={12} >
+          {isLoading ? (
+            <CircularProgress />
+          ) : (
+            <>
+              {role === "SALES" && (
+                <div>
+                  <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                    Sortera på:
+                  </Typography>
+                  <FormControl sx={{ minWidth: 200, mb: 2 }} size="medium">
+                    <Select
+                      value={sortingIndex}
+                      onChange={handleSortingIndexChange}
+                    >
+                      {sortingOptions.map((option, index) => (
+                        <MenuItem key={index} value={index}>
+                          {option.menuItem}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                  <GenericAccordion
+                    formData={formData}
+                    accordionType={sortingOptions[sortingIndex].accordianType}
+                    selectedOption={sortingOptions[sortingIndex].accordianRole}
+                  />
+                </div>
+              )}
+              {role === "MANAGER" && (
+                <div>
+                  <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
+                    Mina Konsulter
+                  </Typography>
+                  <GenericAccordion
+                    formData={formData}
+                    accordionType={"consultant_name"}
+                    selectedOption={role}
+                  />
+                </div>
+              )}
+              {role === "CONSULTANT" && (
+                <GenericTable
                   formData={formData}
-                  accordionType={sortingOptions[sortingIndex].accordianType}
-                  selectedOption={sortingOptions[sortingIndex].accordianRole}
-                />
-              </div>
-            )}
-            {role === "MANAGER" && (
-              <div>
-                <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
-                  Mina Konsulter
-                </Typography>
-                <GenericAccordion
-                  formData={formData}
-                  accordionType={"consultant_name"}
                   selectedOption={role}
                 />
-              </div>
-            )}
-            {role === "CONSULTANT" && (
-              <GenericTable
-                formData={formData}
-                selectedOption={role}
-              />
-            )}
-          </>
-        )}
+              )}
+            </>
+          )}
+        </Grid>
       </Grid>
     </Grid>
+
   );
 }

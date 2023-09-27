@@ -30,7 +30,35 @@ let theme: Theme = createTheme({
         root: {
           "&:hover": {
             backgroundColor: "#ff329f",
+            color: "white",
+            border: "none",
           },
+        },
+      },
+    },
+    MuiLink: {
+      styleOverrides: {
+        root: {
+          "&:hover": {
+            color: "#ff329f",
+          },
+        },
+      },
+    },
+
+    MuiAvatar: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "#ff329f",
+        },
+      },
+    },
+
+    MuiAccordionDetails: {
+      styleOverrides: {
+        root: {
+          maxHeight: "200px",
+          overflowY: "auto",
         },
       },
     },
