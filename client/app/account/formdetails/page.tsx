@@ -57,7 +57,7 @@ export default function FormDetails() {
   }
 
   return (
-    <Box sx={{ height: "100vh", minWidth: "100%" }}>
+    <Box>
       {isLoading ? (
         <div className="centerCircularProgress">
           <CircularProgress size="5rem" />
