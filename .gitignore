@@ -1,2 +1,3 @@
 .gradle/
 cloud-formation-config/.aws-sam/
+.vscode/

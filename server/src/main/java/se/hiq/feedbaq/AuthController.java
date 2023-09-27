@@ -1,6 +1,9 @@
 package se.hiq.feedbaq;
 
 import org.springframework.web.bind.annotation.RestController;
+
+import se.hiq.feedbaq.security.JWTGenerator;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -33,6 +37,9 @@ public class AuthController {
     
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    private JWTGenerator jwtGenerator;
 
 
     @PostMapping("/register")
@@ -58,7 +65,7 @@ public class AuthController {
 
 
     @PostMapping("/sign-in")
-    public ResponseEntity<String> signIn(@RequestBody Map<String, String> requestBody) {
+    public ResponseEntity<Object> signIn(@RequestBody Map<String, String> requestBody) {
         
         String email = requestBody.get("email");
         String password = requestBody.get("password");
@@ -66,7 +73,13 @@ public class AuthController {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        return new ResponseEntity<>("User signed in successfully!", HttpStatus.OK);
+        String token = jwtGenerator.generateToken(authentication);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("accessToken", token);
+        response.put("tokenType", "Bearer ");
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
 
 
     }
