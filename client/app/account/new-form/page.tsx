@@ -19,6 +19,8 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import "../../styles/form.css";
 import Link from 'next/link';
+import { API_BASE_URL, appRoutes } from '../../constants';
+
 
 export default function FormGrid() {
   const questions = [
@@ -181,7 +183,6 @@ export default function FormGrid() {
     setCreatedDate(event);
   };
 
-  const [isLoading, setIsLoading] = useState(false);
 
   const sendJsonForm = () => {
     const requestBody = {
@@ -193,9 +194,7 @@ export default function FormGrid() {
     };
     console.log(JSON.stringify(requestBody));
 
-    setIsLoading(true);
-
-    fetch("http://localhost:8080/api/save-form", {
+    fetch(`${API_BASE_URL}/save-form`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -212,7 +211,7 @@ export default function FormGrid() {
   };
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/consultants", {
+    fetch(`${API_BASE_URL}/consultants`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -229,7 +228,7 @@ export default function FormGrid() {
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/sales", {
+    fetch(`${API_BASE_URL}/sales`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -246,7 +245,7 @@ export default function FormGrid() {
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/customers", {
+    fetch(`${API_BASE_URL}/customers`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -450,7 +449,7 @@ export default function FormGrid() {
           </Button>
         )}
         {activeStep == questions.length && (
-          <Link href={'/account'}>
+          <Link href={appRoutes.ACCOUNT_PAGE}>
             <Button variant="contained" onClick={sendJsonForm}>
               Skicka
             </Button>

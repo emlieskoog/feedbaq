@@ -6,8 +6,19 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
+import Link from 'next/link';
+
 
 export default function Header() {
+
+  const handleLogout = () => {
+    localStorage.removeItem('myData');
+    const sessionData = localStorage.getItem('myData');
+    console.log("Session Data has been cleared");
+    console.log("Session Data:", sessionData);
+
+  };
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -29,9 +40,11 @@ export default function Header() {
           <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
             Kvalitetsuppföljning
           </Typography>
-          <Button color="inherit" href="/">
-            Logga ut
-          </Button>
+          <Link href="/">
+            <Button color="inherit" onClick={handleLogout}>
+              Logga ut
+            </Button>
+          </Link>
         </Toolbar>
       </AppBar>
     </Box>

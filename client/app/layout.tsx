@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import theme from "./theme";
 import { ThemeProvider } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
-import Header from "./header";
 
 export const metadata: Metadata = {
   title: "FeedbaQ",
