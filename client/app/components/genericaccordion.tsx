@@ -1,7 +1,7 @@
 import React from "react";
 import { Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import "../../styles/landingpage.css";
+import "../styles/landingpage.css";
 import { groupBy } from "lodash";
 import GenericTable from "./generictable";
 

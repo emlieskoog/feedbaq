@@ -1,18 +1,18 @@
+'use client';
 
-export default function Home() {
-  return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-        background: '#ff329f',
-        backgroundImage: 'url("feedbaqhome.png")',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-      }}
-    >
-    </div>
-  );
+// pages/index.tsx
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+
+function Home() {
+  const router = useRouter();
+
+  useEffect(() => {
+    router.push('/login');
+  }, [router]);
+
+  return null;
 }
+
+export default Home;
+
