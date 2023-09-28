@@ -16,14 +16,11 @@ import "../styles/landingpage.css";
 import { API_BASE_URL, appRoutes } from "../constants";
 import "../styles/form.css";
 export default function LandingPage() {
-  // Get local storage data
-  const myDataString = localStorage.getItem("myData");
-  const myData = myDataString ? JSON.parse(myDataString) : null;
 
-  // Check if myData exists and contains an email and role
-  const email = myData?.email || "Email not found";
-  const userId = myData?.id || "Id not found";
-  const role = myData?.role || "No role";
+  // MOCK DATA
+  const email = "emelie.skoog@hiq.se"
+  const userId = "1";
+  const role = "CONSULTANT";
   const userName = email
     .split("@")[0]
     .split(".")
