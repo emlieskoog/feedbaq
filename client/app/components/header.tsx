@@ -77,31 +77,31 @@ export default function Header() {
           onClose={handleClose}
           TransitionComponent={Fade}
         >
-          <MenuItem>
-            <ListItemIcon>
-              <AccountCircleIcon fontSize="small" style={{ color: '#ff329f' }} />
-            </ListItemIcon>
-            <Link href="/account" variant="body2" onClick={handleClose} style={{ textDecoration: "none" }}>
+          <Link href="/account" variant="body2" onClick={handleClose} style={{ textDecoration: "none" }}>
+            <MenuItem>
+              <ListItemIcon>
+                <AccountCircleIcon fontSize="small" style={{ color: '#ff329f' }} />
+              </ListItemIcon>
               <ListItemText>Profil</ListItemText>
-            </Link>
-          </MenuItem>
-          <MenuItem>
-            <ListItemIcon>
-              <Settings fontSize="small" />
-            </ListItemIcon>
-            <Link href="#" variant="body2" onClick={handleClose} style={{ textDecoration: "none" }}>
+            </MenuItem>
+          </Link>
+          <Link href="#" variant="body2" onClick={handleClose} style={{ textDecoration: "none" }}>
+            <MenuItem>
+              <ListItemIcon>
+                <Settings fontSize="small" />
+              </ListItemIcon>
               <ListItemText>Inställningar</ListItemText>
-            </Link>
-          </MenuItem>
+            </MenuItem>
+          </Link>
           <Divider />
-          <MenuItem>
-            <ListItemIcon>
-              <Logout fontSize="small" />
-            </ListItemIcon>
-            <Link href="/" variant="body2" onClick={handleLogout} style={{ textDecoration: "none" }}>
+          <Link href="/" variant="body2" onClick={handleLogout} style={{ textDecoration: "none" }}>
+            <MenuItem>
+              <ListItemIcon>
+                <Logout fontSize="small" />
+              </ListItemIcon>
               <ListItemText>Logga ut</ListItemText>
-            </Link>
-          </MenuItem>
+            </MenuItem>
+          </Link>
         </Menu>
       </Toolbar>
     </AppBar >
