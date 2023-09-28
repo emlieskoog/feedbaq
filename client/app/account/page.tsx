@@ -19,8 +19,6 @@ export default function LandingPage() {
 
   // MOCK DATA
   const email = "emelie.skoog@hiq.se"
-  const userId = "1";
-  const role = "CONSULTANT";
   const userName = email
     .split("@")[0]
     .split(".")
@@ -44,6 +42,9 @@ export default function LandingPage() {
   // Load data to form
   const [sortingIndex, setSortingIndex] = useState(0);
   const [formData, setFormData] = useState([]);
+  const [profileName, setProfileName] = useState("");
+  const [role, setRole] = useState("");
+  const [userId, setUserId] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   // Sort by company or consultant
@@ -70,8 +71,9 @@ export default function LandingPage() {
   useEffect(() => {
     setIsLoading(true);
 
-    let endpoint = "";
+    let endpoint = `${API_BASE_URL}/profile`;
 
+    /*
     // Anväder 1 nu för att ladda så många forms som möjligt för en säljare
     if (role === "SALES") {
       endpoint = `${API_BASE_URL}/forms/sales/1`;
@@ -80,7 +82,9 @@ export default function LandingPage() {
     } else if (role === "CONSULTANT") {
       endpoint = `${API_BASE_URL}/forms/consultants/${userId}`;
     }
+    */
 
+    /*
     fetch(endpoint)
       .then((response) => response.json())
       .then((data) => {
@@ -94,8 +98,29 @@ export default function LandingPage() {
         );
         setIsLoading(false);
       });
+      */
 
-  }, [role, userId]);
+    fetch(endpoint, {
+      method: 'GET',
+      credentials: 'include'
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setProfileName(data.name);
+        setRole(data.role);
+        setUserId(data.id);
+      })
+      .catch((error) => {
+        console.log('ERROR!', error);
+      })
+
+  }, []);
+
+  useEffect(() => {
+    if (profileName !== "") {
+      setIsLoading(false);
+    }
+  }, [profileName]);
 
   return (
     <Grid container component="main" sx={{ overflowX: 'auto ' }}>
@@ -127,10 +152,10 @@ export default function LandingPage() {
             }}
           >
             <Typography variant="h5" component="div">
-              {userName}
+              {profileName}
             </Typography>
             <Typography variant="caption" component="div">
-              {roleMapping[role]}
+              {role}
             </Typography>
           </Box>
         </Grid>

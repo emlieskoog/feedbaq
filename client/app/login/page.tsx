@@ -5,8 +5,11 @@ import { Button, Avatar, TextField, Link, Paper, Box, Grid, Typography } from "@
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import RegisterDialog from './registerdialog';
 import { API_BASE_URL } from '../constants';
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
+
+  const router = useRouter();
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
@@ -36,8 +39,10 @@ export default function LoginPage() {
           console.error('Lösenordet som du angav är fel :-( ');
         else if (!response.ok)
           console.error('HTTP error! Status:', response.status);
-        else
+        else {
           console.log('Woho du angav rätt mail och lösenord :-D');
+          router.push('/account');
+        }
       });
   };
 

@@ -16,9 +16,9 @@ export default function RegisterDialog(props: any) {
 
     const handleRegister = async (event: any) => {
         event.preventDefault();
-        const { email, password, role } = Object.fromEntries(new FormData(event.target).entries());
+        const { email, password, name, role } = Object.fromEntries(new FormData(event.target).entries());
 
-        const requestBody = { email, password, role };
+        const requestBody = { email, password, name, role };
         console.log(requestBody);
 
         fetch(`${API_BASE_URL}/auth/register`, {
@@ -74,6 +74,17 @@ export default function RegisterDialog(props: any) {
                         name="password"
                         label="Lösenord"
                         type="password"
+                        fullWidth
+                        sx={{ mb: 2 }}
+                    />
+                    <TextField
+                        required
+                        autoComplete="name"
+                        margin="dense"
+                        id="name"
+                        name="name"
+                        label="Namn"
+                        type="text"
                         fullWidth
                         sx={{ mb: 2 }}
                     />

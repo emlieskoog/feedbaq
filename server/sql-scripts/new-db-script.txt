@@ -1,0 +1,17 @@
+DROP TABLE users;
+DROP TABLE consultants_managers;
+
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    email VARCHAR(255),
+    password VARCHAR(255),
+    name VARCHAR(255),
+    role VARCHAR(10)
+);
+
+CREATE TABLE consultants_managers (
+    consultant_id INTEGER,
+    manager_id INTEGER,
+    FOREIGN KEY (consultant_id) REFERENCES users(id),
+    FOREIGN KEY (manager_id) REFERENCES users(id)
+);
