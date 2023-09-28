@@ -1,17 +1,16 @@
 "use client";
 
-import * as React from 'react';
+import React, { useState } from "react";
 import { Button, Avatar, TextField, Link, Paper, Box, Grid, Typography } from "@mui/material";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import RegisterDialog from './registerdialog';
-import { API_BASE_URL, appRoutes } from '../constants';
+import { API_BASE_URL } from '../constants';
 import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
 
   const router = useRouter();
-
-  const [isDialogOpen, setIsDialogOpen] = React.useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const handleOpenDialog = () => {
     setIsDialogOpen(true);
@@ -20,15 +19,10 @@ export default function LoginPage() {
   const handleLogin = async (event: any) => {
     event.preventDefault();
     const formData = new FormData(event.target);
-    const emailValue = formData.get('email');
-    const passwordValue = formData.get('password');
+    const { email, password } = Object.fromEntries(formData.entries());
 
-    console.log({ message: 'Inloggad som:', email: emailValue, password: passwordValue });
-
-    const requestBody = {
-      email: emailValue,
-      password: passwordValue,
-    };
+    const requestBody = { email, password };
+    console.log(requestBody);
 
 
     fetch(`${API_BASE_URL}/auth/sign-in`, {
@@ -56,44 +50,40 @@ export default function LoginPage() {
         const sessionData = sessionStorage.getItem('sessionData');
 
         if (sessionData !== null) {
-          const parsedSessionData = JSON.parse(sessionData) as { id: number, email: string, role?: string };
-          console.log("Session Data:", sessionData);
-          localStorage.setItem('myData', JSON.stringify({ id: parsedSessionData.id, email: parsedSessionData.email, role: parsedSessionData.role }));
-          router.push(`/account?email=${encodeURIComponent(parsedSessionData.email)}`);
+          const { id, email, role } = JSON.parse(sessionData);
+          localStorage.setItem('myData', JSON.stringify({ id, email, role }));
+          router.push('/account');
+
         } else {
           console.error('Session data is null.');
         }
-
       });
-
   };
 
   return (
-
     <Grid container component="main" sx={{ height: '100vh' }}>
       <Grid
         item
         xs={false}
-        sm={4}
-        md={5}
+        sm={false}
+        md={7}
         sx={{
-          backgroundImage: 'url(feedbaqlogin.png)',
+          backgroundImage: 'url(feedbaqlogin-vertical.png)',
           backgroundRepeat: 'no-repeat',
           backgroundColor: 'white',
           backgroundPosition: 'center',
         }}
       />
-      <Grid item xs={12} sm={8} md={7} component={Paper} elevation={6} square>
+      <Grid item xs={12} sm={12} md={5} component={Paper} elevation={6}>
         <Box
           sx={{
-            my: 8,
             mx: 4,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 3, bgcolor: 'secondary.main' }}>
+          <Avatar sx={{ m: 5 }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h3" variant="h4">
@@ -124,7 +114,7 @@ export default function LoginPage() {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 5, mb: 2 }}
             >
               Logga in
             </Button>

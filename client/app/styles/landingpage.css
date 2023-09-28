@@ -4,13 +4,35 @@
   padding: 0 !important;
 }
 
-
 .tableRow {
   margin: 0 !important;
   padding: 10px 10px !important;
 }
 
-.centerContent {
+.profileGrid {
+  height: 20px;
+  margin-top: 20px;
+}
+
+.qualityButtonGrid{
   align-items: center;
   display: flex;
+  justify-content: flex-end;
+}
+
+.qualityButton{
+  margin-right: '20px'
+}
+
+.avatar {
+  width: 90;
+  height: 90;
+  object-fit: "contain";
+  margin-right: '20px'
+}
+
+.profileTextBox{
+  display: flex;
+  flex-direction: column;
+  align-items: left;
 }

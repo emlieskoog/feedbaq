@@ -1,8 +1,7 @@
 'use client';
 import { appRoutes, BASE_PATH } from '../constants';
 import { useEffect } from 'react'
-import { useRouter } from "next/navigation";
-import { usePathname } from 'next/navigation';
+import { useRouter, usePathname } from "next/navigation";
 
 // Here you would fetch and return the user
 const useUser = () => ({ user: 'emelie', loading: false })
