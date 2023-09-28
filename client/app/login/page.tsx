@@ -5,11 +5,9 @@ import { Button, Avatar, TextField, Link, Paper, Box, Grid, Typography } from "@
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import RegisterDialog from './registerdialog';
 import { API_BASE_URL } from '../constants';
-import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
 
-  const router = useRouter();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const handleOpenDialog = () => {
@@ -18,12 +16,10 @@ export default function LoginPage() {
 
   const handleLogin = async (event: any) => {
     event.preventDefault();
-    const formData = new FormData(event.target);
-    const { email, password } = Object.fromEntries(formData.entries());
+    const { email, password } = Object.fromEntries(new FormData(event.target).entries());
 
     const requestBody = { email, password };
     console.log(requestBody);
-
 
     fetch(`${API_BASE_URL}/auth/sign-in`, {
       method: "POST",
@@ -31,6 +27,7 @@ export default function LoginPage() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(requestBody),
+      credentials: 'include',
     })
       .then(async (response) => {
         if (response.status === 404)
@@ -41,22 +38,6 @@ export default function LoginPage() {
           console.error('HTTP error! Status:', response.status);
         else
           console.log('Woho du angav rätt mail och lösenord :-D');
-
-        // Parse the response data (assuming it's in JSON format)
-        const responseData = await response.json();
-
-        // Store the data in sessionStorage
-        sessionStorage.setItem('sessionData', JSON.stringify(responseData));
-        const sessionData = sessionStorage.getItem('sessionData');
-
-        if (sessionData !== null) {
-          const { id, email, role } = JSON.parse(sessionData);
-          localStorage.setItem('myData', JSON.stringify({ id, email, role }));
-          router.push('/account');
-
-        } else {
-          console.error('Session data is null.');
-        }
       });
   };
 

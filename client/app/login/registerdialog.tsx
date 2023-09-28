@@ -16,8 +16,7 @@ export default function RegisterDialog(props: any) {
 
     const handleRegister = async (event: any) => {
         event.preventDefault();
-        const formData = new FormData(event.target);
-        const { email, password, role } = Object.fromEntries(formData.entries());
+        const { email, password, role } = Object.fromEntries(new FormData(event.target).entries());
 
         const requestBody = { email, password, role };
         console.log(requestBody);
@@ -101,6 +100,5 @@ export default function RegisterDialog(props: any) {
                 </DialogContent>
             </form>
         </Dialog >
-
     );
 }
