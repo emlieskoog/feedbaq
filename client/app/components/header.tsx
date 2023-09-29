@@ -8,101 +8,32 @@ import {
   Tooltip,
   Menu,
   MenuItem,
-  Avatar,
   Divider,
   ListItemIcon,
   Fade,
   Link,
-  List,
-  ListItem,
 } from "@mui/material";
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
-import Paper from '@mui/material/Paper';
-import MenuList from '@mui/material/MenuList';
 import ListItemText from '@mui/material/ListItemText';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import ContentCopy from '@mui/icons-material/ContentCopy';
-import ContentPaste from '@mui/icons-material/ContentPaste';
-import Cloud from '@mui/icons-material/Cloud';
+import TemporaryDrawer from "./drawer";
 
 export default function Header() {
-  const handleLogout = () => {
-    localStorage.removeItem('myData');
-    const sessionData = localStorage.getItem('myData');
-    console.log("Session Data has been cleared");
-    console.log("Session Data:", sessionData);
-  };
-
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 
   return (
-    <AppBar position="fixed">
+    <AppBar position="static" >
       <Toolbar>
+        <TemporaryDrawer />
         <img
           src="/HiQ_logo_white.png"
           alt="HiQ Logo"
-          style={{ height: "35px", marginRight: "15px" }}
+          style={{ height: "35px", marginLeft: "15px", marginRight: "15px" }}
         ></img>
         <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
           Kvalitetsuppföljning
         </Typography>
-        <Tooltip title="Menu">
-          <IconButton
-            onClick={handleClick}
-            size="large"
-            color="inherit"
-            sx={{ ml: 'auto' }}
-            aria-controls={open ? 'account-menu' : undefined}
-            aria-haspopup="true"
-            aria-expanded={open ? 'true' : undefined}
-          >
-            <MenuIcon />
-          </IconButton>
-        </Tooltip>
-        <Menu
-          id="fade-menu"
-          MenuListProps={{
-            'aria-labelledby': 'fade-button',
-          }}
-          anchorEl={anchorEl}
-          open={open}
-          onClose={handleClose}
-          TransitionComponent={Fade}
-        >
-          <Link href="/account" variant="body2" onClick={handleClose} style={{ textDecoration: "none" }}>
-            <MenuItem>
-              <ListItemIcon>
-                <AccountCircleIcon fontSize="small" style={{ color: '#ff329f' }} />
-              </ListItemIcon>
-              <ListItemText>Profil</ListItemText>
-            </MenuItem>
-          </Link>
-          <Link href="#" variant="body2" onClick={handleClose} style={{ textDecoration: "none" }}>
-            <MenuItem>
-              <ListItemIcon>
-                <Settings fontSize="small" />
-              </ListItemIcon>
-              <ListItemText>Inställningar</ListItemText>
-            </MenuItem>
-          </Link>
-          <Divider />
-          <Link href="/" variant="body2" onClick={handleLogout} style={{ textDecoration: "none" }}>
-            <MenuItem>
-              <ListItemIcon>
-                <Logout fontSize="small" />
-              </ListItemIcon>
-              <ListItemText>Logga ut</ListItemText>
-            </MenuItem>
-          </Link>
-        </Menu>
+
       </Toolbar>
     </AppBar >
   );
