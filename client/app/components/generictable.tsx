@@ -40,7 +40,7 @@ export default function GenericTable(props: any) {
             <TableRow key={innerIndex} hover>
               {selectedOption === "SALES" ? (
                 <>
-                  <TableCell>{form.consultant_name}</TableCell>
+                  <TableCell>{form.name}</TableCell>
                   <TableCell>{form.date}</TableCell>
                 </>
               ) : (

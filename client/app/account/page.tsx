@@ -17,14 +17,6 @@ import { API_BASE_URL, appRoutes } from "../constants";
 import "../styles/form.css";
 export default function LandingPage() {
 
-  // MOCK DATA
-  const email = "emelie.skoog@hiq.se"
-  const userName = email
-    .split("@")[0]
-    .split(".")
-    .map((part: string) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join(' ');
-
   // Define the role mapping
   const roleMapping: Record<string, string> = {
     SALES: "Säljare",
@@ -58,7 +50,7 @@ export default function LandingPage() {
     {
       type: "consultant",
       menuItem: "Konsult",
-      accordianType: "consultant_name",
+      accordianType: "name",
       accordianRole: "MANAGER",
     },
   ];
@@ -69,58 +61,26 @@ export default function LandingPage() {
 
   // Load form data for different roles
   useEffect(() => {
-    setIsLoading(true);
 
-    let endpoint = `${API_BASE_URL}/profile`;
-
-    /*
-    // Anväder 1 nu för att ladda så många forms som möjligt för en säljare
-    if (role === "SALES") {
-      endpoint = `${API_BASE_URL}/forms/sales/1`;
-    } else if (role === "MANAGER") {
-      endpoint = `${API_BASE_URL}/forms/managers/${userId}`;
-    } else if (role === "CONSULTANT") {
-      endpoint = `${API_BASE_URL}/forms/consultants/${userId}`;
-    }
-    */
-
-    /*
-    fetch(endpoint)
-      .then((response) => response.json())
-      .then((data) => {
-        setFormData(data);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.log(
-          `An error occurred when trying to retrieve forms for ${role}.`,
-          error
-        );
-        setIsLoading(false);
-      });
-      */
-
-    fetch(endpoint, {
+    fetch(`${API_BASE_URL}/profile`, {
       method: 'GET',
       credentials: 'include'
     })
       .then((response) => response.json())
       .then((data) => {
+        console.log(data);
         setProfileName(data.name);
         setRole(data.role);
+        setFormData(data.forms);
         setUserId(data.id);
+        setIsLoading(false);
       })
       .catch((error) => {
         console.log('ERROR!', error);
+        setIsLoading(false);
       })
 
   }, []);
-
-  useEffect(() => {
-    if (profileName !== "") {
-      setIsLoading(false);
-    }
-  }, [profileName]);
 
   return (
     <Grid container component="main" sx={{ overflowX: 'auto ' }}>
@@ -155,7 +115,7 @@ export default function LandingPage() {
               {profileName}
             </Typography>
             <Typography variant="caption" component="div">
-              {role}
+              {roleMapping[role]}
             </Typography>
           </Box>
         </Grid>
@@ -218,7 +178,7 @@ export default function LandingPage() {
                   </Typography>
                   <GenericAccordion
                     formData={formData}
-                    accordionType={"consultant_name"}
+                    accordionType={"name"}
                     selectedOption={role}
                   />
                 </div>

@@ -17,6 +17,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.Base64;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,15 +67,37 @@ public class ProfileController {
         }
 
         
-        String sql = "SELECT id, email, name, role FROM users WHERE email=?";
+        String sql = "SELECT id, name, role FROM users WHERE email=?";
 
         Map<String, Object> result = jdbcTemplate.queryForMap(sql, subject);
 
-        // FORTSÄTT MED ATT HÄMTA FORMS
+        int userId = (int) result.get("id");
+        String name = result.get("name").toString();
+        String role = result.get("role").toString();
 
+        String formQuery = null;
 
+        if (role.equals("CONSULTANT")) {
+            formQuery = "SELECT f.id, c.customer_name, f.date FROM forms_metadata f JOIN customers c ON f.customer_id=c.id WHERE f.consultant_id=?";
+        }
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        if (role.equals("MANAGER")) {
+            formQuery = "SELECT f.id, u.name, cu.customer_name, f.date FROM forms_metadata f JOIN users u ON f.consultant_id=u.id JOIN customers cu ON f.customer_id=cu.id JOIN consultants_managers cm ON f.consultant_id=cm.consultant_id WHERE cm.manager_id=?";
+        }
+        
+        if (role.equals("SALES")) {
+            formQuery = "SELECT f.id, u.name, cu.customer_name, f.date FROM forms_metadata f JOIN users u ON f.consultant_id=u.id JOIN customers cu ON f.customer_id=cu.id WHERE f.sales_id=?";            
+        }
+
+        List<Map<String, Object>> forms = jdbcTemplate.queryForList(formQuery, userId);
+
+        Map<String, Object> responseObject = new HashMap<>();
+        responseObject.put("userId", userId);
+        responseObject.put("name", name);
+        responseObject.put("role", role);
+        responseObject.put("forms", forms);
+
+        return new ResponseEntity<>(responseObject, HttpStatus.OK);
     }
 
     

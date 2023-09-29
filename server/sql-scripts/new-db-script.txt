@@ -1,5 +1,7 @@
 DROP TABLE users;
 DROP TABLE consultants_managers;
+DROP TABLE forms_metadata;
+DROP TABLE customers;
 
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
@@ -15,3 +17,46 @@ CREATE TABLE consultants_managers (
     FOREIGN KEY (consultant_id) REFERENCES users(id),
     FOREIGN KEY (manager_id) REFERENCES users(id)
 );
+
+CREATE TABLE forms_metadata (
+    id SERIAL PRIMARY KEY,
+    consultant_id INTEGER,
+    customer_id INTEGER,
+    sales_id INTEGER,
+    date DATE
+);
+
+CREATE TABLE customers (
+    id SERIAL PRIMARY KEY,
+    customer_name VARCHAR(255)
+);
+
+
+INSERT INTO customers (customer_name) VALUES ('Ica');
+INSERT INTO customers (customer_name) VALUES ('Skatteverket');
+INSERT INTO customers (customer_name) VALUES ('Scania');
+INSERT INTO customers (customer_name) VALUES ('SAAB');
+INSERT INTO customers (customer_name) VALUES ('Taxi Stockholm');
+INSERT INTO customers (customer_name) VALUES ('Handelsbanken');
+INSERT INTO customers (customer_name) VALUES ('Nocco');
+INSERT INTO customers (customer_name) VALUES ('Coca-Cola');
+INSERT INTO customers (customer_name) VALUES ('Barebells');
+INSERT INTO customers (customer_name) VALUES ('Alstom');
+INSERT INTO customers (customer_name) VALUES ('IKEA');
+
+INSERT INTO consultants_managers (consultant_id, manager_id) VALUES (1, 5);
+INSERT INTO consultants_managers (consultant_id, manager_id) VALUES (2, 8);
+INSERT INTO consultants_managers (consultant_id, manager_id) VALUES (3, 6);
+INSERT INTO consultants_managers (consultant_id, manager_id) VALUES (4, 7);
+
+
+INSERT INTO forms_metadata (consultant_id, customer_id, sales_id, date) VALUES (1, 4, 10, '2023-09-29'); 
+INSERT INTO forms_metadata (consultant_id, customer_id, sales_id, date) VALUES (1, 1, 11, '2023-09-29');
+INSERT INTO forms_metadata (consultant_id, customer_id, sales_id, date) VALUES (2, 8, 9, '2023-09-29');
+INSERT INTO forms_metadata (consultant_id, customer_id, sales_id, date) VALUES (2, 3, 9, '2023-09-29');
+INSERT INTO forms_metadata (consultant_id, customer_id, sales_id, date) VALUES (3, 11, 11, '2023-09-29');
+INSERT INTO forms_metadata (consultant_id, customer_id, sales_id, date) VALUES (3, 10, 10, '2023-09-29');
+INSERT INTO forms_metadata (consultant_id, customer_id, sales_id, date) VALUES (4, 9, 11, '2023-09-29');
+INSERT INTO forms_metadata (consultant_id, customer_id, sales_id, date) VALUES (4, 7, 10, '2023-09-29');
+
+
