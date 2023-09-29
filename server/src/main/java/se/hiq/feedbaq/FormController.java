@@ -67,9 +67,27 @@ public class FormController {
     @GetMapping("/forms/{id}")
     public ResponseEntity<Object> getFormById(@PathVariable int id) {
         try {
-            String query = "SELECT * FROM forms WHERE id=?";
-            Map<String, Object> result = jdbcTemplate.queryForMap(query, id);
-            return new ResponseEntity<>(result, HttpStatus.OK);
+            String formDataQuery = "SELECT * FROM forms_metadata fm JOIN form_responses fr ON fm.form_response_id=fr.id WHERE fm.id=?";
+            Map<String, Object> formData = jdbcTemplate.queryForMap(formDataQuery, id);
+            int customerId = (int) formData.get("customer_id");
+            int consultantId = (int) formData.get("consultant_id");
+            int salesId = (int) formData.get("sales_id");
+            
+            String customerNameQuery = "SELECT customer_name FROM customers WHERE id=?";
+            String consultantAndSalesNameQuery = "SELECT name FROM users WHERE id=?";
+
+            Map<String, Object> customerNameMap = jdbcTemplate.queryForMap(customerNameQuery, customerId); // Dessa kan nog göras om till något annat än map direkt...
+            Map<String, Object> consultantNameMap = jdbcTemplate.queryForMap(consultantAndSalesNameQuery, consultantId);
+            Map<String, Object> salesNameMap = jdbcTemplate.queryForMap(consultantAndSalesNameQuery, salesId);
+
+            Map<String, Object> responseMap = new HashMap<>();
+            responseMap.put("form_data", formData);
+            responseMap.put("customer_name", customerNameMap.get("customer_name").toString());
+            responseMap.put("consultant_name", consultantNameMap.get("name").toString());
+            responseMap.put("sales_name", salesNameMap.get("name").toString());
+
+    
+            return new ResponseEntity<>(responseMap, HttpStatus.OK);
         } catch (IncorrectResultSizeDataAccessException e) {
             String errorMessage = "Form with ID " + id + " not found.";
             return new ResponseEntity<>(errorMessage, HttpStatus.NOT_FOUND);

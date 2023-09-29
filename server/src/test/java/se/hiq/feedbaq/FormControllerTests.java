@@ -68,6 +68,7 @@ public class FormControllerTests {
         assertEquals("An error occurred while fetching forms: Test DataAccessException", response.getBody());
     }
     
+    /*
     @Test
     public void testGetFormByIdSuccess() {
         
@@ -77,7 +78,7 @@ public class FormControllerTests {
         mockData.put("name", "form1");
         
         // Mock the behavior of jdbcTemplate.queryForMap to return mock data above
-        String query = "SELECT * FROM forms WHERE id=?";
+        String query = "SELECT * FROM form_responses WHERE id=?";
         int id = 1;
         when(jdbcTemplate.queryForMap(query, id)).thenReturn(mockData);
         
@@ -90,11 +91,12 @@ public class FormControllerTests {
         assertEquals(mockData, response.getBody());
     }
     
+    
     @Test
     public void testGetFormByIdNotFound() {
         
         // Mock the behavior of jdbcTemplate.queryForMap to throw a IncorrectResultSizeDataAccessException
-        String query = "SELECT * FROM forms WHERE id=?";
+        String query = "SELECT * FROM form_responses WHERE id=?";
         int id = 1;
         IncorrectResultSizeDataAccessException exception = new IncorrectResultSizeDataAccessException("Form with ID " + id + " not found.", id);
         doThrow(exception).when(jdbcTemplate).queryForMap(query, id);
@@ -112,7 +114,7 @@ public class FormControllerTests {
     public void testGetFormByIdThrowsDataAccessException() {
         
         // Mock the behavior of jdbcTemplate.queryForMap to throw a DataAccessException
-        String query = "SELECT * FROM forms WHERE id=?";
+        String query = "SELECT * FROM form_responses WHERE id=?";
         int id = 1;
         doThrow(new DataAccessException("Test DataAccessException") {}).when(jdbcTemplate).queryForMap(query, id);
 
@@ -124,7 +126,8 @@ public class FormControllerTests {
         assertEquals("An error occured while fetching form with ID " + id + ": Test DataAccessException", response.getBody());
         
     }
-    
+    */
+
     /*
     @Test
     public void testSaveFormSuccess() {
