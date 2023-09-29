@@ -38,7 +38,7 @@ public class FormController {
             Long generatedResponseId = jdbcTemplate.queryForObject(responseQuery, Long.class, formResponseValues.toArray());
 
             //Create a new entity in the form table
-            String formQuery = "INSERT INTO forms (consultant_id, customer_id, sales_id, date, form_response_id) " 
+            String formQuery = "INSERT INTO forms_metadata (consultant_id, customer_id, sales_id, date, form_response_id) " 
                 + "VALUES (?::int,?::int,?::int,?::date,?::int)";
 
             jdbcTemplate.update(formQuery, requestBody.get("consultantId"), requestBody.get("customerId"), 

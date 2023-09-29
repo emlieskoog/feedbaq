@@ -23,8 +23,29 @@ CREATE TABLE forms_metadata (
     consultant_id INTEGER,
     customer_id INTEGER,
     sales_id INTEGER,
-    date DATE
+    date DATE,
+    form_response_id INTEGER,
+    FOREIGN KEY (form_response_id) REFERENCES form_responses(id) ON DELETE CASCADE
 );
+
+CREATE TABLE form_responses (
+    id SERIAL PRIMARY KEY,
+    q0 VARCHAR(200),
+    q1 VARCHAR(200),
+    q2 VARCHAR(200),
+    q3 VARCHAR(200),
+    q4 VARCHAR(200),
+    q5 VARCHAR(200),
+    q6 VARCHAR(200),
+    q7 VARCHAR(200),
+    q8 VARCHAR(200),
+    q9 VARCHAR(200),
+    q10 VARCHAR(200),
+    q11 VARCHAR(200),
+    q12 VARCHAR(200),
+    q13 VARCHAR(200)
+);
+
 
 CREATE TABLE customers (
     id SERIAL PRIMARY KEY,
@@ -44,10 +65,10 @@ INSERT INTO customers (customer_name) VALUES ('Barebells');
 INSERT INTO customers (customer_name) VALUES ('Alstom');
 INSERT INTO customers (customer_name) VALUES ('IKEA');
 
-INSERT INTO consultants_managers (consultant_id, manager_id) VALUES (1, 5);
+INSERT INTO consultants_managers (consultant_id, manager_id) VALUES (1, 7);
 INSERT INTO consultants_managers (consultant_id, manager_id) VALUES (2, 8);
-INSERT INTO consultants_managers (consultant_id, manager_id) VALUES (3, 6);
-INSERT INTO consultants_managers (consultant_id, manager_id) VALUES (4, 7);
+INSERT INTO consultants_managers (consultant_id, manager_id) VALUES (3, 5);
+INSERT INTO consultants_managers (consultant_id, manager_id) VALUES (4, 6);
 
 
 INSERT INTO forms_metadata (consultant_id, customer_id, sales_id, date) VALUES (1, 4, 10, '2023-09-29'); 

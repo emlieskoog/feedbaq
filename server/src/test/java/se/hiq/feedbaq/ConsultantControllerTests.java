@@ -42,7 +42,7 @@ public class ConsultantControllerTests {
         mockData.add(consultant);
         
         // Mock the behavior of jdbcTemplate.queryForList to return mock data above
-        when(jdbcTemplate.queryForList("SELECT * FROM consultants;")).thenReturn(mockData);
+        when(jdbcTemplate.queryForList("SELECT * FROM users WHERE role='CONSULTANT';")).thenReturn(mockData);
 
         // Act
         ResponseEntity<Object> response = consultantController.getAllConsultants();
@@ -57,7 +57,7 @@ public class ConsultantControllerTests {
     public void testGetAllConsultantsThrowsException() {
         
         // Mock the behavior of jdbcTemplate.queryForList to throw a DataAccessException
-        doThrow(new DataAccessException("Test DataAccessException") {}).when(jdbcTemplate).queryForList("SELECT * FROM consultants;");
+        doThrow(new DataAccessException("Test DataAccessException") {}).when(jdbcTemplate).queryForList("SELECT * FROM users WHERE role='CONSULTANT';");
 
         // Act
         ResponseEntity<Object> response = consultantController.getAllConsultants();

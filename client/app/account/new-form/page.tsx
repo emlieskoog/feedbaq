@@ -355,7 +355,7 @@ export default function FormGrid() {
                       >
                         {consultants.map((consultant: any) => (
                           <MenuItem value={consultant.id} key={consultant.id}>
-                            {consultant.consultant_name}
+                            {consultant.name}
                           </MenuItem>
                         ))}
                       </Select>
@@ -369,7 +369,7 @@ export default function FormGrid() {
                       >
                         {sales.map((salesperson: any) => (
                           <MenuItem value={salesperson.id} key={salesperson.id}>
-                            {salesperson.sales_name}
+                            {salesperson.name}
                           </MenuItem>
                         ))}
                       </Select>

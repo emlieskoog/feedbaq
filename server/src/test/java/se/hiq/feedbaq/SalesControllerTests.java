@@ -42,7 +42,7 @@ public class SalesControllerTests {
         mockData.add(sales);
         
         // Mock the behavior of jdbcTemplate.queryForList to return mock data above
-        when(jdbcTemplate.queryForList("SELECT * FROM sales;")).thenReturn(mockData);
+        when(jdbcTemplate.queryForList("SELECT * FROM users WHERE role='SALES';")).thenReturn(mockData);
 
         // Act
         ResponseEntity<Object> response = salesController.getAllSales();
@@ -57,7 +57,7 @@ public class SalesControllerTests {
     public void testGetAllSalesThrowsException() {
         
         // Mock the behavior of jdbcTemplate.queryForList to throw a DataAccessException
-        doThrow(new DataAccessException("Test DataAccessException") {}).when(jdbcTemplate).queryForList("SELECT * FROM sales;");
+        doThrow(new DataAccessException("Test DataAccessException") {}).when(jdbcTemplate).queryForList("SELECT * FROM users WHERE role='SALES';");
 
         // Act
         ResponseEntity<Object> response = salesController.getAllSales();

@@ -22,7 +22,7 @@ public class SalesController {
     @GetMapping("/sales")
     public ResponseEntity<Object> getAllSales() {
         try {
-            List<Map<String, Object>> result = jdbcTemplate.queryForList("SELECT * FROM sales;");
+            List<Map<String, Object>> result = jdbcTemplate.queryForList("SELECT * FROM users WHERE role='SALES';");
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (DataAccessException e) {
             String errorMessage = "An error occurred while fetching sales: " + e.getMessage();
