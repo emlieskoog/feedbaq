@@ -28,6 +28,34 @@ CREATE TABLE forms_metadata (
     FOREIGN KEY (form_response_id) REFERENCES form_responses(id) ON DELETE CASCADE
 );
 
+CREATE TABLE customer_form_metadata (
+    uuid VARCHAR(200) UNIQUE,
+    consultant_id INTEGER,
+    customer_id INTEGER,
+    sales_id INTEGER,
+    date DATE, 
+    is_valid BOOLEAN
+);
+
+CREATE TABLE customer_form_responses (
+    uuid VARCHAR(200) UNIQUE,
+    q0 VARCHAR(200),
+    q1 VARCHAR(200),
+    q2 VARCHAR(200),
+    q3 VARCHAR(200),
+    q4 VARCHAR(200),
+    q5 VARCHAR(200),
+    q6 VARCHAR(200),
+    q7 VARCHAR(200),
+    q8 VARCHAR(200),
+    q9 VARCHAR(200),
+    q10 VARCHAR(200),
+    q11 VARCHAR(200),
+    q12 VARCHAR(200),
+    q13 VARCHAR(200), 
+    FOREIGN KEY (uuid) REFERENCES customer_form_responses(uuid) ON DELETE CASCADE
+);
+
 CREATE TABLE form_responses (
     id SERIAL PRIMARY KEY,
     q0 VARCHAR(200),
