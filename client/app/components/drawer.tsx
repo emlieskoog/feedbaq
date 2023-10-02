@@ -66,7 +66,7 @@ export default function TemporaryDrawer() {
                         <ListItemText><Typography variant="h5">Profil</Typography></ListItemText>
                     </ListItem>
                 </Link>
-                <Link href="#" variant="body2" style={{ textDecoration: "none" }}>
+                <Link href="/account/settings" variant="body2" style={{ textDecoration: "none" }}>
                     <ListItem>
                         <ListItemIcon>
                             <Settings fontSize="medium" />

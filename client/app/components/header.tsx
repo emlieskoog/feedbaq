@@ -22,7 +22,7 @@ import TemporaryDrawer from "./drawer";
 export default function Header() {
 
   return (
-    <AppBar position="static" >
+    <AppBar position="relative" >
       <Toolbar>
         <TemporaryDrawer />
         <img

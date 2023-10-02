@@ -260,27 +260,21 @@ export default function FormGrid() {
   }, []);
 
   return (
-    <Grid container spacing={2} className="outerGrid">
-      {/* First row */}
-      <Grid item xs={12} className="topRow centerContent">
-        <Typography variant="h3">Kvalitetsuppföljning</Typography>
-      </Grid>
+    <Grid container spacing={4}>
 
-      {/* Second row */}
       <Grid
         item
         xs={false}
         sm={3}
         md={3}
         sx={{ flexDirection: "column" }}
-        className="middleRow"
       >
-        <Typography variant="h6">Kapitel</Typography>
+        {/* <Typography variant="h6">Kapitel</Typography> */}
         {questions.map((q, index) => {
           return (
             <div
               key={q.id}
-              className="formChapterList"
+              // className="formChapterList"
               onClick={() => setActiveStep(index)}
             >
               {index === activeStep ? (
@@ -304,9 +298,9 @@ export default function FormGrid() {
         xs={12}
         sm={9}
         md={6}
-        sx={{ flexDirection: "column", overflowY: "auto" }}
-        className="middleRow"
+        sx={{ flexDirection: "column" }}
       >
+        <Typography variant="h3">Kvalitetsuppföljning</Typography>
         {activeStep < questions.length ? (
           <>
             <Typography variant="h5" sx={{ textAlign: "center" }}>
@@ -423,49 +417,42 @@ export default function FormGrid() {
             })}
           </>
         )}
+        <Grid container spacing={4} >
+          <Grid item xs={2} className=" centerContent">
+            {activeStep != 0 && (
+              <Button variant="contained" onClick={handleBack}>
+                Tillbaka
+              </Button>
+            )}
+          </Grid>
+          <Grid item xs={6} className=" centerContent">
+            <Box sx={{ width: "100%" }}>
+              <LinearProgressWithLabel
+                value={(activeStep / questions.length) * 100}
+              />
+            </Box>
+          </Grid>
+          <Grid item xs={2} className=" centerContent">
+            {activeStep < questions.length - 1 && (
+              <Button variant="contained" onClick={handleNext}>
+                Nästa
+              </Button>
+            )}
+            {activeStep == questions.length - 1 && (
+              <Button variant="contained" onClick={handleNext}>
+                Klar
+              </Button>
+            )}
+            {activeStep == questions.length && (
+              <Link href={appRoutes.ACCOUNT_PAGE}>
+                <Button variant="contained" onClick={sendJsonForm}>
+                  Skicka
+                </Button>
+              </Link>
+            )}
+          </Grid>
+        </Grid>
       </Grid>
-      <Grid
-        item
-        xs={false}
-        sm={false}
-        md={3}
-        className="middleRow centerContent"
-      ></Grid>
-
-      {/* Third row */}
-      <Grid item xs={4} className="bottomRow centerContent">
-        {activeStep != 0 && (
-          <Button variant="contained" onClick={handleBack}>
-            Tillbaka
-          </Button>
-        )}
-      </Grid>
-      <Grid item xs={4} className="bottomRow centerContent">
-        <Box sx={{ width: "100%" }}>
-          <LinearProgressWithLabel
-            value={(activeStep / questions.length) * 100}
-          />
-        </Box>
-      </Grid>
-      <Grid item xs={4} className="bottomRow centerContent">
-        {activeStep < questions.length - 1 && (
-          <Button variant="contained" onClick={handleNext}>
-            Nästa
-          </Button>
-        )}
-        {activeStep == questions.length - 1 && (
-          <Button variant="contained" onClick={handleNext}>
-            Klar
-          </Button>
-        )}
-        {activeStep == questions.length && (
-          <Link href={appRoutes.ACCOUNT_PAGE}>
-            <Button variant="contained" onClick={sendJsonForm}>
-              Skicka
-            </Button>
-          </Link>
-        )}
-      </Grid>
-    </Grid>
+    </Grid >
   );
 }
