@@ -1,7 +1,10 @@
-DROP TABLE users;
-DROP TABLE consultants_managers;
-DROP TABLE forms_metadata;
 DROP TABLE customers;
+DROP TABLE customer_form_responses;
+DROP TABLE customer_form_metadata;
+DROP TABLE forms_metadata;
+DROP TABLE form_responses;
+DROP TABLE consultants_managers;
+DROP TABLE users;
 
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
@@ -16,16 +19,6 @@ CREATE TABLE consultants_managers (
     manager_id INTEGER,
     FOREIGN KEY (consultant_id) REFERENCES users(id),
     FOREIGN KEY (manager_id) REFERENCES users(id)
-);
-
-CREATE TABLE forms_metadata (
-    id SERIAL PRIMARY KEY,
-    consultant_id INTEGER,
-    customer_id INTEGER,
-    sales_id INTEGER,
-    date DATE,
-    form_response_id INTEGER,
-    FOREIGN KEY (form_response_id) REFERENCES form_responses(id) ON DELETE CASCADE
 );
 
 CREATE TABLE form_responses (
@@ -46,11 +39,53 @@ CREATE TABLE form_responses (
     q13 VARCHAR(200)
 );
 
+CREATE TABLE forms_metadata (
+    id SERIAL PRIMARY KEY,
+    consultant_id INTEGER,
+    customer_id INTEGER,
+    sales_id INTEGER,
+    date DATE,
+    form_response_id INTEGER,
+    FOREIGN KEY (form_response_id) REFERENCES form_responses(id) ON DELETE CASCADE
+);
 
 CREATE TABLE customers (
     id SERIAL PRIMARY KEY,
     customer_name VARCHAR(255)
 );
+
+CREATE TABLE customer_form_metadata (
+    uuid VARCHAR(200) UNIQUE,
+    consultant_id INTEGER,
+    customer_id INTEGER,
+    sales_id INTEGER,
+    date DATE, 
+    is_valid BOOLEAN
+);
+
+CREATE TABLE customer_form_responses (
+    uuid VARCHAR(200) UNIQUE,
+    q0 VARCHAR(200),
+    q1 VARCHAR(200),
+    q2 VARCHAR(200),
+    q3 VARCHAR(200),
+    q4 VARCHAR(200),
+    q5 VARCHAR(200),
+    q6 VARCHAR(200),
+    q7 VARCHAR(200),
+    q8 VARCHAR(200),
+    q9 VARCHAR(200),
+    q10 VARCHAR(200),
+    q11 VARCHAR(200),
+    q12 VARCHAR(200),
+    q13 VARCHAR(200), 
+    FOREIGN KEY (uuid) REFERENCES customer_form_responses(uuid) ON DELETE CASCADE
+);
+
+
+
+
+
 
 
 INSERT INTO customers (customer_name) VALUES ('Ica');
@@ -69,7 +104,6 @@ INSERT INTO consultants_managers (consultant_id, manager_id) VALUES (1, 7);
 INSERT INTO consultants_managers (consultant_id, manager_id) VALUES (2, 8);
 INSERT INTO consultants_managers (consultant_id, manager_id) VALUES (3, 5);
 INSERT INTO consultants_managers (consultant_id, manager_id) VALUES (4, 6);
-
 
 INSERT INTO forms_metadata (consultant_id, customer_id, sales_id, date) VALUES (1, 4, 10, '2023-09-29'); 
 INSERT INTO forms_metadata (consultant_id, customer_id, sales_id, date) VALUES (1, 1, 11, '2023-09-29');
