@@ -6,13 +6,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
@@ -21,7 +17,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
 import java.util.UUID;
 
 @RestController
@@ -74,12 +69,10 @@ public class CustomerController {
         String uuid = requestBody.get("uuid").toString();
 
         // Check if uuid exists...
-        if (!doesUuidExist(uuid)) {
-            String errorMessage = "Customer form uuid " + uuid + " does not exist.";
+        if (!doesUuidExistAndIsValid(uuid)) {
+            String errorMessage = "Customer form with uuid " + uuid + " does not exist or is not valid.";
             return new ResponseEntity<>(errorMessage, HttpStatus.NOT_FOUND);
         }    
-
-        // LÄGG TILL EN KONTROLL FÖR ATT SE OM UUID ÄR VALID
 
         List<Object> formResponseValues = (List<Object>) requestBody.get("formResponseValues");
         
@@ -92,8 +85,8 @@ public class CustomerController {
 
     }
 
-    private boolean doesUuidExist(String uuid) {
-        String uuidCheckSql = "SELECT count(*) FROM customer_form_metadata WHERE uuid=?";
+    private boolean doesUuidExistAndIsValid(String uuid) {
+        String uuidCheckSql = "SELECT count(*) FROM customer_form_metadata WHERE uuid=? AND is_valid=true";
         int count = jdbcTemplate.queryForObject(uuidCheckSql, Integer.class, uuid);
         return count > 0;
     }
