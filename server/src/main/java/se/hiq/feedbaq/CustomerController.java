@@ -48,7 +48,7 @@ public class CustomerController {
 
             Map<String,String> responseObject = new HashMap<>();
             responseObject.put("uuid", uuid.toString()); 
-            responseObject.put("message", "Generated uuid successfully!"), 
+            responseObject.put("message", "Generated uuid successfully!"); 
 
             return ResponseEntity.ok()
                 .body(responseObject);
