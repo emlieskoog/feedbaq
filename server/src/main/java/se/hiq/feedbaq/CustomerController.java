@@ -75,7 +75,7 @@ public class CustomerController {
 
         // Check if uuid exists...
         if (!doesUuidExistAndIsValid(uuid)) {
-            String errorMessage = "Customer form uuid " + uuid + " does not exist.";
+            String errorMessage = "Customer form with uuid " + uuid + " does not exist or is not valid.";
             return new ResponseEntity<>(errorMessage, HttpStatus.NOT_FOUND);
         }    
 
