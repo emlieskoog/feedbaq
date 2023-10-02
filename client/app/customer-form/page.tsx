@@ -17,9 +17,9 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import "../../styles/form.css";
+import "../styles/form.css";
 import Link from "next/link";
-import { API_BASE_URL, appRoutes } from "../../constants";
+import { API_BASE_URL, appRoutes } from "../constants";
 
 export default function FormGrid() {
   const questions = [
@@ -188,19 +188,20 @@ export default function FormGrid() {
       customerId: customerId,
       salesId: salesId,
       date: createdDate.format("YYYY-MM-DD"),
-      formResponseValues: inputValues,
     };
-    console.log(JSON.stringify(requestBody));
 
-    fetch(`${API_BASE_URL}/save-form`, {
+    fetch(`${API_BASE_URL}/customer-form`, {
       method: "POST",
-      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(requestBody),
     })
-      .then((response) => response.text())
+      .then((response) => {
+        const generatedHash = response.headers.get("X-Generated-Hash");
+        console.log("Generated Hash from Header:", generatedHash);
+        return response.text();
+      })
       .then((data) => {
         console.log("Response from server:", data);
       })
@@ -461,11 +462,7 @@ export default function FormGrid() {
         md={2}
         sx={{ flexDirection: "column" }}
         className="centerContent"
-      >
-        <Button variant="contained" href={appRoutes.CUSTOMER_FORM}>
-          Generera länk
-        </Button>
-      </Grid>
+      ></Grid>
     </Grid>
   );
 }
