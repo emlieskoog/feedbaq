@@ -74,12 +74,10 @@ public class CustomerController {
         String uuid = requestBody.get("uuid").toString();
 
         // Check if uuid exists...
-        if (!doesUuidExist(uuid)) {
+        if (!doesUuidExistAndIsValid(uuid)) {
             String errorMessage = "Customer form uuid " + uuid + " does not exist.";
             return new ResponseEntity<>(errorMessage, HttpStatus.NOT_FOUND);
         }    
-
-        // LÄGG TILL EN KONTROLL FÖR ATT SE OM UUID ÄR VALID
 
         List<Object> formResponseValues = (List<Object>) requestBody.get("formResponseValues");
         
@@ -92,8 +90,8 @@ public class CustomerController {
 
     }
 
-    private boolean doesUuidExist(String uuid) {
-        String uuidCheckSql = "SELECT count(*) FROM customer_form_metadata WHERE uuid=?";
+    private boolean doesUuidExistAndIsValid(String uuid) {
+        String uuidCheckSql = "SELECT count(*) FROM customer_form_metadata WHERE uuid=? AND is_valid=true";
         int count = jdbcTemplate.queryForObject(uuidCheckSql, Integer.class, uuid);
         return count > 0;
     }
