@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.io.IOException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import se.hiq.feedbaq.security.JWTAuthenticationFilter;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,19 +32,12 @@ public class ProfileController {
     @Autowired
     private JdbcTemplate jdbcTemplate;
     
+    @Autowired JWTAuthenticationFilter jwtAuthenticationFilter;
     
     @GetMapping("/profile")
     public ResponseEntity<Object> getProfileData(HttpServletRequest request) {
-
-
-        Cookie[] cookies = request.getCookies();
-        String token = null;
-
-        for (Cookie cookie: cookies) {
-            if (cookie.getName().equals("jwt")) {
-                token = cookie.getValue();
-            }
-        }
+        
+        String token = jwtAuthenticationFilter.getJWTFromRequest(request);
 
         String[] jwtChunks = token.split("\\.");
         Base64.Decoder decoder = Base64.getUrlDecoder();

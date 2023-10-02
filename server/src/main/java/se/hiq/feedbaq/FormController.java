@@ -52,6 +52,7 @@ public class FormController {
         }
     }
 
+    // Används ej?
     @GetMapping("/forms")
     public ResponseEntity<Object> getAllForms() {
         try {
@@ -96,7 +97,8 @@ public class FormController {
             return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-        
+    
+    // ANVÄNDS EJ? (Ersatt av getProfileData?)
     @GetMapping("/forms/consultants/{consultantId}")
     public ResponseEntity<Object> getFormsForConsultants(@PathVariable int consultantId) { // RequestParam: encodar URI
         try {
@@ -114,6 +116,7 @@ public class FormController {
         }
     }
     
+    // ANVÄNDS EJ? (Ersatt av getProfileData?)
     @GetMapping("/forms/managers/{managerId}")
     public ResponseEntity<Object> getFormsForManagers(@PathVariable int managerId) {
         try {
@@ -131,7 +134,7 @@ public class FormController {
         }
     }
     
-
+    // ANVÄNDS EJ? (Ersatt av getProfileData?)
     @GetMapping("/forms/sales/{salesId}")
     public ResponseEntity<Object> getFormsForSales(@PathVariable int salesId) {
         try {
@@ -148,6 +151,7 @@ public class FormController {
         }
     }
     
+    // ANVÄNDS EJ? (Ersatt av getFormById...?)
     @GetMapping("/form_responses/{id}")
     public ResponseEntity<Object> getFormResponseById(@PathVariable int id) {
         try {
@@ -163,6 +167,7 @@ public class FormController {
         }
     }
     
+    // ANVÄNDS EJ? (Ersatt av getFormById...?)
     @GetMapping("/names/{consultantId}/{salesId}/{customerId}")
     public ResponseEntity<Object> getFormNames(@PathVariable int consultantId, @PathVariable int salesId, @PathVariable int customerId) {
         try {
