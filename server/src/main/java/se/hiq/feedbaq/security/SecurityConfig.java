@@ -48,6 +48,9 @@ public class SecurityConfig {
                 authorizeHttpRequests
                     .requestMatchers("/auth/**").permitAll()
                     .requestMatchers("/error").permitAll()
+                    .requestMatchers("/customer-form/**").permitAll()
+                    .requestMatchers("/save-customer-form").permitAll()
+                    .requestMatchers("/customer-form").permitAll()
                     .anyRequest().authenticated()
             )
             .httpBasic(withDefaults());
