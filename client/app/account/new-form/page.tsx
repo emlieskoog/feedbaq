@@ -12,11 +12,15 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  Collapse,
+  Alert,
+  IconButton,
 } from "@mui/material";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import CloseIcon from "@mui/icons-material/Close";
 import "../../styles/form.css";
 import Link from "next/link";
 import { API_BASE_URL, appRoutes } from "../../constants";
@@ -127,6 +131,10 @@ export default function FormGrid() {
   const [customers, setCustomers] = useState([]);
   const [customerId, setCustomerId] = useState("");
 
+  const [generatedLink, setGeneratedLink] = useState<any>("");
+
+  const [open, setOpen] = useState(false);
+
   // Day.js is a minimalist JavaScript library that parses, validates, manipulates, and displays dates and times for modern browsers with a largely Moment.js-compatible API.
   const dayjs = require("dayjs");
 
@@ -180,6 +188,40 @@ export default function FormGrid() {
 
   const handleDateChange = (event: any) => {
     setCreatedDate(event);
+  };
+
+  const sendJsonCustomerForm = () => {
+    const requestBody = {
+      consultantId: consultantId,
+      customerId: customerId,
+      salesId: salesId,
+      date: createdDate.format("YYYY-MM-DD"),
+    };
+
+    fetch(`${API_BASE_URL}/customer-form`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestBody),
+    })
+      .then((response) => {
+        const generatedHash = response.headers.get("X-Generated-Hash");
+        console.log("Generated Hash from Header:", generatedHash);
+
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Response from server:", data);
+
+        const link = "http://localhost:3000/customer-form/" + data.uuid;
+        setGeneratedLink(link);
+
+        setOpen(true);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   };
 
   const sendJsonForm = () => {
@@ -458,11 +500,30 @@ export default function FormGrid() {
       </Grid>
       <Grid
         item
-        md={2}
+        md={4}
         sx={{ flexDirection: "column" }}
         className="centerContent"
       >
-        <Button variant="contained" href={appRoutes.CUSTOMER_FORM}>
+        <Collapse in={open}>
+          <Alert
+            action={
+              <IconButton
+                aria-label="close"
+                color="inherit"
+                size="medium"
+                onClick={() => {
+                  setOpen(false);
+                }}
+              >
+                <CloseIcon fontSize="inherit" />
+              </IconButton>
+            }
+            sx={{ mb: 2 }}
+          >
+            {generatedLink}
+          </Alert>
+        </Collapse>
+        <Button variant="contained" onClick={sendJsonCustomerForm}>
           Generera länk
         </Button>
       </Grid>
