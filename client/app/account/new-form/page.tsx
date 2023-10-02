@@ -194,6 +194,7 @@ export default function FormGrid() {
 
     fetch(`${API_BASE_URL}/save-form`, {
       method: "POST",
+      credentials: 'include',
       headers: {
         "Content-Type": "application/json",
       },
@@ -211,6 +212,7 @@ export default function FormGrid() {
   useEffect(() => {
     fetch(`${API_BASE_URL}/consultants`, {
       method: "GET",
+      credentials: 'include',
       headers: {
         "Content-Type": "application/json",
       },
@@ -228,6 +230,7 @@ export default function FormGrid() {
   useEffect(() => {
     fetch(`${API_BASE_URL}/sales`, {
       method: "GET",
+      credentials: 'include',
       headers: {
         "Content-Type": "application/json",
       },
@@ -245,6 +248,7 @@ export default function FormGrid() {
   useEffect(() => {
     fetch(`${API_BASE_URL}/customers`, {
       method: "GET",
+      credentials: 'include',
       headers: {
         "Content-Type": "application/json",
       },

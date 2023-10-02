@@ -47,7 +47,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(authorizeHttpRequests -> 
                 authorizeHttpRequests
                     .requestMatchers("/auth/**").permitAll()
-                    //.requestMatchers("/error").permitAll()
+                    .requestMatchers("/error").permitAll()
                     .anyRequest().authenticated()
             )
             .httpBasic(withDefaults());
