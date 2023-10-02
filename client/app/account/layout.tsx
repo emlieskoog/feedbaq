@@ -2,6 +2,7 @@
 import Header from "../components/header";
 import { useRouter } from 'next/navigation';
 import { ProtectedRoute } from '../components/protectedroute';
+import "../styles/form.css";
 
 
 export default function AccountLayout({
@@ -14,9 +15,9 @@ export default function AccountLayout({
 
   return (
     <ProtectedRoute router={router}>
-      <div>
+      <div className="outerGrid" >
         <Header />
-        <section style={{ padding: "0px 20px" }}>{children}</section>
+        <section>{children}</section>
       </div>
     </ProtectedRoute>
 

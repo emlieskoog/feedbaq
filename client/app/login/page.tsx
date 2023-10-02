@@ -108,7 +108,7 @@ export default function LoginPage() {
           <Link href="#" variant="body2" onClick={handleOpenDialog}>
             {"Registrera dig här"}
           </Link>
-          <Typography variant="body2" sx={{ color: '#ff329f', mt: '100px' }}>Powered by &trade; WALE</Typography>
+          <Typography variant="body2" sx={{ color: '#ff329f', mt: '100px' }}>Powered by WALE  &trade;</Typography>
           {isDialogOpen && <RegisterDialog isOpen={isDialogOpen} onClose={() => setIsDialogOpen(false)} />}
         </Box>
       </Grid>
