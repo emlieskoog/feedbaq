@@ -1,15 +1,11 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Block } from "@mui/icons-material";
 import { Box, CircularProgress } from "@mui/material";
 import "../../styles/form.css";
 
 export default function FormDetails() {
   const [formData, setFormData] = useState<any>([]);
-  const [detailedFormData, setDetailedFormData] = useState<any>([]);
-
-  const [namesData, setNamesData] = useState<any>([]);
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -25,31 +21,12 @@ export default function FormDetails() {
       const id = urlParams.get("id");
 
       const responseFormData = await fetch(
-        "http://localhost:8080/api/forms/" + id
+        "http://localhost:8080/api/forms/" + id, { credentials: "include" }
       );
       const data = await responseFormData.json();
       setFormData(data);
       setIsLoading(false);
 
-      /*
-      const responseDetailedFormData = await fetch(
-        "http://localhost:8080/api/form_responses/" + id
-      );
-      const detailedFormData = await responseDetailedFormData.json();
-      setDetailedFormData(detailedFormData);
-
-      const responseNamesData = await fetch(
-        "http://localhost:8080/api/names/" +
-          formData.consultant_id +
-          "/" +
-          formData.sales_id +
-          "/" +
-          formData.customer_id
-      );
-      const namesData = await responseNamesData.json();
-      console.log(namesData);
-      setNamesData(namesData);
-      */
     } catch (error) {
       console.log("An error occured when trying to retrieve form data.", error);
     }

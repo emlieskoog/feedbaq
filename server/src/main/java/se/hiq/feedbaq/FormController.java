@@ -29,7 +29,6 @@ public class FormController {
 
         try {
 
-
             //Create a new entity in the form_responses table and return the row id
             String responseQuery = "INSERT INTO form_responses (q0, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13) " 
             + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id";
@@ -49,18 +48,6 @@ public class FormController {
         } catch (DataAccessException e) {
             e.printStackTrace(); 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error saving answers");
-        }
-    }
-
-    // Används ej?
-    @GetMapping("/forms")
-    public ResponseEntity<Object> getAllForms() {
-        try {
-            List<Map<String, Object>> result = jdbcTemplate.queryForList("SELECT * FROM forms;");
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch (DataAccessException e) {
-            String errorMessage = "An error occurred while fetching forms: " + e.getMessage();
-            return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -87,106 +74,12 @@ public class FormController {
             responseMap.put("consultant_name", consultantNameMap.get("name").toString());
             responseMap.put("sales_name", salesNameMap.get("name").toString());
 
-    
             return new ResponseEntity<>(responseMap, HttpStatus.OK);
         } catch (IncorrectResultSizeDataAccessException e) {
             String errorMessage = "Form with ID " + id + " not found.";
             return new ResponseEntity<>(errorMessage, HttpStatus.NOT_FOUND);
         } catch (DataAccessException e) {
             String errorMessage = "An error occured while fetching form with ID " + id + ": " + e.getMessage();
-            return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-    
-    // ANVÄNDS EJ? (Ersatt av getProfileData?)
-    @GetMapping("/forms/consultants/{consultantId}")
-    public ResponseEntity<Object> getFormsForConsultants(@PathVariable int consultantId) { // RequestParam: encodar URI
-        try {
-            //String query = "SELECT  FROM forms WHERE consultant_id=?";
-            String query = "SELECT f.id, c.customer_name, f.date FROM forms f JOIN customers c ON f.customer_id=c.id WHERE f.consultant_id=?";
-            List<Map<String, Object>> result = jdbcTemplate.queryForList(query, consultantId);
-            if (result.isEmpty()) {
-                String message = "No forms found for consultant with ID " + consultantId + ".";
-                return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
-            }
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch (DataAccessException e) {
-            String errorMessage = "An error occured while fetching forms for consultant with ID " + consultantId + ": " + e.getMessage();
-            return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-    
-    // ANVÄNDS EJ? (Ersatt av getProfileData?)
-    @GetMapping("/forms/managers/{managerId}")
-    public ResponseEntity<Object> getFormsForManagers(@PathVariable int managerId) {
-        try {
-            //String query = "SELECT * FROM forms WHERE manager_id=?";
-            String query = "SELECT f.id, co.consultant_name, cu.customer_name, f.date FROM forms f JOIN consultants co ON f.consultant_id=co.id JOIN customers cu ON f.customer_id=cu.id WHERE co.manager_id=?";
-            List<Map<String, Object>> result = jdbcTemplate.queryForList(query, managerId);
-            if (result.isEmpty()) {
-                String message = "No forms found for manager with ID " + managerId + ".";
-                return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
-            }
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch (DataAccessException e) {
-            String errorMessage = "An error occurred while fetching forms for manager with ID " + managerId + ": " + e.getMessage();
-            return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-    
-    // ANVÄNDS EJ? (Ersatt av getProfileData?)
-    @GetMapping("/forms/sales/{salesId}")
-    public ResponseEntity<Object> getFormsForSales(@PathVariable int salesId) {
-        try {
-            String query = "SELECT f.id, cu.customer_name, co.consultant_name, f.date FROM forms f JOIN customers cu ON f.customer_id=cu.id JOIN consultants co ON f.consultant_id=co.id WHERE f.sales_id=?";
-            List<Map<String, Object>> result = jdbcTemplate.queryForList(query, salesId);
-            if (result.isEmpty()) {
-                String message = "No forms found for sales with ID " + salesId + ".";
-                return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
-            }
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch (DataAccessException e) {
-            String errorMessage = "An error occurred while fetching forms for sales with ID " + salesId + ": " + e.getMessage();
-            return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-    
-    // ANVÄNDS EJ? (Ersatt av getFormById...?)
-    @GetMapping("/form_responses/{id}")
-    public ResponseEntity<Object> getFormResponseById(@PathVariable int id) {
-        try {
-            String query = "SELECT * FROM form_responses WHERE id=?";
-            Map<String, Object> result = jdbcTemplate.queryForMap(query, id);
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch (IncorrectResultSizeDataAccessException e) {
-            String errorMessage = "Form response with ID " + id + " not found.";
-            return new ResponseEntity<>(errorMessage, HttpStatus.NOT_FOUND);
-        } catch (DataAccessException e) {
-            String errorMessage = "An error occured while fetching form response with ID " + id + ": " + e.getMessage();
-            return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-    
-    // ANVÄNDS EJ? (Ersatt av getFormById...?)
-    @GetMapping("/names/{consultantId}/{salesId}/{customerId}")
-    public ResponseEntity<Object> getFormNames(@PathVariable int consultantId, @PathVariable int salesId, @PathVariable int customerId) {
-        try {
-            String consultantQuery = "SELECT consultant_name FROM consultants WHERE id=?";
-            String salesQuery = "SELECT sales_name FROM sales WHERE id=?";
-            String customerQuery = "SELECT customer_name FROM customers WHERE id=?";
-
-            String consultantName = jdbcTemplate.queryForObject(consultantQuery, String.class, consultantId);
-            String salesName = jdbcTemplate.queryForObject(salesQuery, String.class, salesId);
-            String customerName = jdbcTemplate.queryForObject(customerQuery, String.class, customerId);
-
-            Map<String, Object> result = new HashMap<>();
-            result.put("consultantName", consultantName);
-            result.put("salesName", salesName);
-            result.put("customerName", customerName);
-
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch (DataAccessException e) {
-            String errorMessage = "An error occured while fetching names with ids " + consultantId + ", " + salesId + ", " + customerId + ": " + e.getMessage();
             return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
