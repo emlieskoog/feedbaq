@@ -54,7 +54,7 @@ public class AuthControllerTests {
         requestBody.put("email", "test@hiq.se");
 
         // SQL query
-        String sql = "SELECT count(*) FROM users WHERE email=?";
+        String sql = "SELECT count(*) FROM users WHERE emaila=?";
 
         // Mock behavior of jdbcTemplate.queryForObject to return 1
         when(jdbcTemplate.queryForObject(sql, Integer.class, requestBody.get("email"))).thenReturn(1);
