@@ -18,8 +18,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
-import java.util.Arrays;
-
 
 @Configuration
 @EnableWebSecurity
@@ -27,9 +25,6 @@ public class SecurityConfig {
 
     @Autowired
     private JwtAuthEntryPoint authEntryPoint;
-
-    @Autowired
-    private CustomUserDetailsService customUserDetailsService;
     
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -48,6 +43,8 @@ public class SecurityConfig {
                 authorizeHttpRequests
                     .requestMatchers("/auth/**").permitAll()
                     .requestMatchers("/error").permitAll()
+                    .requestMatchers("/customer-form/**").permitAll()
+                    .requestMatchers("/save-customer-form").permitAll()
                     .requestMatchers("/customer-form").permitAll()
                     .anyRequest().authenticated()
             )

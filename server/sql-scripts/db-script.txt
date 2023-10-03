@@ -39,6 +39,7 @@ CREATE TABLE form_responses (
     q13 VARCHAR(200)
 );
 
+
 CREATE TABLE forms_metadata (
     id SERIAL PRIMARY KEY,
     consultant_id INTEGER,
@@ -47,11 +48,6 @@ CREATE TABLE forms_metadata (
     date DATE,
     form_response_id INTEGER,
     FOREIGN KEY (form_response_id) REFERENCES form_responses(id) ON DELETE CASCADE
-);
-
-CREATE TABLE customers (
-    id SERIAL PRIMARY KEY,
-    customer_name VARCHAR(255)
 );
 
 CREATE TABLE customer_form_metadata (
@@ -83,9 +79,10 @@ CREATE TABLE customer_form_responses (
 );
 
 
-
-
-
+CREATE TABLE customers (
+    id SERIAL PRIMARY KEY,
+    customer_name VARCHAR(255)
+);
 
 
 INSERT INTO customers (customer_name) VALUES ('Ica');
