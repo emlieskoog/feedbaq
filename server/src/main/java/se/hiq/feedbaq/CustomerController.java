@@ -64,7 +64,7 @@ public class CustomerController {
 
 
     @PostMapping("/save-customer-form")
-    public ResponseEntity<Object> saveForm(@RequestBody Map<String, Object> requestBody) {
+    public ResponseEntity<Object> saveCustomerForm(@RequestBody Map<String, Object> requestBody) {
 
         String uuid = requestBody.get("uuid").toString();
 
