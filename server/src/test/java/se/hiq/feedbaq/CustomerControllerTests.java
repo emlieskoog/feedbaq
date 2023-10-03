@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.junit.jupiter.api.BeforeEach;
+import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -24,6 +24,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
@@ -73,52 +75,58 @@ public class CustomerControllerTests {
         assertEquals("An error occurred while fetching customers: Test DataAccessException", response.getBody());
     }
     
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testGenerateCustomerFormSuccess() {
 
-    // @Test
-    // public void testGenerateCustomerFormSuccess() {
-
-    //     // Create a mock body and SQL query
-    //     UUID uuid = UUID.randomUUID();
-
-    //     Map<String, String> requestBody = new HashMap<>(); 
-    //     requestBody.put("consultantId", "1"); 
-    //     requestBody.put("customerId", "1"); 
-    //     requestBody.put("salesId", "1");
-    //     requestBody.put("date", "2022-09-23");
+        // Create a mock body and SQL query
+        Map<String, String> requestBody = new HashMap<>(); 
+        requestBody.put("consultantId", "1"); 
+        requestBody.put("customerId", "2"); 
+        requestBody.put("salesId", "3");
+        requestBody.put("date", "2022-09-23");
             
-    //     String formQuery = "INSERT INTO customer_form_metadata (uuid, consultant_id, customer_id, sales_id, date, is_valid) " 
-    //         + "VALUES (?,?::int,?::int,?::int,?::date,?::boolean)";
+        String formQuery = "INSERT INTO customer_form_metadata (uuid, consultant_id, customer_id, sales_id, date, is_valid) " 
+            + "VALUES (?,?::int,?::int,?::int,?::date,?::boolean)";
 
-    //     // Mock a successful jdbcTemplate.update 
-    //     when(jdbcTemplate.update(formQuery, uuid, requestBody.get("consultantId"), requestBody.get("customerId"), 
-    //     requestBody.get("salesId"), requestBody.get("date"), true)).thenReturn(1);
+        // Mock a successful jdbcTemplate.update 
+        when(jdbcTemplate.update(eq(formQuery), any(Object[].class))).thenReturn(1);
 
-    //     // Act
-    //     ResponseEntity<Object> response = customerController.generateCustomerForm(requestBody);
+        // Act
+        ResponseEntity<Object> response = customerController.generateCustomerForm(requestBody);
 
-    //     // Assert
-    //     assertNotNull(response);
-    //     assertEquals(HttpStatus.OK, response.getStatusCode());
-    //     assertEquals("Data saved successfully", response.getBody());
-    // }
-        // @Test
-    // public void testGenerateCustomerFormThrowsException() {
-    //     // Create a mock body and SQL query
-    //     List<String> requestBody = Arrays.asList("r1", "r2", "r3","r4","r5","r6","r7","r8","r9","r10","r11","r12");
-    //     String query = "INSERT INTO form_responses (q0, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12) " 
-    //             + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        // Assert
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
-    //     // Mock a database update failure
-    //     when(jdbcTemplate.update(query, requestBody.toArray())).thenThrow(new DataAccessException("Database error") {});
+        Map<String, String> responseObject = (Map<String,String>) response.getBody();
+        assertEquals(responseObject.get("message"),"Generated uuid successfully!");
+    }
 
-    //     // Act
-    //     ResponseEntity<Object> response = formController.postForm(requestBody);
-
-    //     // Assert
-    //     assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
-    //     assertEquals("Error saving answers", response.getBody());
-    // }
     
+    @Test
+    public void testGenerateCustomerFormThrowsException() {
+        // Create a mock body and SQL query
+        Map<String, String> requestBody = new HashMap<>(); 
+        requestBody.put("consultantId", "1"); 
+        requestBody.put("customerId", "2"); 
+        requestBody.put("salesId", "3");
+        requestBody.put("date", "2022-09-23");
+            
+        String formQuery = "INSERT INTO customer_form_metadata (uuid, consultant_id, customer_id, sales_id, date, is_valid) " 
+            + "VALUES (?,?::int,?::int,?::int,?::date,?::boolean)";
+
+        
+            // Mock a database update failure
+        when(jdbcTemplate.update(eq(formQuery), any(Object[].class))).thenThrow(new DataAccessException("Database error") {});
+
+        // Act
+        ResponseEntity<Object> response = customerController.generateCustomerForm(requestBody);
+
+        // Assert
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+        assertEquals("Error generating link", response.getBody());
+    }
 
     @Test
     public void testGetCustomerFormSuccess() {
@@ -206,7 +214,7 @@ public class CustomerControllerTests {
     }
 
 
-    /*
+    /* STUBBING ERROR, UNDERSÖK!
     @Test
     public void testSaveCustomerFormSuccess() {
         // Mock data, SQL query and exception
@@ -228,7 +236,7 @@ public class CustomerControllerTests {
         when(jdbcTemplate.queryForObject(uuidCheckSql, Integer.class, uuid)).thenReturn(1);
         
         // Mock behavior of jdbc.update to insert successfully
-        when(jdbcTemplate.update(insertSql, arguments.toArray())).thenReturn(1);
+        when(jdbcTemplate.update(insertSql, arguments.toArray())).thenReturn(1); // DENNA ÄR FEL?
 
         // Act
         ResponseEntity<Object> response = customerController.saveCustomerForm(requestBody);
@@ -265,7 +273,7 @@ public class CustomerControllerTests {
     }
 
 
-    /*
+    /* STUBBING ERROR, UNDERSÖK!!!
     @Test
     public void testSaveCustomerFormThrowsDataAccessException() {
 
@@ -289,7 +297,7 @@ public class CustomerControllerTests {
         when(jdbcTemplate.queryForObject(uuidCheckSql, Integer.class, uuid)).thenReturn(1);
         
         // Mock behavior of jdbc.update to throw DataAccessException
-        doThrow(exception).when(jdbcTemplate).update(insertSql, arguments.toArray());
+        doThrow(exception).when(jdbcTemplate).update(insertSql, arguments.toArray()); // Denna är fel???
 
         // Act
         ResponseEntity<Object> response = customerController.saveCustomerForm(requestBody);
