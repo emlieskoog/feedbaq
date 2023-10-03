@@ -1,4 +1,4 @@
-package se.hiq.feedbaq;
+package se.hiq.feedbaq.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,30 +22,30 @@ import static org.mockito.Mockito.when;
 
 
 @ExtendWith(MockitoExtension.class)
-public class ConsultantControllerTests {
+public class SalesControllerTests {
     
     @Mock
     private JdbcTemplate jdbcTemplate;
 
     @InjectMocks
-    private ConsultantController consultantController;    
+    private SalesController salesController;    
     
     
     @Test
-    public void testGetAllConsultantsSuccess() {
+    public void testGetAllSalesSuccess() {
         
         // Create mock data
         List<Map<String, Object>> mockData = new ArrayList<>();
-        Map<String, Object> consultant = new HashMap<String, Object>();
-        consultant.put("id", 1);
-        consultant.put("name", "consultant1");
-        mockData.add(consultant);
+        Map<String, Object> sales = new HashMap<String, Object>();
+        sales.put("id", 1);
+        sales.put("name", "sales1");
+        mockData.add(sales);
         
         // Mock the behavior of jdbcTemplate.queryForList to return mock data above
-        when(jdbcTemplate.queryForList("SELECT * FROM users WHERE role='CONSULTANT';")).thenReturn(mockData);
+        when(jdbcTemplate.queryForList("SELECT * FROM users WHERE role='SALES';")).thenReturn(mockData);
 
         // Act
-        ResponseEntity<Object> response = consultantController.getAllConsultants();
+        ResponseEntity<Object> response = salesController.getAllSales();
         
         // Assert
         assertNotNull(response);
@@ -54,17 +54,17 @@ public class ConsultantControllerTests {
     }
     
     @Test
-    public void testGetAllConsultantsThrowsException() {
+    public void testGetAllSalesThrowsException() {
         
         // Mock the behavior of jdbcTemplate.queryForList to throw a DataAccessException
-        doThrow(new DataAccessException("Test DataAccessException") {}).when(jdbcTemplate).queryForList("SELECT * FROM users WHERE role='CONSULTANT';");
+        doThrow(new DataAccessException("Test DataAccessException") {}).when(jdbcTemplate).queryForList("SELECT * FROM users WHERE role='SALES';");
 
         // Act
-        ResponseEntity<Object> response = consultantController.getAllConsultants();
+        ResponseEntity<Object> response = salesController.getAllSales();
 
         // Assert
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
-        assertEquals("An error occurred while fetching consultants: Test DataAccessException", response.getBody());
+        assertEquals("An error occurred while fetching sales: Test DataAccessException", response.getBody());
     }
     
     

@@ -1,4 +1,4 @@
-package se.hiq.feedbaq;
+package se.hiq.feedbaq.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,18 +14,18 @@ import java.util.Map;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
-public class ConsultantController {
+public class SalesController {
     
     @Autowired
     private JdbcTemplate jdbcTemplate;
     
-    @GetMapping("/consultants")
-    public ResponseEntity<Object> getAllConsultants() {
+    @GetMapping("/sales")
+    public ResponseEntity<Object> getAllSales() {
         try {
-            List<Map<String, Object>> result = jdbcTemplate.queryForList("SELECT * FROM users WHERE role='CONSULTANT';");
+            List<Map<String, Object>> result = jdbcTemplate.queryForList("SELECT * FROM users WHERE role='SALES';");
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (DataAccessException e) {
-            String errorMessage = "An error occurred while fetching consultants: " + e.getMessage();
+            String errorMessage = "An error occurred while fetching sales: " + e.getMessage();
             return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

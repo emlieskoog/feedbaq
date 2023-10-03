@@ -1,4 +1,4 @@
-package se.hiq.feedbaq;
+package se.hiq.feedbaq.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 

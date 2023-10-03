@@ -45,7 +45,7 @@ public class SecurityConfig {
                     .requestMatchers("/error").permitAll()
                     .requestMatchers("/customer-form/**").permitAll()
                     .requestMatchers("/save-customer-form").permitAll()
-                    .requestMatchers("/customer-form").permitAll()
+                    .requestMatchers("/customer-form").permitAll() // Denna rad ska tas bort sen, bara autentiserade användare ska kunna generera
                     .anyRequest().authenticated()
             )
             .httpBasic(withDefaults());
