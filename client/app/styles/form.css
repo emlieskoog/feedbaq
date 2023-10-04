@@ -41,6 +41,10 @@
 
 .separator {
   border-bottom: 1px solid lightgrey;
-  padding-bottom: 8px; /* Adjust the padding as needed */
-  margin-bottom: 8px; /* Adjust the margin as needed */
+  padding-bottom: 8px;
+  margin-bottom: 8px;
+}
+
+.MuiTextField-root input {
+  cursor: default;
 }

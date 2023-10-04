@@ -132,6 +132,7 @@ export default function FormGrid() {
   const [customerId, setCustomerId] = useState("");
 
   const [generatedLink, setGeneratedLink] = useState<any>("");
+  const [copySuccess, setCopySuccess] = useState<any>("");
 
   const [open, setOpen] = useState(false);
 
@@ -159,6 +160,18 @@ export default function FormGrid() {
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+
+  const handleCopyToClipboard = () => {
+    navigator.clipboard
+      .writeText(generatedLink)
+      .then(() => {
+        setCopySuccess(true); // Set copy success to true to display the success message
+        setTimeout(() => {
+          setCopySuccess(false); // Reset success message after a few seconds
+        }, 3000);
+      })
+      .catch((err) => console.error("Failed to copy: ", err));
   };
 
   const handleInputChange = (event: any) => {
@@ -216,7 +229,6 @@ export default function FormGrid() {
 
         const link = "http://localhost:3000/customer-form/" + data.uuid;
         setGeneratedLink(link);
-
         setOpen(true);
       })
       .catch((error) => {
@@ -500,17 +512,23 @@ export default function FormGrid() {
       </Grid>
       <Grid
         item
-        md={4}
-        sx={{ flexDirection: "column" }}
-        className="centerContent"
+        md={8}
+        sx={{ flexDirection: "row", display: "flex", marginLeft: "9em" }}
       >
+        <Button
+          variant="contained"
+          onClick={sendJsonCustomerForm}
+          sx={{ width: "15%", height: "100%" }}
+        >
+          Generera länk
+        </Button>
         <Collapse in={open}>
           <Alert
             action={
               <IconButton
                 aria-label="close"
                 color="inherit"
-                size="medium"
+                size="small"
                 onClick={() => {
                   setOpen(false);
                 }}
@@ -518,14 +536,14 @@ export default function FormGrid() {
                 <CloseIcon fontSize="inherit" />
               </IconButton>
             }
-            sx={{ mb: 2 }}
+            severity="info"
+            sx={{ cursor: "pointer" }}
+            onClick={handleCopyToClipboard}
           >
             {generatedLink}
           </Alert>
         </Collapse>
-        <Button variant="contained" onClick={sendJsonCustomerForm}>
-          Generera länk
-        </Button>
+        {copySuccess && <Alert severity="success">Kopierad!</Alert>}
       </Grid>
     </Grid>
   );
