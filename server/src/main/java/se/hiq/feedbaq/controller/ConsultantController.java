@@ -24,12 +24,14 @@ public class ConsultantController {
     @PreAuthorize("hasAnyAuthority('SALES', 'MANAGER')")
     public ResponseEntity<Object> getAllConsultants() {
         try {
-            List<Map<String, Object>> result = jdbcTemplate.queryForList("SELECT * FROM users WHERE role='CONSULTANT';");
+            List<Map<String, Object>> result = jdbcTemplate.queryForList("SELECT uc.id, uc.name, uc.role, um.name AS manager_name FROM users uc "+
+                "LEFT JOIN consultants_managers cm ON uc.id=cm.consultant_id "+
+                "LEFT JOIN users um ON cm.manager_id=um.id "+
+                "WHERE uc.role='CONSULTANT';");
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (DataAccessException e) {
             String errorMessage = "An error occurred while fetching consultants: " + e.getMessage();
             return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    
 }
