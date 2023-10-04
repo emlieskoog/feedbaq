@@ -16,6 +16,7 @@ import {
   Collapse,
   Alert,
   IconButton,
+  FormControl,
 } from "@mui/material";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -137,6 +138,8 @@ export default function FormGrid() {
 
   const [open, setOpen] = useState(false);
 
+  const isFormValid = consultantId && salesId && customerId;
+
   // Day.js is a minimalist JavaScript library that parses, validates, manipulates, and displays dates and times for modern browsers with a largely Moment.js-compatible API.
   const dayjs = require("dayjs");
 
@@ -220,8 +223,6 @@ export default function FormGrid() {
       body: JSON.stringify(requestBody),
     })
       .then((response) => {
-        //const generatedHash = response.headers.get("X-Generated-Hash");
-        //console.log("Generated Hash from Header:", generatedHash);
         console.log(response);
         return response.json();
       })
@@ -321,9 +322,6 @@ export default function FormGrid() {
   return (
     <Grid container spacing={2} className="outerGrid">
       {/* First row */}
-
-
-      {/* Second row */}
       <Grid
         item
         xs={false}
@@ -393,71 +391,71 @@ export default function FormGrid() {
                 />
               )}
               {questions[activeStep].inputType === "info" && (
-                <Box>
-                  <div
-                    style={{
-                      width: "45vh",
-                      margin: "20px",
-                    }}
-                  >
+                <div
+                  style={{
+                    width: "45vh",
+                    margin: "20px",
+                  }}
+                >
+                  <FormControl required fullWidth margin="normal" variant='standard'>
                     <InputLabel id="select-label-consultant">
                       Konsult
                     </InputLabel>
-                    <Box>
-                      <Select
-                        labelId="select-label-consultant"
-                        fullWidth
-                        value={consultantId}
-                        onChange={handleConsultantChange}
-                      >
-                        {consultants.map((consultant: any) => (
-                          <MenuItem value={consultant.id} key={consultant.id}>
-                            {consultant.name}
-                          </MenuItem>
-                        ))}
-                      </Select>
+                    <Select
+                      labelId="select-label-consultant"
+                      value={consultantId}
+                      onChange={handleConsultantChange}
+                    >
+                      {consultants.map((consultant: any) => (
+                        <MenuItem value={consultant.id} key={consultant.id}>
+                          {consultant.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
 
-                      <InputLabel id="select-label-sales">Säljare</InputLabel>
-                      <Select
-                        labelId="select-label-sales"
-                        fullWidth
-                        value={salesId}
-                        onChange={handleSalesChange}
-                      >
-                        {sales.map((salesperson: any) => (
-                          <MenuItem value={salesperson.id} key={salesperson.id}>
-                            {salesperson.name}
-                          </MenuItem>
-                        ))}
-                      </Select>
+                  <FormControl required fullWidth margin="normal" variant='standard'>
+                    <InputLabel id="select-label-sales">Säljare</InputLabel>
+                    <Select
+                      labelId="select-label-sales"
+                      value={salesId}
+                      onChange={handleSalesChange}
+                    >
+                      {sales.map((salesperson: any) => (
+                        <MenuItem value={salesperson.id} key={salesperson.id}>
+                          {salesperson.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
 
-                      <InputLabel id="select-label-customer">Kund</InputLabel>
-                      <Select
-                        labelId="select-label-customer"
-                        fullWidth
-                        value={customerId}
-                        onChange={handleCustomerChange}
-                      >
-                        {customers.map((customer: any) => (
-                          <MenuItem value={customer.id} key={customer.id}>
-                            {customer.customer_name}
-                          </MenuItem>
-                        ))}
-                      </Select>
+                  <FormControl required fullWidth margin="normal" variant='standard'>
+                    <InputLabel id="select-label-customer">Kund</InputLabel>
+                    <Select
+                      labelId="select-label-customer"
+                      value={customerId}
+                      onChange={handleCustomerChange}
+                    >
+                      {customers.map((customer: any) => (
+                        <MenuItem value={customer.id} key={customer.id}>
+                          {customer.customer_name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
 
-                      <InputLabel id="select-date">Datum</InputLabel>
-                      <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DemoContainer components={["DatePicker"]}>
-                          <DatePicker
-                            value={createdDate}
-                            format="YYYY-MM-DD"
-                            onChange={handleDateChange}
-                          />
-                        </DemoContainer>
-                      </LocalizationProvider>
-                    </Box>
-                  </div>
-                </Box>
+                  <InputLabel id="select-date">Datum</InputLabel>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DemoContainer components={["DatePicker"]}>
+                      <DatePicker
+                        value={createdDate}
+                        format="YYYY-MM-DD"
+                        onChange={handleDateChange}
+                      />
+                    </DemoContainer>
+                  </LocalizationProvider>
+
+                </div>
               )}
             </Box>
           </>
@@ -493,6 +491,7 @@ export default function FormGrid() {
           <Grid item xs={10} className="centerContent">
             <Button
               variant="contained"
+              disabled={!isFormValid}
               onClick={sendJsonCustomerForm}
               sx={{ width: "70%", height: "100%" }}
             >
@@ -542,7 +541,12 @@ export default function FormGrid() {
         </Box>
       </Grid>
       <Grid item xs={4} className="bottomRow centerContent">
-        {activeStep < questions.length - 1 && (
+        {activeStep == 0 && (
+          <Button variant="contained" disabled={!isFormValid} onClick={handleNext}>
+            Starta
+          </Button>
+        )}
+        {(activeStep > 0) && (activeStep < questions.length - 1) && (
           <Button variant="contained" onClick={handleNext}>
             Nästa
           </Button>
