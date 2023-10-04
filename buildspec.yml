@@ -10,7 +10,9 @@ phases:
   build:
     commands:
       - echo Starting the build phase...
-      - gradle build
+      - cd server/
+      - gradle clean test
+      - gradle clean build
   post_build:
     commands:
       - echo Build phase completed.

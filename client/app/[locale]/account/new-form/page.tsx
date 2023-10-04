@@ -12,13 +12,16 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  Collapse,
+  Alert,
+  IconButton,
 } from "@mui/material";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import "../../../styles/forms.css"
-import "../../styles/form.css";
+import CloseIcon from "@mui/icons-material/Close";
 import Link from "next/link";
 import { API_BASE_URL, appRoutes } from "../../../constants";
 
@@ -128,6 +131,11 @@ export default function FormGrid() {
   const [customers, setCustomers] = useState([]);
   const [customerId, setCustomerId] = useState("");
 
+  const [generatedLink, setGeneratedLink] = useState<any>("");
+  const [copySuccess, setCopySuccess] = useState<any>("");
+
+  const [open, setOpen] = useState(false);
+
   // Day.js is a minimalist JavaScript library that parses, validates, manipulates, and displays dates and times for modern browsers with a largely Moment.js-compatible API.
   const dayjs = require("dayjs");
 
@@ -152,6 +160,18 @@ export default function FormGrid() {
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+
+  const handleCopyToClipboard = () => {
+    navigator.clipboard
+      .writeText(generatedLink)
+      .then(() => {
+        setCopySuccess(true); // Set copy success to true to display the success message
+        setTimeout(() => {
+          setCopySuccess(false); // Reset success message after a few seconds
+        }, 3000);
+      })
+      .catch((err) => console.error("Failed to copy: ", err));
   };
 
   const handleInputChange = (event: any) => {
@@ -183,6 +203,39 @@ export default function FormGrid() {
     setCreatedDate(event);
   };
 
+  const sendJsonCustomerForm = () => {
+    const requestBody = {
+      consultantId: consultantId,
+      customerId: customerId,
+      salesId: salesId,
+      date: createdDate.format("YYYY-MM-DD"),
+    };
+
+    fetch(`${API_BASE_URL}/customer-form`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestBody),
+    })
+      .then((response) => {
+        //const generatedHash = response.headers.get("X-Generated-Hash");
+        //console.log("Generated Hash from Header:", generatedHash);
+        console.log(response);
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Response from server:", data);
+
+        const link = "http://localhost:3000/customer-form/" + data.uuid;
+        setGeneratedLink(link);
+        setOpen(true);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
+
   const sendJsonForm = () => {
     const requestBody = {
       consultantId: consultantId,
@@ -195,6 +248,7 @@ export default function FormGrid() {
 
     fetch(`${API_BASE_URL}/save-form`, {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -212,6 +266,7 @@ export default function FormGrid() {
   useEffect(() => {
     fetch(`${API_BASE_URL}/consultants`, {
       method: "GET",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -219,7 +274,7 @@ export default function FormGrid() {
       .then((response) => response.json())
       .then((data) => {
         setConsultants(data);
-        console.log("Data received", data);
+        console.log("Consultant data received", data);
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -229,6 +284,7 @@ export default function FormGrid() {
   useEffect(() => {
     fetch(`${API_BASE_URL}/sales`, {
       method: "GET",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -236,7 +292,7 @@ export default function FormGrid() {
       .then((response) => response.json())
       .then((data) => {
         setSales(data);
-        console.log("Data received", data);
+        console.log("Sales data received", data);
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -246,6 +302,7 @@ export default function FormGrid() {
   useEffect(() => {
     fetch(`${API_BASE_URL}/customers`, {
       method: "GET",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -253,7 +310,7 @@ export default function FormGrid() {
       .then((response) => response.json())
       .then((data) => {
         setCustomers(data);
-        console.log("Data received", data);
+        console.log("Customer data received", data);
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -261,21 +318,27 @@ export default function FormGrid() {
   }, []);
 
   return (
-    <Grid container spacing={4}>
+    <Grid container spacing={2} className="outerGrid">
+      {/* First row */}
+      <Grid item xs={12} className="topRow centerContent">
+        <Typography variant="h4">Kvalitetsuppföljning</Typography>
+      </Grid>
 
+      {/* Second row */}
       <Grid
         item
         xs={false}
         sm={3}
         md={3}
         sx={{ flexDirection: "column" }}
+        className="middleRow"
       >
-        {/* <Typography variant="h6">Kapitel</Typography> */}
+        <Typography variant="h6">Kapitel</Typography>
         {questions.map((q, index) => {
           return (
             <div
               key={q.id}
-              // className="formChapterList"
+              className="formChapterList"
               onClick={() => setActiveStep(index)}
             >
               {index === activeStep ? (
@@ -299,9 +362,9 @@ export default function FormGrid() {
         xs={12}
         sm={9}
         md={6}
-        sx={{ flexDirection: "column" }}
+        sx={{ flexDirection: "column", overflowY: "auto" }}
+        className="middleRow"
       >
-        <Typography variant="h3">Kvalitetsuppföljning</Typography>
         {activeStep < questions.length ? (
           <>
             <Typography variant="h5" sx={{ textAlign: "center" }}>
@@ -418,42 +481,86 @@ export default function FormGrid() {
             })}
           </>
         )}
-        <Grid container spacing={4} >
-          <Grid item xs={2} className=" centerContent">
-            {activeStep != 0 && (
-              <Button variant="contained" onClick={handleBack}>
-                Tillbaka
-              </Button>
-            )}
+      </Grid>
+
+      <Grid
+        item
+        xs={false}
+        sm={false}
+        md={3}
+        className="middleRow centerContent"
+      >
+        <Grid container spacing={2} sx={{ flexDirection: "column" }}>
+          <Grid item xs={10} className="centerContent">
+            <Button
+              variant="contained"
+              onClick={sendJsonCustomerForm}
+              sx={{ width: "70%", height: "100%" }}
+            >
+              Generera länk
+            </Button>
           </Grid>
-          <Grid item xs={6} className=" centerContent">
-            <Box sx={{ width: "100%" }}>
-              <LinearProgressWithLabel
-                value={(activeStep / questions.length) * 100}
-              />
-            </Box>
-          </Grid>
-          <Grid item xs={2} className=" centerContent">
-            {activeStep < questions.length - 1 && (
-              <Button variant="contained" onClick={handleNext}>
-                Nästa
-              </Button>
-            )}
-            {activeStep == questions.length - 1 && (
-              <Button variant="contained" onClick={handleNext}>
-                Klar
-              </Button>
-            )}
-            {activeStep == questions.length && (
-              <Link href={appRoutes.ACCOUNT_PAGE}>
-                <Button variant="contained" onClick={sendJsonForm}>
-                  Skicka
-                </Button>
-              </Link>
-            )}
+          <Grid item xs={14}>
+            <Collapse in={open}>
+              <Alert
+                action={
+                  <IconButton
+                    aria-label="close"
+                    color="inherit"
+                    size="small"
+                    onClick={() => {
+                      setOpen(false);
+                    }}
+                  >
+                    <CloseIcon fontSize="inherit" />
+                  </IconButton>
+                }
+                severity="info"
+                sx={{ cursor: "pointer" }}
+              >
+                <p onClick={handleCopyToClipboard}> {generatedLink}</p>
+              </Alert>
+            </Collapse>
+            {copySuccess && <Alert severity="success">Kopierad!</Alert>}{" "}
           </Grid>
         </Grid>
       </Grid>
-    </Grid >
+
+      {/* Third row */}
+
+      <Grid item xs={4} className="bottomRow centerContent">
+        {activeStep != 0 && (
+          <Button variant="contained" onClick={handleBack}>
+            Tillbaka
+          </Button>
+        )}
+      </Grid>
+      <Grid item xs={4} className="bottomRow centerContent">
+        <Box sx={{ width: "100%" }}>
+          <LinearProgressWithLabel
+            value={(activeStep / questions.length) * 100}
+          />
+        </Box>
+      </Grid>
+      <Grid item xs={4} className="bottomRow centerContent">
+        {activeStep < questions.length - 1 && (
+          <Button variant="contained" onClick={handleNext}>
+            Nästa
+          </Button>
+        )}
+        {activeStep == questions.length - 1 && (
+          <Button variant="contained" onClick={handleNext}>
+            Klar
+          </Button>
+        )}
+        {activeStep == questions.length && (
+          <Link href={appRoutes.ACCOUNT_PAGE}>
+            <Button variant="contained" onClick={sendJsonForm}>
+              Skicka
+            </Button>
+          </Link>
+        )}
+      </Grid>
+    </Grid>
   );
 }

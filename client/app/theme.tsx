@@ -1,14 +1,20 @@
 "use client";
 
-import { createTheme, Theme } from "@mui/material/styles";
+import {
+  createTheme,
+  responsiveFontSizes,
+  Shadows,
+  Theme,
+} from "@mui/material/styles";
 
 let theme: Theme = createTheme({
+  shadows: Array(25).fill("none") as Shadows, // To remove box shadows
   palette: {
     primary: {
       main: "#353435",
     },
     secondary: {
-      main: '#ff329f',
+      main: "#ff329f",
     },
     background: {
       default: "white",
@@ -27,6 +33,19 @@ let theme: Theme = createTheme({
     MuiButton: {
       styleOverrides: {
         root: {
+          "&:hover": {
+            backgroundColor: "#ff329f",
+            color: "white",
+            border: "none",
+          },
+        },
+      },
+    },
+    MuiToggleButton: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "#4a4a4a",
+          color: "white",
           "&:hover": {
             backgroundColor: "#ff329f",
             color: "white",
