@@ -50,7 +50,6 @@ export default function FormDetails() {
           >
             <h2> {formData.customer_name} </h2>
             <h2> {formData.consultant_name} </h2>
-            <h2> {formData.manager_name} </h2>
             <h2> {formData.form_data.date} </h2>
           </Box>
           <div className="centerContent">
