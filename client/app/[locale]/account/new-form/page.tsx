@@ -492,13 +492,16 @@ export default function FormGrid() {
       >
         <Grid container spacing={2} sx={{ flexDirection: "column" }}>
           <Grid item xs={10} className="centerContent">
-            <Button
-              variant="contained"
-              onClick={isFormValid ? sendJsonCustomerForm : () => setOpenSnackbar(true)}
-              sx={{ width: "70%", height: "100%" }}
-            >
-              Generera länk
-            </Button>
+            <Alert severity='info'>
+              Om du istället önskar generera en länk till en kund, klickar du här:
+              <Button
+                variant="contained"
+                onClick={isFormValid ? sendJsonCustomerForm : () => setOpenSnackbar(true)}
+                sx={{ width: "90%", height: "30%", mt: "2px" }}
+              >
+                Generera länk
+              </Button>
+            </Alert>
           </Grid>
           <Grid item xs={14}>
             <Collapse in={open}>
