@@ -203,56 +203,59 @@ export default function CustomerFormGrid() {
           <Typography variant="h5">Kvalitetsuppföljning</Typography>
         </Toolbar>
       </AppBar>
-      <Grid container spacing={4} sx={{}}>
-        <Grid item xs={6} md={10} sx={{ margin: "0.5em" }}>
-          <div
-            style={{
-              margin: "10px",
+      <Grid container spacing={4} className="outerGrid">
+        {/* First row */}
+        <Grid item xs={10} className="topRow">
+          <TextField
+            id="outlined-disabled"
+            label="Konsult"
+            defaultValue={consultantName}
+            InputProps={{
+              readOnly: true,
             }}
-          >
-            <TextField
-              id="outlined-disabled"
-              label="Konsult"
-              defaultValue={consultantName}
-              InputProps={{
-                readOnly: true,
-              }}
-              margin="normal"
-              variant="filled"
-            />
-            <TextField
-              id="outlined-disabled"
-              label="Säljare"
-              defaultValue={salesName}
-              InputProps={{
-                readOnly: true,
-              }}
-              margin="normal"
-              variant="filled"
-            />
-            <TextField
-              id="outlined-disabled"
-              label="Kund"
-              defaultValue={customerName}
-              InputProps={{
-                readOnly: true,
-              }}
-              margin="normal"
-              variant="filled"
-            />
-            <TextField
-              id="outlined-disabled"
-              label="Datum"
-              defaultValue={createdDate}
-              InputProps={{
-                readOnly: true,
-              }}
-              margin="normal"
-              variant="filled"
-            />
-          </div>
+            margin="normal"
+            variant="filled"
+          />
+          <TextField
+            id="outlined-disabled"
+            label="Säljare"
+            defaultValue={salesName}
+            InputProps={{
+              readOnly: true,
+            }}
+            margin="normal"
+            variant="filled"
+          />
+          <TextField
+            id="outlined-disabled"
+            label="Kund"
+            defaultValue={customerName}
+            InputProps={{
+              readOnly: true,
+            }}
+            margin="normal"
+            variant="filled"
+          />
+          <TextField
+            id="outlined-disabled"
+            label="Datum"
+            defaultValue={createdDate}
+            InputProps={{
+              readOnly: true,
+            }}
+            margin="normal"
+            variant="filled"
+          />
         </Grid>
-        <Grid item xs={false} sm={3} md={2} sx={{ flexDirection: "column" }}>
+        {/* Second row */}
+        <Grid
+          item
+          xs={false}
+          sm={3}
+          md={3}
+          sx={{ flexDirection: "column" }}
+          className="middleRow"
+        >
           {questions.map((q, index) => {
             return (
               <div
@@ -281,10 +284,17 @@ export default function CustomerFormGrid() {
           })}
         </Grid>
 
-        <Grid item xs={12} sm={9} md={8} sx={{ flexDirection: "column" }}>
+        <Grid
+          item
+          xs={12}
+          sm={9}
+          md={6}
+          sx={{ flexDirection: "column", overflowY: "auto" }}
+          className="middleRow"
+        >
           {activeStep < questions.length ? (
             <>
-              <Typography variant="h6" sx={{ textAlign: "center" }}>
+              <Typography variant="h5" sx={{ textAlign: "center" }}>
                 {questions[activeStep].description}
               </Typography>
               <Box className="centerContent">
@@ -332,7 +342,7 @@ export default function CustomerFormGrid() {
                 return (
                   <>
                     <h4>{q.question}</h4>
-                    <Box sx={{ marginBottom: "2px" }}>
+                    <Box sx={{ marginBottom: "10px" }}>
                       {inputValues[index] ? (
                         <p>{inputValues[index]}</p>
                       ) : (
@@ -344,60 +354,40 @@ export default function CustomerFormGrid() {
               })}
             </>
           )}
-          <Grid container spacing={8} className=" centerContent">
-            <Grid
-              item
-              md={10}
-              sx={{ margin: "0", padding: "0", marginTop: "10em" }}
-              className=" centerContent"
-            >
-              <Grid item xs={2} className=" centerContent">
-                {activeStep != 0 && (
-                  <Button variant="contained" onClick={handleBack}>
-                    Tillbaka
-                  </Button>
-                )}
-              </Grid>
-              <Grid item xs={6} className=" centerContent">
-                <Box sx={{ width: "100%" }}>
-                  <LinearProgressWithLabel
-                    value={(activeStep / questions.length) * 100}
-                  />
-                </Box>
-              </Grid>
-              {activeStep < questions.length - 1 && (
-                <Button
-                  variant="contained"
-                  onClick={handleNext}
-                  sx={{ margin: "1em" }}
-                >
-                  Nästa
-                </Button>
-              )}
-              {activeStep == questions.length - 1 && (
-                <Button
-                  variant="contained"
-                  onClick={handleNext}
-                  sx={{ margin: "1em" }}
-                >
-                  Klar
-                </Button>
-              )}
-              {activeStep == questions.length && (
-                <Button
-                  variant="contained"
-                  onClick={sendJsonCustomerFormResponses}
-                  sx={{ margin: "1em" }}
-                >
-                  Skicka
-                </Button>
-              )}
-              <SuccessDialog
-                open={dialogOpen}
-                handleClose={handleCloseDialog}
-              />
-            </Grid>
-          </Grid>
+        </Grid>
+
+        {/* Third row */}
+        <Grid item xs={4} className="bottomRow centerContent">
+          {activeStep != 0 && (
+            <Button variant="contained" onClick={handleBack}>
+              Tillbaka
+            </Button>
+          )}
+        </Grid>
+        <Grid item xs={4} className="bottomRow centerContent">
+          <Box sx={{ width: "100%" }}>
+            <LinearProgressWithLabel
+              value={(activeStep / questions.length) * 100}
+            />
+          </Box>
+        </Grid>
+        <Grid item xs={4} className="bottomRow centerContent">
+          {activeStep < questions.length - 1 && (
+            <Button variant="contained" onClick={handleNext}>
+              Nästa
+            </Button>
+          )}
+          {activeStep == questions.length - 1 && (
+            <Button variant="contained" onClick={handleNext}>
+              Klar
+            </Button>
+          )}
+          {activeStep == questions.length && (
+            <Button variant="contained" onClick={sendJsonCustomerFormResponses}>
+              Skicka
+            </Button>
+          )}
+          <SuccessDialog open={dialogOpen} handleClose={handleCloseDialog} />
         </Grid>
       </Grid>
     </>

@@ -219,9 +219,9 @@ export default function FormGrid() {
       body: JSON.stringify(requestBody),
     })
       .then((response) => {
-        const generatedHash = response.headers.get("X-Generated-Hash");
-        console.log("Generated Hash from Header:", generatedHash);
-
+        //const generatedHash = response.headers.get("X-Generated-Hash");
+        //console.log("Generated Hash from Header:", generatedHash);
+        console.log(response);
         return response.json();
       })
       .then((data) => {
@@ -274,7 +274,7 @@ export default function FormGrid() {
       .then((response) => response.json())
       .then((data) => {
         setConsultants(data);
-        console.log("Data received", data);
+        console.log("Consultant data received", data);
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -292,7 +292,7 @@ export default function FormGrid() {
       .then((response) => response.json())
       .then((data) => {
         setSales(data);
-        console.log("Data received", data);
+        console.log("Sales data received", data);
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -310,7 +310,7 @@ export default function FormGrid() {
       .then((response) => response.json())
       .then((data) => {
         setCustomers(data);
-        console.log("Data received", data);
+        console.log("Customer data received", data);
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -318,49 +318,56 @@ export default function FormGrid() {
   }, []);
 
   return (
-    <Grid container spacing={4} sx={{ marginTop: "1em" }}>
-      <Grid item xs={false} sm={3} md={3} sx={{ flexDirection: "column" }}>
-        {/* <Typography variant="h6">Kapitel</Typography> */}
+    <Grid container spacing={2} className="outerGrid">
+      {/* First row */}
+      <Grid item xs={12} className="topRow centerContent">
+        <Typography variant="h4">Kvalitetsuppföljning</Typography>
+      </Grid>
+
+      {/* Second row */}
+      <Grid
+        item
+        xs={false}
+        sm={3}
+        md={3}
+        sx={{ flexDirection: "column" }}
+        className="middleRow"
+      >
+        <Typography variant="h6">Kapitel</Typography>
         {questions.map((q, index) => {
           return (
             <div
-              style={{
-                padding: "0.1em",
-                marginLeft: "9em",
-              }}
+              key={q.id}
+              className="formChapterList"
+              onClick={() => setActiveStep(index)}
             >
-              <div
-                key={q.id}
-                className="formChapterList"
-                onClick={() => setActiveStep(index)}
-              >
-                {index === activeStep ? (
-                  <Typography
-                    variant="overline"
-                    sx={{
-                      color: "#ff329f",
-                    }}
-                  >
-                    {q.question}
-                  </Typography>
-                ) : (
-                  <Typography variant="overline">{q.question}</Typography>
-                )}
-              </div>
+              {index === activeStep ? (
+                <Typography
+                  variant="overline"
+                  sx={{
+                    color: "#ff329f",
+                  }}
+                >
+                  {q.question}
+                </Typography>
+              ) : (
+                <Typography variant="overline">{q.question}</Typography>
+              )}
             </div>
           );
         })}
       </Grid>
-      <Grid item xs={12} sm={9} md={6} sx={{ flexDirection: "column" }}>
-        <Typography variant="h3" className="centerContent">
-          Kvalitetsuppföljning
-        </Typography>
+      <Grid
+        item
+        xs={12}
+        sm={9}
+        md={6}
+        sx={{ flexDirection: "column", overflowY: "auto" }}
+        className="middleRow"
+      >
         {activeStep < questions.length ? (
           <>
-            <Typography
-              variant="h5"
-              sx={{ textAlign: "center", margin: "1em" }}
-            >
+            <Typography variant="h5" sx={{ textAlign: "center" }}>
               {questions[activeStep].question}
             </Typography>
             <Typography variant="subtitle1" sx={{ textAlign: "center" }}>
@@ -474,76 +481,85 @@ export default function FormGrid() {
             })}
           </>
         )}
-        <Grid container spacing={4} className=" centerContent">
-          <Grid item xs={2} className=" centerContent">
-            {activeStep != 0 && (
-              <Button variant="contained" onClick={handleBack}>
-                Tillbaka
-              </Button>
-            )}
+      </Grid>
+
+      <Grid
+        item
+        xs={false}
+        sm={false}
+        md={3}
+        className="middleRow centerContent"
+      >
+        <Grid container spacing={2} sx={{ flexDirection: "column" }}>
+          <Grid item xs={10} className="centerContent">
+            <Button
+              variant="contained"
+              onClick={sendJsonCustomerForm}
+              sx={{ width: "70%", height: "100%" }}
+            >
+              Generera länk
+            </Button>
           </Grid>
-          <Grid item xs={6} className=" centerContent">
-            <Box sx={{ width: "100%" }}>
-              <LinearProgressWithLabel
-                value={(activeStep / questions.length) * 100}
-              />
-            </Box>
-          </Grid>
-          <Grid item xs={2} className=" centerContent">
-            {activeStep < questions.length - 1 && (
-              <Button variant="contained" onClick={handleNext}>
-                Nästa
-              </Button>
-            )}
-            {activeStep == questions.length - 1 && (
-              <Button variant="contained" onClick={handleNext}>
-                Klar
-              </Button>
-            )}
-            {activeStep == questions.length && (
-              <Link href={appRoutes.ACCOUNT_PAGE}>
-                <Button variant="contained" onClick={sendJsonForm}>
-                  Skicka
-                </Button>
-              </Link>
-            )}
+          <Grid item xs={14}>
+            <Collapse in={open}>
+              <Alert
+                action={
+                  <IconButton
+                    aria-label="close"
+                    color="inherit"
+                    size="small"
+                    onClick={() => {
+                      setOpen(false);
+                    }}
+                  >
+                    <CloseIcon fontSize="inherit" />
+                  </IconButton>
+                }
+                severity="info"
+                sx={{ cursor: "pointer" }}
+              >
+                <p onClick={handleCopyToClipboard}> {generatedLink}</p>
+              </Alert>
+            </Collapse>
+            {copySuccess && <Alert severity="success">Kopierad!</Alert>}{" "}
           </Grid>
         </Grid>
       </Grid>
-      <Grid
-        item
-        md={8}
-        sx={{ flexDirection: "row", display: "flex", marginLeft: "9em" }}
-      >
-        <Button
-          variant="contained"
-          onClick={sendJsonCustomerForm}
-          sx={{ width: "15%", height: "100%" }}
-        >
-          Generera länk
-        </Button>
-        <Collapse in={open}>
-          <Alert
-            action={
-              <IconButton
-                aria-label="close"
-                color="inherit"
-                size="small"
-                onClick={() => {
-                  setOpen(false);
-                }}
-              >
-                <CloseIcon fontSize="inherit" />
-              </IconButton>
-            }
-            severity="info"
-            sx={{ cursor: "pointer" }}
-            onClick={handleCopyToClipboard}
-          >
-            {generatedLink}
-          </Alert>
-        </Collapse>
-        {copySuccess && <Alert severity="success">Kopierad!</Alert>}
+
+      {/* Third row */}
+
+      <Grid item xs={4} className="bottomRow centerContent">
+        {activeStep != 0 && (
+          <Button variant="contained" onClick={handleBack}>
+            Tillbaka
+          </Button>
+        )}
+      </Grid>
+      <Grid item xs={4} className="bottomRow centerContent">
+        <Box sx={{ width: "100%" }}>
+          <LinearProgressWithLabel
+            value={(activeStep / questions.length) * 100}
+          />
+        </Box>
+      </Grid>
+      <Grid item xs={4} className="bottomRow centerContent">
+        {activeStep < questions.length - 1 && (
+          <Button variant="contained" onClick={handleNext}>
+            Nästa
+          </Button>
+        )}
+        {activeStep == questions.length - 1 && (
+          <Button variant="contained" onClick={handleNext}>
+            Klar
+          </Button>
+        )}
+        {activeStep == questions.length && (
+          <Link href={appRoutes.ACCOUNT_PAGE}>
+            <Button variant="contained" onClick={sendJsonForm}>
+              Skicka
+            </Button>
+          </Link>
+        )}
       </Grid>
     </Grid>
   );
