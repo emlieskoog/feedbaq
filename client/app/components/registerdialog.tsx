@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react';
-import { Grid, Typography, Avatar, Button, Box, Dialog, TextField, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
+import { Grid, Typography, Avatar, Button, Box, Dialog, TextField, DialogActions, DialogContent, DialogContentText, DialogTitle, Snackbar, Alert } from "@mui/material";
 import SendIcon from '@mui/icons-material/Send';
 import { API_BASE_URL } from '../constants';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
@@ -14,6 +14,7 @@ export default function RegisterDialog(props: any) {
     const t = useTranslations('Login');
 
     const [role, setRole] = React.useState('SALES');
+    const [openSnackbar, setOpenSnackbar] = React.useState(false);
 
     const handleRoleChange = (event: any) => {
         setRole(event.target.value as string);
@@ -34,12 +35,16 @@ export default function RegisterDialog(props: any) {
             body: JSON.stringify(requestBody),
         })
             .then(async (response) => {
-                if (response.status === 400)
-                    console.error('Det finns redan en användare med den emailen :-( ');
-                else if (!response.ok)
+                if (response.status === 400) {
+                    console.error('Email is already in use.');
+                    setOpenSnackbar(true);
+                } else if (!response.ok) {
                     console.error('HTTP error! Status:', response.status);
-                else
-                    console.log('Woho du är nu registrerad :-D');
+                }
+                else {
+                    console.log('User registered successfully!');
+                    onClose();
+                }
             });
     }
 
@@ -117,6 +122,11 @@ export default function RegisterDialog(props: any) {
                     </DialogActions>
                 </DialogContent>
             </form>
+            <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={() => setOpenSnackbar(false)}>
+                <Alert severity='info'> 
+                    Det existerar redan ett konto med angiven mailadress.
+                </Alert>
+            </Snackbar>
         </Dialog >
     );
 }

@@ -72,7 +72,6 @@ export default function LandingPage() {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         setProfileName(data.name);
         setRole(data.role);
         setFormData(data.forms);
@@ -86,43 +85,50 @@ export default function LandingPage() {
 
   }, []);
 
-  return (
-    <Grid container component="main" sx={{ overflowX: 'auto ' }}>
-      {/* Profile section */}
-      <Grid container sx={{ height: '30vh', mt: '40px' }}>
-        {/* First column (left) */}
-        <Grid
-          item
-          xs={6}
-          sm={6}
-          md={6}
-          lg={6}
-          sx={{
-            display: 'flex',
-            justifyContent: 'flex',
-            alignItems: 'center',
-          }}
-        >
-          <Avatar
-            src={profilePicture[role]}
-            sx={{ width: 90, height: 90 }}
-          />
-          <Box
+  if (isLoading) {
+    return (
+      <Box sx={{height: '100vh', minWidth: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+        <CircularProgress/>
+      </Box>
+    );
+  } else {
+    return (
+      <Grid container component="main" sx={{ overflowX: 'auto', padding: '0% 10%'}}> {/* Overflow X? */}
+        {/* Profile section */}
+        <Grid container sx={{ height: '30vh', mt: '40px' }}>
+          {/* First column (left) */}
+          <Grid
+            item
+            xs={6}
+            sm={6}
+            md={6}
+            lg={6}
             sx={{
-              mx: 2,
               display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'left',
+              justifyContent: 'center',
+              alignItems: 'center',
             }}
           >
-            <Typography variant="h5" component="div">
-              {profileName}
-            </Typography>
-            <Typography variant="caption" component="div">
-              {roleMapping[role]}
-            </Typography>
-          </Box>
-        </Grid>
+            <Avatar
+              src={profilePicture[role]}
+              sx={{ width: 90, height: 90 }}
+            />
+            <Box
+              sx={{
+                mx: 2,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'left',
+              }}
+            >
+              <Typography variant="h5" component="div">
+                {profileName}
+              </Typography>
+              <Typography variant="caption" component="div">
+                {roleMapping[role]}
+              </Typography>
+            </Box>
+          </Grid>
         {/* Second column (right) */}
         <Grid
           item
@@ -132,7 +138,7 @@ export default function LandingPage() {
           lg={6}
           sx={{
             display: 'flex',
-            justifyContent: 'flex-end', // Align content to the right
+            justifyContent: 'center', // Align content to the right
             alignItems: 'center', // Center content vertically
           }}
         >
@@ -146,10 +152,7 @@ export default function LandingPage() {
 
       {/* Form section */}
       <Grid container>
-        <Grid item xs={12} sm={12} md={12} lg={12} >
-          {isLoading ? (
-            <CircularProgress />
-          ) : (
+        <Grid item xs={12} sm={12} md={12} lg={12}>
             <>
               {role === "SALES" && (
                 <div>
@@ -194,10 +197,11 @@ export default function LandingPage() {
                 />
               )}
             </>
-          )}
+          </Grid>
         </Grid>
       </Grid>
-    </Grid>
+    );
+  }
 
-  );
+  
 }
