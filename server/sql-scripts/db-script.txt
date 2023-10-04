@@ -61,7 +61,6 @@ CREATE TABLE customer_form_metadata (
 
 CREATE TABLE customer_form_responses (
     uuid VARCHAR(200) UNIQUE,
-    q0 VARCHAR(200),
     q1 VARCHAR(200),
     q2 VARCHAR(200),
     q3 VARCHAR(200),
@@ -71,11 +70,7 @@ CREATE TABLE customer_form_responses (
     q7 VARCHAR(200),
     q8 VARCHAR(200),
     q9 VARCHAR(200),
-    q10 VARCHAR(200),
-    q11 VARCHAR(200),
-    q12 VARCHAR(200),
-    q13 VARCHAR(200), 
-    FOREIGN KEY (uuid) REFERENCES customer_form_responses(uuid) ON DELETE CASCADE
+    FOREIGN KEY (uuid) REFERENCES customer_form_metadata(uuid) ON DELETE CASCADE
 );
 
 
