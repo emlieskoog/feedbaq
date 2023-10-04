@@ -14,12 +14,21 @@ import {
   Toolbar,
   AppBar,
 } from "@mui/material";
-import "../../styles/form.css";
-import { API_BASE_URL } from "../../constants";
+import "../../../styles/form.css";
+import { API_BASE_URL } from "../../../constants";
 import { useParams } from "next/navigation";
 import SuccessDialog from "./successdialog";
+import HeaderCustomerForm from "@/app/components/header-customerform";
+import { useLocale } from "next-intl";
+import { usePathname, useRouter } from "next-intl/client";
 
 export default function CustomerFormGrid() {
+  const router = useRouter();
+  const currentPathname = usePathname();
+  const locale = useLocale();
+
+  console.log(locale);
+
   const questions = [
     {
       id: "1",
@@ -193,7 +202,7 @@ export default function CustomerFormGrid() {
 
   return (
     <>
-      <AppBar position="relative">
+      {/* <AppBar position="relative">
         <Toolbar>
           <img
             src="/HiQ_logo_white.png"
@@ -201,8 +210,19 @@ export default function CustomerFormGrid() {
             style={{ height: "35px", marginLeft: "15px", marginRight: "15px" }}
           ></img>
           <Typography variant="h5">Kvalitetsuppföljning</Typography>
+          <LocaleSwitcher
+            router={router}
+            currentPathname={currentPathname}
+            locale={locale}
+          />
         </Toolbar>
-      </AppBar>
+      </AppBar> */}
+
+      <HeaderCustomerForm
+        router={router}
+        currentPathname={currentPathname}
+        locale={locale}
+      />
       <Grid container spacing={4} className="outerGrid">
         {/* First row */}
         <Grid item xs={10} className="topRow">
