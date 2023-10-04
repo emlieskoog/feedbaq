@@ -12,7 +12,7 @@ export default function Header(props: any) {
   const t = useTranslations('Account');
 
   return (
-    <AppBar position="relative" >
+    <AppBar position="relative" elevation={10}>
       <Toolbar>
         <TemporaryDrawer />
         <img

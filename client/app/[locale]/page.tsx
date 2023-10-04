@@ -57,7 +57,7 @@ export default function LoginPage() {
         item
         xs={false}
         sm={false}
-        md={7}
+        md={5}
         sx={{
           backgroundImage: 'url(/feedbaqlogin-vertical.png)',
           backgroundRepeat: 'no-repeat',
@@ -65,7 +65,7 @@ export default function LoginPage() {
           backgroundPosition: 'center',
         }}
       />
-      <Grid item xs={12} sm={12} md={5} component={Paper} elevation={6}>
+      <Grid item xs={12} sm={12} md={7} component={Paper} elevation={10} square>
         <Box
           sx={{
             mx: 20,
@@ -121,9 +121,9 @@ export default function LoginPage() {
         </Box>
       </Grid>
       <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={() => setOpenSnackbar(false)}>
-          <Alert severity="info">
-            Fel mailadress eller lösenord, vänligen försök igen.
-          </Alert>
+        <Alert severity="info">
+          Fel mailadress eller lösenord, vänligen försök igen.
+        </Alert>
       </Snackbar>
     </Grid >
   );
