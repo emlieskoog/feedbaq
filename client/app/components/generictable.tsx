@@ -8,14 +8,19 @@ import {
   TableRow,
 } from "@mui/material";
 import Link from "next/link";
+import { useTranslations } from 'next-intl';
 
 export default function GenericTable(props: any) {
+  const t = useTranslations('Account');
+
   const { formData, selectedOption } = props;
 
   const tableHeadings =
     selectedOption === "SALES"
-      ? ["Konsult", "Datum", ""]
-      : ["Företag", "Datum", ""];
+
+
+      ? [t('tableHeadingConsultant'), t('tableHeadingDate'), ""]
+      : [t('tableHeadingCompany'), t('tableHeadingDate'), ""];
 
   const handleOpenClick = (event: any, formId: number) => {
     // Prevent the default behavior of the link
@@ -54,7 +59,7 @@ export default function GenericTable(props: any) {
                   href="/account/formdetails"
                   onClick={(event) => handleOpenClick(event, form.id)}
                 >
-                  Öppna
+                  {t('tableOpenButton')}
                 </Link>
               </TableCell>
             </TableRow>

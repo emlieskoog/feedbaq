@@ -1,0 +1,57 @@
+{
+    "Login":{
+        "email":"Email",
+        "password":"Password",
+        "login": "Log in",
+        "registerNewButton": "Register new user",
+        "registerTitle": "Register new user",
+        "name": "Name",
+        "role": "Role",
+        "sales": "Salesperson",
+        "manager": "Manager",
+        "consultant": "Consultant",
+        "cancelButton":"Cancel",
+        "registerButton": "Register"
+    },
+    "Account":{
+        "qualityHeader": "Quality Follow-up",
+        "localeSwitcherLabel": "Change Language",
+
+        "sales": "Salesperson",
+        "manager": "Manager",
+        "consultant": "Consultant",
+        "business": "Business",
+        "newQualityForm": "Create new quality form",
+        "sortControl": "Sort by:",
+        "myConsultants": "My Consultants",
+
+        "profileDrawer": "Profile",
+        "settingsDrawer": "Settings",
+        "signOutDrawer": "Sign out",
+
+        "tableHeadingConsultant": "Consultant",
+        "tableHeadingDate": "Date",
+        "tableHeadingCompany": "Company",
+        "tableOpenButton": "Open",
+
+        "locale": {
+            "en": "English",
+            "sv": "Svenska"
+          }
+        },
+
+        "Settings":{
+            "settingsHeading": "Settings",
+            "nameField": "Name",
+            "roleInput": "Role",
+            "salesSelect": "Salesperson",
+            "managerSelect": "Manager",
+            "consultantSelect": "Consultant",
+            "passwordField": "Password",
+            "passwordConfirmField": "Confirm your new password",
+            "regretButton": "Reset changes",
+            "saveButton": "Save changes",
+            "avatarDialogHeader": "Choose your new avatar :D"
+
+        }
+}

@@ -1,9 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Block } from "@mui/icons-material";
 import { Box, CircularProgress } from "@mui/material";
-import "../../styles/form.css";
+import "../../../styles/form.css";
 
 export default function FormDetails() {
   const [formData, setFormData] = useState<any>([]);

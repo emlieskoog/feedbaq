@@ -1,8 +1,7 @@
 "use client";
 
-import { createTheme, responsiveFontSizes, Theme } from "@mui/material/styles";
+import { createTheme, Theme } from "@mui/material/styles";
 
-// Define your custom theme
 let theme: Theme = createTheme({
   palette: {
     primary: {

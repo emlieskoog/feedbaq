@@ -3,13 +3,18 @@
 import React, { useState } from "react";
 import { Button, Avatar, TextField, Link, Paper, Box, Grid, Typography } from "@mui/material";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import RegisterDialog from './registerdialog';
+import RegisterDialog from '../components/registerdialog';
 import { API_BASE_URL } from '../constants';
-import { useRouter } from "next/navigation";
+import { useTranslations, useLocale } from 'next-intl';
+import LocaleSwitcher from "../components/localeswitcher";
+import { usePathname, useRouter } from 'next-intl/client';
 
 export default function LoginPage() {
 
+  const t = useTranslations('Login');
   const router = useRouter();
+  const currentPathname = usePathname();
+  const locale = useLocale();
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
@@ -41,6 +46,7 @@ export default function LoginPage() {
           console.error('HTTP error! Status:', response.status);
         else {
           console.log('Woho du angav rätt mail och lösenord :-D');
+
           router.push('/account');
         }
       });
@@ -54,7 +60,7 @@ export default function LoginPage() {
         sm={false}
         md={7}
         sx={{
-          backgroundImage: 'url(feedbaqlogin-vertical.png)',
+          backgroundImage: 'url(/feedbaqlogin-vertical.png)',
           backgroundRepeat: 'no-repeat',
           backgroundColor: 'white',
           backgroundPosition: 'center',
@@ -63,7 +69,7 @@ export default function LoginPage() {
       <Grid item xs={12} sm={12} md={5} component={Paper} elevation={6}>
         <Box
           sx={{
-            mx: 4,
+            mx: 20,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -81,7 +87,7 @@ export default function LoginPage() {
               required
               fullWidth
               id="email"
-              label="Email"
+              label={t('email')}
               name="email"
               autoComplete="email"
               autoFocus
@@ -91,7 +97,7 @@ export default function LoginPage() {
               required
               fullWidth
               name="password"
-              label="Lösenord"
+              label={t('password')}
               type="password"
               id="password"
               autoComplete="current-password"
@@ -102,13 +108,16 @@ export default function LoginPage() {
               variant="contained"
               sx={{ mt: 5, mb: 2 }}
             >
-              Logga in
+              {t('login')}
             </Button>
           </form>
-          <Link href="#" variant="body2" onClick={handleOpenDialog}>
-            {"Registrera dig här"}
+
+          <Link href="#" onClick={handleOpenDialog} sx={{ mb: '20px' }}>
+            {t('registerNewButton')}
           </Link>
-          <Typography variant="body2" sx={{ color: '#ff329f', mt: '100px' }}>Powered by WALE  &trade;</Typography>
+          <LocaleSwitcher router={router} currentPathname={currentPathname} locale={locale} />
+
+          <Typography variant="body2" sx={{ color: '#ff329f', mt: '30px' }}>Powered by WALE  &trade;</Typography>
           {isDialogOpen && <RegisterDialog isOpen={isDialogOpen} onClose={() => setIsDialogOpen(false)} />}
         </Box>
       </Grid>

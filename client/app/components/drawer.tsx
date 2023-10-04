@@ -16,11 +16,15 @@ import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { useTranslations } from 'next-intl';
 
 
 type Anchor = 'left';
 
 export default function TemporaryDrawer() {
+
+    const t = useTranslations('Account');
+
     const [state, setState] = React.useState({
         left: false,
     });
@@ -63,7 +67,7 @@ export default function TemporaryDrawer() {
                         <ListItemIcon>
                             <AccountCircleIcon fontSize="medium" style={{ color: '#ff329f' }} />
                         </ListItemIcon>
-                        <ListItemText><Typography variant="h5">Profil</Typography></ListItemText>
+                        <ListItemText><Typography variant="h5">{t('profileDrawer')}</Typography></ListItemText>
                     </ListItem>
                 </Link>
                 <Link href="/account/settings" variant="body2" style={{ textDecoration: "none" }}>
@@ -71,7 +75,7 @@ export default function TemporaryDrawer() {
                         <ListItemIcon>
                             <Settings fontSize="medium" />
                         </ListItemIcon>
-                        <ListItemText><Typography variant="h5">Inställningar</Typography></ListItemText>
+                        <ListItemText><Typography variant="h5">{t('settingsDrawer')}</Typography></ListItemText>
                     </ListItem>
                 </Link>
                 <Divider />
@@ -80,7 +84,7 @@ export default function TemporaryDrawer() {
                         <ListItemIcon>
                             <Logout fontSize="medium" />
                         </ListItemIcon>
-                        <ListItemText><Typography variant="h5">Logga ut</Typography></ListItemText>
+                        <ListItemText><Typography variant="h5">{t('signOutDrawer')}</Typography></ListItemText>
                     </ListItem>
                 </Link>
             </List>

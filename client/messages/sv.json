@@ -1,0 +1,57 @@
+{
+    "Login":{
+        "email":"Email",
+        "password":"Lösenord",
+        "login": "Logga in",
+        "registerNewButton": "Registrera ny användare",
+        "registerTitle": "Registrera ny användare",
+        "name": "Namn",
+        "role": "Roll",
+        "sales": "Säljare",
+        "manager": "Konsultchef",
+        "consultant": "Konsult",
+        "cancelButton":"Avbryt",
+        "registerButton": "Registrera"
+        },
+
+        "Account":{
+            "qualityHeader": "Kvalitetsuppföljning",
+            "localeSwitcherLabel": "Change Language",
+
+            "sales": "Säljare",
+            "manager": "Konsultchef",
+            "consultant": "Konsult",
+            "business": "Företag",
+            "newQualityForm": "Skapa ny kvalitetsuppföljning",
+            "sortControl": "Sortera på:",
+            "myConsultants": "Mina Konsulter",
+
+            "profileDrawer": "Profil",
+            "settingsDrawer": "Inställningar",
+            "signOutDrawer": "Logga ut",
+
+            "tableHeadingConsultant": "Konsult",
+            "tableHeadingDate": "Datum",
+            "tableHeadingCompany": "Företag",
+            "tableOpenButton": "Öppna",
+
+            "locale": {
+                "en": "English",
+                "sv": "Svenska"
+              }
+            },
+
+            "Settings":{
+                "settingsHeading": "Inställningar",
+                "nameField": "Namn",
+                "roleInput": "Roll",
+                "salesSelect": "Säljare",
+                "managerSelect": "Konsultchef",
+                "consultantSelect": "Konsult",
+                "passwordField": "Lösenord",
+                "passwordConfirmField": "Bekräfta ditt nya lösenord",
+                "regretButton": "Ångra ändringar",
+                "saveButton": "Spara ändringar",
+                "avatarDialogHeader": "Välj din nya avatar :D"
+            }
+    }

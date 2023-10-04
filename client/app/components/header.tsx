@@ -2,24 +2,14 @@ import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
-import {
-  Tooltip,
-  Menu,
-  MenuItem,
-  Divider,
-  ListItemIcon,
-  Fade,
-  Link,
-} from "@mui/material";
-import Settings from '@mui/icons-material/Settings';
-import Logout from '@mui/icons-material/Logout';
-import ListItemText from '@mui/material/ListItemText';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import TemporaryDrawer from "./drawer";
+import { useTranslations } from 'next-intl';
+import LocaleSwitcher from "./localeswitcher";
 
-export default function Header() {
+export default function Header(props: any) {
+  const { router, currentPathname, locale } = props;
+
+  const t = useTranslations('Account');
 
   return (
     <AppBar position="relative" >
@@ -31,9 +21,9 @@ export default function Header() {
           style={{ height: "35px", marginLeft: "15px", marginRight: "15px" }}
         ></img>
         <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
-          Kvalitetsuppföljning
+          {t('qualityHeader')}
         </Typography>
-
+        <LocaleSwitcher router={router} currentPathname={currentPathname} locale={locale} />
       </Toolbar>
     </AppBar >
   );

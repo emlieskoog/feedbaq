@@ -1,6 +1,5 @@
 'use client';
 import React, { useEffect, useState } from "react";
-import '@fontsource/inter';
 import {
     Box,
     Typography,
@@ -8,18 +7,17 @@ import {
     Button,
     AvatarGroup,
     Grid,
-    Paper,
     TextField,
     FormControl,
     InputLabel,
     Select,
     MenuItem
 } from "@mui/material";
-import "../../styles/form.css";
 import IconButton from '@mui/material/IconButton';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import AvatarDialog from "./avatardialog";
-import { API_BASE_URL, appRoutes } from "../../constants";
+import { API_BASE_URL, appRoutes } from "../../../constants";
+import { useTranslations } from 'next-intl';
 
 
 const initialFormData = {
@@ -30,6 +28,9 @@ const initialFormData = {
 };
 
 export default function Settings() {
+
+    const t = useTranslations('Settings');
+
     const [isDialogOpen, setOpenDialog] = useState(false);
     const [formData, setFormData] = useState(initialFormData);
     const [isPasswordChanged, setIsPasswordChanged] = useState(false);
@@ -102,7 +103,7 @@ export default function Settings() {
                     flexDirection: 'column',
                     alignItems: 'center',
                 }}>
-                    <Avatar src={'consultant_avatar.png'} sx={{ width: 90, height: 90 }} />
+                    <Avatar src={"/consultant_avatar.png"} sx={{ width: 90, height: 90 }} />
                     <IconButton sx={{ position: 'absolute', top: 0, right: 0 }} onClick={handleEditPictureClick}>
                         <EditRoundedIcon />
                     </IconButton>
@@ -118,7 +119,7 @@ export default function Settings() {
                     }}
                 >
                     <Typography component="h3" variant="h4">
-                        Inställningar
+                        {t('settingsHeading')}
                     </Typography>
                     <form onSubmit={handleSubmit}>
                         <TextField
@@ -126,14 +127,14 @@ export default function Settings() {
                             variant="standard"
                             fullWidth
                             id="name"
-                            label="Namn"
+                            label={t('nameField')}
                             name="name"
                             autoFocus
                             value={profileName}
                             onChange={handleInputChange}
                             sx={{ mb: 2 }}
                         />
-                        <InputLabel shrink>Roll</InputLabel>
+                        <InputLabel shrink>{t('roleInput')}</InputLabel>
                         <FormControl fullWidth variant="standard" >
                             <Select
                                 labelId="role-select"
@@ -142,9 +143,9 @@ export default function Settings() {
                                 value={role}
                                 onChange={handleRoleChange}
                             >
-                                <MenuItem value="SALES">Säljare</MenuItem>
-                                <MenuItem value="MANAGER">Konsultchef</MenuItem>
-                                <MenuItem value="CONSULTANT">Konsult</MenuItem>
+                                <MenuItem value="SALES">{t('salesSelect')}</MenuItem>
+                                <MenuItem value="MANAGER">{t('managerSelect')}</MenuItem>
+                                <MenuItem value="CONSULTANT">{t('consultantSelect')}</MenuItem>
                             </Select>
                         </FormControl>
                         <TextField
@@ -152,7 +153,7 @@ export default function Settings() {
                             variant="standard"
                             fullWidth
                             id="password"
-                            label="Lösenord"
+                            label={t('passwordField')}
                             name="password"
                             type="password"
                             value={formData.password}
@@ -163,7 +164,7 @@ export default function Settings() {
                             variant="standard"
                             fullWidth
                             id="passwordConfirm"
-                            label="Bekräfta ditt nya lösenord"
+                            label={t('passwordConfirmField')}
                             name="passwordConfirm"
                             type="password"
                             value={formData.passwordConfirm}
@@ -171,8 +172,8 @@ export default function Settings() {
                             disabled={!isPasswordChanged}
                             sx={{ mb: 2 }}
                         />
-                        <Button variant="outlined" color="primary" sx={{ marginRight: 2 }}>Ångra ändringar</Button>
-                        <Button type="submit" variant="contained">Spara ändringar</Button>
+                        <Button variant="outlined" color="primary" sx={{ marginRight: 2 }}>{t('regretButton')}</Button>
+                        <Button type="submit" variant="contained">{t('saveButton')}</Button>
                     </form>
                 </Box>
             </Grid>

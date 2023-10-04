@@ -1,0 +1,11 @@
+.switchContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .flagIcon {
+    width: 18px;
+    height: 18px;
+  }
+  

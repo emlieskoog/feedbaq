@@ -10,25 +10,29 @@ import {
   Box,
 } from "@mui/material";
 import { FormControl, MenuItem, Select } from "@mui/material";
-import GenericAccordion from "../components/genericaccordion";
-import GenericTable from "../components/generictable";
-import "../styles/landingpage.css";
-import { API_BASE_URL, appRoutes } from "../constants";
-import "../styles/form.css";
+import GenericAccordion from "../../components/genericaccordion";
+import GenericTable from "../../components/generictable";
+import "../../styles/form.css"
+import "../../styles/landingpage.css"
+import { API_BASE_URL, appRoutes } from "../../constants";
+import { useTranslations } from 'next-intl';
+
 export default function LandingPage() {
+
+  const t = useTranslations('Account');
 
   // Define the role mapping
   const roleMapping: Record<string, string> = {
-    SALES: "Säljare",
-    MANAGER: "Konsultchef",
-    CONSULTANT: "Konsult",
+    SALES: t('sales'),
+    MANAGER: t('manager'),
+    CONSULTANT: t('consultant'),
   };
 
   //Profile picture for different type of users
   const profilePicture: Record<string, string> = {
-    SALES: "sales_avatar.png",
-    MANAGER: "manager_avatar.png",
-    CONSULTANT: "consultant_avatar.png",
+    SALES: "/sales_avatar.png",
+    MANAGER: "/manager_avatar.png",
+    CONSULTANT: "/consultant_avatar.png",
   };
 
   // Load data to form
@@ -43,13 +47,13 @@ export default function LandingPage() {
   const sortingOptions = [
     {
       type: "business",
-      menuItem: "Företag",
+      menuItem: t('business'),
       accordianType: "customer_name",
       accordianRole: "SALES",
     },
     {
       type: "consultant",
-      menuItem: "Konsult",
+      menuItem: t('consultant'),
       accordianType: "name",
       accordianRole: "MANAGER",
     },
@@ -134,7 +138,7 @@ export default function LandingPage() {
         >
           {(role === "SALES" || role === "MANAGER") && (
             <Button href={appRoutes.NEW_FORM} variant="contained" className="qualityButton">
-              Skapa ny kvalitetsuppföljning
+              {t('newQualityForm')}
             </Button>
           )}
         </Grid>
@@ -150,7 +154,7 @@ export default function LandingPage() {
               {role === "SALES" && (
                 <div>
                   <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                    Sortera på:
+                    {t('sortControl')}
                   </Typography>
                   <FormControl sx={{ minWidth: 200, mb: 2 }} size="medium">
                     <Select
@@ -174,7 +178,7 @@ export default function LandingPage() {
               {role === "MANAGER" && (
                 <div>
                   <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
-                    Mina Konsulter
+                    {t('myConsultants')}
                   </Typography>
                   <GenericAccordion
                     formData={formData}

@@ -1,13 +1,18 @@
+'use client'
+
 import * as React from 'react';
 import { Grid, Typography, Avatar, Button, Box, Dialog, TextField, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 import SendIcon from '@mui/icons-material/Send';
 import { API_BASE_URL } from '../constants';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
-
+import { useTranslations } from 'next-intl';
 
 export default function RegisterDialog(props: any) {
     const { isOpen, onClose } = props;
+
+    const t = useTranslations('Login');
+
     const [role, setRole] = React.useState('SALES');
 
     const handleRoleChange = (event: any) => {
@@ -52,7 +57,9 @@ export default function RegisterDialog(props: any) {
                             </Avatar>
                         </Grid>
                         <Grid item xs>
-                            <Typography variant="h5">Registrera ny användare</Typography>
+                            <Typography variant="h5">
+                                {t('registerTitle')}
+                            </Typography>
                         </Grid>
                     </Grid>
                     <TextField
@@ -62,7 +69,7 @@ export default function RegisterDialog(props: any) {
                         margin="dense"
                         id="email"
                         name="email"
-                        label="Email"
+                        label={t('email')}
                         type="email"
                         fullWidth
                     />
@@ -72,7 +79,7 @@ export default function RegisterDialog(props: any) {
                         margin="dense"
                         id="password"
                         name="password"
-                        label="Lösenord"
+                        label={t('password')}
                         type="password"
                         fullWidth
                         sx={{ mb: 2 }}
@@ -83,30 +90,30 @@ export default function RegisterDialog(props: any) {
                         margin="dense"
                         id="name"
                         name="name"
-                        label="Namn"
+                        label={t('name')}
                         type="text"
                         fullWidth
                         sx={{ mb: 2 }}
                     />
                     <FormControl fullWidth>
-                        <InputLabel >Roll</InputLabel>
+                        <InputLabel>{t('role')}</InputLabel>
                         <Select
                             labelId="role-select"
                             id="role"
                             name="role"
-                            label="Roll"
+                            label={t('role')}
                             value={role}
                             onChange={handleRoleChange}
                             sx={{ mb: 2 }}
                         >
-                            <MenuItem value="SALES">Säljare</MenuItem>
-                            <MenuItem value="MANAGER">Konsultchef</MenuItem>
-                            <MenuItem value="CONSULTANT">Konsult</MenuItem>
+                            <MenuItem value="SALES">{t('sales')}</MenuItem>
+                            <MenuItem value="MANAGER">{t('manager')}</MenuItem>
+                            <MenuItem value="CONSULTANT">{t('consultant')}</MenuItem>
                         </Select>
                     </FormControl>
                     <DialogActions>
-                        <Button onClick={onClose} variant="outlined" color="primary">Avbryt</Button>
-                        <Button type="submit" variant="contained" endIcon={<SendIcon />}>Registrera</Button>
+                        <Button onClick={onClose} variant="outlined" color="primary">{t('cancelButton')}</Button>
+                        <Button type="submit" variant="contained" endIcon={<SendIcon />}>{t('registerButton')}</Button>
                     </DialogActions>
                 </DialogContent>
             </form>

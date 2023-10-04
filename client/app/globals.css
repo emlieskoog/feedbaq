@@ -23,14 +23,14 @@ a {
 
 @font-face {
   font-family: 'TrimWebLight'; 
-  src: url('../fonts/TrimWebLight.woff2') format('woff2');
+  src: url('./../fonts/TrimWebLight.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'MDPrimerBlack'; 
-  src: url('../fonts/MDPrimerBlack.woff2') format('woff2');
+  src: url('./../fonts/MDPrimerBlack.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
   }

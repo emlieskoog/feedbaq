@@ -17,9 +17,10 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import "../../../styles/forms.css"
 import "../../styles/form.css";
 import Link from "next/link";
-import { API_BASE_URL, appRoutes } from "../../constants";
+import { API_BASE_URL, appRoutes } from "../../../constants";
 
 export default function FormGrid() {
   const questions = [

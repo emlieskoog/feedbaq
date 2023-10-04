@@ -1,18 +1,5 @@
-'use client';
+import { redirect } from 'next/navigation';
 
-// pages/index.tsx
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-
-function Home() {
-  const router = useRouter();
-
-  useEffect(() => {
-    router.push('/login');
-  }, [router]);
-
-  return null;
+export default function RootPage() {
+    redirect('/en');
 }
-
-export default Home;
-

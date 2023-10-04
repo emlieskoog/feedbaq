@@ -23,7 +23,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ router, children
 
     useEffect(() => {
         if (!user && pathIsProtected) {
-            router.push('/login')
+            router.push('/')
         }
     }, [user, router]);
 
