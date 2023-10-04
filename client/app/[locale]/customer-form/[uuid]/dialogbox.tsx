@@ -6,18 +6,25 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 
-interface SuccessDialogProps {
+interface DialogBoxProps {
   open: boolean;
   handleClose: () => void;
+  dialogTitle: string;
+  dialogMessage: string;
 }
 
-const SuccessDialog: React.FC<SuccessDialogProps> = ({ open, handleClose }) => {
+const DialogBox: React.FC<DialogBoxProps> = ({
+  open,
+  handleClose,
+  dialogTitle,
+  dialogMessage,
+}) => {
   return (
     <Dialog open={open} onClose={handleClose}>
-      <DialogTitle>Kvalitetsuppföljning inskickad</DialogTitle>
+      <DialogTitle>{dialogTitle}</DialogTitle>
       <DialogContent>
-        <DialogContentText>
-          Tack! Kvalitetsuppföljningen har skickats in till HiQ.
+        <DialogContentText sx={{ whiteSpace: "pre-wrap" }}>
+          {dialogMessage}
         </DialogContentText>
       </DialogContent>
       <DialogActions>
@@ -29,4 +36,4 @@ const SuccessDialog: React.FC<SuccessDialogProps> = ({ open, handleClose }) => {
   );
 };
 
-export default SuccessDialog;
+export default DialogBox;

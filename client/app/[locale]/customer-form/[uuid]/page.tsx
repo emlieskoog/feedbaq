@@ -11,13 +11,11 @@ import {
   Typography,
   ToggleButtonGroup,
   ToggleButton,
-  Toolbar,
-  AppBar,
 } from "@mui/material";
 import "../../../styles/form.css";
 import { API_BASE_URL } from "../../../constants";
 import { useParams } from "next/navigation";
-import SuccessDialog from "./successdialog";
+import DialogBox from "./dialogbox";
 import HeaderCustomerForm from "@/app/components/header-customerform";
 import { useLocale } from "next-intl";
 import { usePathname, useRouter } from "next-intl/client";
@@ -109,6 +107,10 @@ export default function CustomerFormGrid() {
 
   const [dialogOpen, setDialogOpen] = useState(false);
 
+  const [dialogMessage, setDialogMessage] = useState("");
+
+  const [dialogTitle, setDialogTitle] = useState("");
+
   const handleCloseDialog = () => {
     setDialogOpen(false);
   };
@@ -193,6 +195,21 @@ export default function CustomerFormGrid() {
         console.log("Response from server:", data);
         if (data === "Data saved successfully!") {
           setDialogOpen(true);
+          setDialogMessage(
+            "Tack! Kvalitetsuppföljningen har skickats in till HiQ."
+          );
+          setDialogTitle("Kvalitetsuppföljning är inskickad!");
+        } else if (
+          data ===
+          "Customer form with uuid " +
+            params.uuid +
+            " does not exist or is not valid."
+        ) {
+          setDialogOpen(true);
+          setDialogMessage(
+            "Tyvärr är länken till detta formulär inte giltig längre. \nDet kan vara på grund av att ett svar redan skickats in. \n\nDu kan alltid kontakta HiQ för att få en ny länk."
+          );
+          setDialogTitle("Något gick fel!");
         }
       })
       .catch((error) => {
@@ -407,7 +424,12 @@ export default function CustomerFormGrid() {
               Skicka
             </Button>
           )}
-          <SuccessDialog open={dialogOpen} handleClose={handleCloseDialog} />
+          <DialogBox
+            open={dialogOpen}
+            handleClose={handleCloseDialog}
+            dialogMessage={dialogMessage}
+            dialogTitle={dialogTitle}
+          />
         </Grid>
       </Grid>
     </>

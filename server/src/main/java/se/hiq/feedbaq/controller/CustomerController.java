@@ -100,6 +100,9 @@ public class CustomerController {
         List<Object> arguments = new ArrayList<>();
         arguments.add(uuid);
         arguments.addAll(formResponseValues);
+
+        String sqlSetIsValidFalse = "UPDATE customer_form_metadata SET is_valid = false WHERE uuid=?";
+        jdbcTemplate.update(sqlSetIsValidFalse, uuid);
     
         try {
             jdbcTemplate.update(sql, arguments.toArray());
