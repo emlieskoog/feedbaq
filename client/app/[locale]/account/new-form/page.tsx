@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import {
   Grid,
@@ -20,9 +21,9 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import "../../../styles/forms.css"
 import CloseIcon from "@mui/icons-material/Close";
 import Link from "next/link";
+import "../../../styles/form.css";
 import { API_BASE_URL, appRoutes } from "../../../constants";
 
 export default function FormGrid() {
@@ -320,9 +321,7 @@ export default function FormGrid() {
   return (
     <Grid container spacing={2} className="outerGrid">
       {/* First row */}
-      <Grid item xs={12} className="topRow centerContent">
-        <Typography variant="h4">Kvalitetsuppföljning</Typography>
-      </Grid>
+
 
       {/* Second row */}
       <Grid
