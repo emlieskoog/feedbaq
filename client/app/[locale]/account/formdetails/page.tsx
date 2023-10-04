@@ -70,6 +70,8 @@ export default function FormDetails() {
                 <p className="separator"> {formData.customer_name} </p>
                 <h3> Konsult </h3>
                 <p className="separator"> {formData.consultant_name} </p>
+                <h3> Konsultchef </h3>
+                <p className="separator"> {formData.manager_name} </p>
                 <h3> Säljare </h3>
                 <p className="separator"> {formData.sales_name} </p>
                 <h3> Datum </h3>

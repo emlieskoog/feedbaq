@@ -65,16 +65,22 @@ public class FormController {
             
             String customerNameQuery = "SELECT customer_name FROM customers WHERE id=?";
             String consultantAndSalesNameQuery = "SELECT name FROM users WHERE id=?";
+            String managerNameFromConsultantIdQuery = "SELECT um.name AS manager_name FROM users uc "+
+                "LEFT JOIN consultants_managers cm ON uc.id=cm.consultant_id "+
+                "LEFT JOIN users um ON cm.manager_id=um.id "+
+                "WHERE uc.id=?;";
 
             Map<String, Object> customerNameMap = jdbcTemplate.queryForMap(customerNameQuery, customerId); // Dessa kan nog göras om till något annat än map direkt...
             Map<String, Object> consultantNameMap = jdbcTemplate.queryForMap(consultantAndSalesNameQuery, consultantId);
             Map<String, Object> salesNameMap = jdbcTemplate.queryForMap(consultantAndSalesNameQuery, salesId);
+            Map<String, Object> managerNameFromConsultantMap = jdbcTemplate.queryForMap(managerNameFromConsultantIdQuery, consultantId);
 
             Map<String, Object> responseMap = new HashMap<>();
             responseMap.put("form_data", formData);
             responseMap.put("customer_name", customerNameMap.get("customer_name").toString());
             responseMap.put("consultant_name", consultantNameMap.get("name").toString());
             responseMap.put("sales_name", salesNameMap.get("name").toString());
+            responseMap.put("manager_name", managerNameFromConsultantMap.get("manager_name").toString());
 
             return new ResponseEntity<>(responseMap, HttpStatus.OK);
         } catch (IncorrectResultSizeDataAccessException e) {

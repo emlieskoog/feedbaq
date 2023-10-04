@@ -220,6 +220,7 @@ export default function FormGrid() {
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "include",
       body: JSON.stringify(requestBody),
     })
       .then((response) => {
@@ -321,7 +322,7 @@ export default function FormGrid() {
 
   return (
     <Grid container spacing={2} className="outerGrid">
-      {/* First row */}
+
       <Grid
         item
         xs={false}
