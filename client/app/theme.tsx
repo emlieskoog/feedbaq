@@ -88,12 +88,6 @@ let theme: Theme = createTheme({
           zIndex: 1,
           paddingLeft: 2,
         },
-        required: {
-          color: "#ff0000", // Color for required InputLabel
-        },
-        filled: {
-          color: "#000000", // Color for filled InputLabel
-        },
       },
     },
   },
