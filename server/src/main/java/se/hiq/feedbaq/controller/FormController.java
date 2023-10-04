@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
@@ -25,6 +26,7 @@ public class FormController {
     private JdbcTemplate jdbcTemplate;
     
     @PostMapping("/save-form")
+    @PreAuthorize("hasAnyAuthority('SALES', 'MANAGER')")
     public ResponseEntity<Object> saveForm(@RequestBody Map<String, Object> requestBody) {
 
         try {

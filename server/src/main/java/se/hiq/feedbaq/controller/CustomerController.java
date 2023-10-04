@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
@@ -27,6 +28,7 @@ public class CustomerController {
     private JdbcTemplate jdbcTemplate;
     
     @GetMapping("/customers")
+    @PreAuthorize("hasAnyAuthority('SALES', 'MANAGER')")
     public ResponseEntity<Object> getAllCustomers() {
         try {
             List<Map<String, Object>> result = jdbcTemplate.queryForList("SELECT * FROM customers;");
@@ -109,6 +111,7 @@ public class CustomerController {
 
 
     @PostMapping("/customer-form")
+    @PreAuthorize("hasAnyAuthority('SALES', 'MANAGER')")
     public ResponseEntity<Object> generateCustomerForm(@RequestBody Map<String, String> requestBody) {
 
         try {
