@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Button, Avatar, TextField, Link, Paper, Box, Grid, Typography } from "@mui/material";
+import { Button, Avatar, TextField, Link, Paper, Box, Grid, Typography, Snackbar, Alert } from "@mui/material";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import RegisterDialog from '../components/registerdialog';
 import { API_BASE_URL } from '../constants';
@@ -17,6 +17,7 @@ export default function LoginPage() {
   const locale = useLocale();
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
 
   const handleOpenDialog = () => {
     setIsDialogOpen(true);
@@ -27,7 +28,6 @@ export default function LoginPage() {
     const { email, password } = Object.fromEntries(new FormData(event.target).entries());
 
     const requestBody = { email, password };
-    console.log(requestBody);
 
     fetch(`${API_BASE_URL}/auth/sign-in`, {
       method: "POST",
@@ -35,16 +35,15 @@ export default function LoginPage() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(requestBody),
-      credentials: 'include',
+      credentials: 'include'
     })
       .then(async (response) => {
-        if (response.status === 404)
-          console.error('Det finns ingen användare med den emailen :-( ');
-        else if (response.status === 401)
-          console.error('Lösenordet som du angav är fel :-( ');
-        else if (!response.ok)
+        if (response.status === 401) {
+          console.error('Error authenticating user!');
+          setOpenSnackbar(true);
+        } else if (!response.ok) {
           console.error('HTTP error! Status:', response.status);
-        else {
+        } else {
           console.log('Woho du angav rätt mail och lösenord :-D');
 
           router.push('/account');
@@ -121,6 +120,11 @@ export default function LoginPage() {
           {isDialogOpen && <RegisterDialog isOpen={isDialogOpen} onClose={() => setIsDialogOpen(false)} />}
         </Box>
       </Grid>
+      <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={() => setOpenSnackbar(false)}>
+          <Alert severity="info">
+            Fel mailadress eller lösenord, vänligen försök igen.
+          </Alert>
+      </Snackbar>
     </Grid >
   );
 }
