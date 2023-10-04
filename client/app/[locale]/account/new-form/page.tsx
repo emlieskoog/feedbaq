@@ -17,6 +17,7 @@ import {
   Alert,
   IconButton,
   FormControl,
+  Snackbar,
 } from "@mui/material";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -137,6 +138,7 @@ export default function FormGrid() {
   const [copySuccess, setCopySuccess] = useState<any>("");
 
   const [open, setOpen] = useState(false);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
 
   const isFormValid = consultantId && salesId && customerId;
 
@@ -337,7 +339,7 @@ export default function FormGrid() {
             <div
               key={q.id}
               className="formChapterList"
-              onClick={() => setActiveStep(index)}
+              onClick={() => (isFormValid ? setActiveStep(index) : setOpenSnackbar(true))}
             >
               {index === activeStep ? (
                 <Typography
@@ -398,7 +400,7 @@ export default function FormGrid() {
                     margin: "20px",
                   }}
                 >
-                  <FormControl required fullWidth margin="normal" variant='standard'>
+                  <FormControl required fullWidth margin="normal">
                     <InputLabel id="select-label-consultant">
                       Konsult
                     </InputLabel>
@@ -415,7 +417,7 @@ export default function FormGrid() {
                     </Select>
                   </FormControl>
 
-                  <FormControl required fullWidth margin="normal" variant='standard'>
+                  <FormControl required fullWidth margin="normal">
                     <InputLabel id="select-label-sales">Säljare</InputLabel>
                     <Select
                       labelId="select-label-sales"
@@ -430,7 +432,7 @@ export default function FormGrid() {
                     </Select>
                   </FormControl>
 
-                  <FormControl required fullWidth margin="normal" variant='standard'>
+                  <FormControl required fullWidth margin="normal" >
                     <InputLabel id="select-label-customer">Kund</InputLabel>
                     <Select
                       labelId="select-label-customer"
@@ -445,15 +447,15 @@ export default function FormGrid() {
                     </Select>
                   </FormControl>
 
-                  <InputLabel id="select-date">Datum</InputLabel>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DemoContainer components={["DatePicker"]}>
+                    <FormControl required fullWidth margin="normal">
                       <DatePicker
+                        label="Datum"
                         value={createdDate}
                         format="YYYY-MM-DD"
                         onChange={handleDateChange}
                       />
-                    </DemoContainer>
+                    </FormControl>
                   </LocalizationProvider>
 
                 </div>
@@ -492,8 +494,7 @@ export default function FormGrid() {
           <Grid item xs={10} className="centerContent">
             <Button
               variant="contained"
-              disabled={!isFormValid}
-              onClick={sendJsonCustomerForm}
+              onClick={isFormValid ? sendJsonCustomerForm : () => setOpenSnackbar(true)}
               sx={{ width: "70%", height: "100%" }}
             >
               Generera länk
@@ -543,7 +544,10 @@ export default function FormGrid() {
       </Grid>
       <Grid item xs={4} className="bottomRow centerContent">
         {activeStep == 0 && (
-          <Button variant="contained" disabled={!isFormValid} onClick={handleNext}>
+          <Button
+            variant="contained"
+            onClick={isFormValid ? handleNext : () => setOpenSnackbar(true)}
+          >
             Starta
           </Button>
         )}
@@ -564,6 +568,11 @@ export default function FormGrid() {
             </Button>
           </Link>
         )}
+        <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={() => setOpenSnackbar(false)}>
+          <Alert severity='error'>
+            Fyll i alla obligatoriska fält innan du fortsätter!
+          </Alert>
+        </Snackbar>
       </Grid>
     </Grid>
   );
