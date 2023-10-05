@@ -8,6 +8,7 @@ import {
   Typography,
   CircularProgress,
   Box,
+  InputLabel,
 } from "@mui/material";
 import { FormControl, MenuItem, Select } from "@mui/material";
 import GenericAccordion from "../../components/genericaccordion";
@@ -87,15 +88,15 @@ export default function LandingPage() {
 
   if (isLoading) {
     return (
-      <Box sx={{height: '100vh', minWidth: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-        <CircularProgress/>
+      <Box sx={{ height: '100vh', minWidth: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <CircularProgress />
       </Box>
     );
   } else {
     return (
-      <Grid container component="main" sx={{ overflowX: 'auto', padding: '0% 10%'}}> {/* Overflow X? */}
+      <Grid container component="main" sx={{ overflowX: 'auto', padding: '0% 15%' }}> {/* Overflow X? */}
         {/* Profile section */}
-        <Grid container sx={{ height: '30vh', mt: '40px' }}>
+        <Grid container sx={{ height: '30vh', m: '10px' }}>
           {/* First column (left) */}
           <Grid
             item
@@ -105,13 +106,12 @@ export default function LandingPage() {
             lg={6}
             sx={{
               display: 'flex',
-              justifyContent: 'center',
               alignItems: 'center',
             }}
           >
             <Avatar
               src={profilePicture[role]}
-              sx={{ width: 90, height: 90 }}
+              sx={{ width: 100, height: 100 }}
             />
             <Box
               sx={{
@@ -129,37 +129,35 @@ export default function LandingPage() {
               </Typography>
             </Box>
           </Grid>
-        {/* Second column (right) */}
-        <Grid
-          item
-          xs={6}
-          sm={6}
-          md={6}
-          lg={6}
-          sx={{
-            display: 'flex',
-            justifyContent: 'center', // Align content to the right
-            alignItems: 'center', // Center content vertically
-          }}
-        >
-          {(role === "SALES" || role === "MANAGER") && (
-            <Button href={appRoutes.NEW_FORM} variant="contained" className="qualityButton">
-              {t('newQualityForm')}
-            </Button>
-          )}
+          {/* Second column (right) */}
+          <Grid
+            item
+            xs={6}
+            sm={6}
+            md={6}
+            lg={6}
+            sx={{
+              display: 'flex',
+              justifyContent: 'right',
+              alignItems: 'center',
+            }}
+          >
+            {(role === "SALES" || role === "MANAGER") && (
+              <Button href={appRoutes.NEW_FORM} variant="contained" className="qualityButton">
+                {t('newQualityForm')}
+              </Button>
+            )}
+          </Grid>
         </Grid>
-      </Grid>
 
-      {/* Form section */}
-      <Grid container>
-        <Grid item xs={12} sm={12} md={12} lg={12}>
+        {/* Form section */}
+        <Grid container>
+          <Grid item xs={12} sm={12} md={12} lg={12}>
             <>
               {role === "SALES" && (
                 <div>
-                  <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                    {t('sortControl')}
-                  </Typography>
                   <FormControl sx={{ minWidth: 200, mb: 2 }} size="medium">
+                    <InputLabel>{t('sortControl')}</InputLabel>
                     <Select
                       value={sortingIndex}
                       onChange={handleSortingIndexChange}
@@ -203,5 +201,5 @@ export default function LandingPage() {
     );
   }
 
-  
+
 }

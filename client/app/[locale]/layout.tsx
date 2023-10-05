@@ -26,8 +26,6 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params: { locale } }: Props) {
   const messages = await getMessages(locale);
 
-  const t = createTranslator({ locale, messages });
-
   return {
     title: "FeedbaQ"
   };

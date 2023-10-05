@@ -61,7 +61,7 @@ export default function TemporaryDrawer() {
                         marginLeft: "90px",
                         filter: "brightness(1) invert(1)",
                     }}
-                ></img>
+                />
                 <Link href="/account" variant="body2" style={{ textDecoration: "none" }}>
                     <ListItem >
                         <ListItemIcon>

@@ -12,15 +12,18 @@ export default function Header(props: any) {
   const t = useTranslations('Account');
 
   return (
-    <AppBar position="relative" >
+    <AppBar position="relative" elevation={10} style={{ background: 'rgba(220, 220, 220, 0.7)', boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)' }}>
       <Toolbar>
         <TemporaryDrawer />
         <img
           src="/HiQ_logo_white.png"
           alt="HiQ Logo"
-          style={{ height: "35px", marginLeft: "15px", marginRight: "15px" }}
-        ></img>
-        <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
+          style={{
+            height: "35px", marginLeft: "15px", marginRight: "15px",
+            filter: "brightness(1) invert(1)",
+          }}
+        />
+        <Typography variant="h5" component="div" sx={{ flexGrow: 1, color: '#353435' }}>
           {t('qualityHeader')}
         </Typography>
         <LocaleSwitcher router={router} currentPathname={currentPathname} locale={locale} />

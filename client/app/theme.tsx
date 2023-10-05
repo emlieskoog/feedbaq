@@ -80,6 +80,16 @@ let theme: Theme = createTheme({
         },
       },
     },
+
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "#fff",
+          zIndex: 1,
+          paddingLeft: 2,
+        },
+      },
+    },
   },
 });
 

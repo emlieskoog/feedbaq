@@ -16,26 +16,27 @@ import {
   Collapse,
   Alert,
   IconButton,
+  FormControl,
+  Snackbar,
 } from "@mui/material";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import "../../../styles/form.css"
 import CloseIcon from "@mui/icons-material/Close";
 import Link from "next/link";
-import { API_BASE_URL, appRoutes, formQuestions } from "../../../constants";
+import { API_BASE_URL, appRoutes, formInputType } from "../../../constants";
+import { useTranslations } from "next-intl";
 
 export default function FormGrid() {
 
-
+  const t = useTranslations('QualityForm');
   const [activeStep, setActiveStep] = useState(0);
-  const [inputValues, setInputValues] = useState(
-    Array(formQuestions.length).fill("")
-  );
+  const [inputValues, setInputValues] = useState(Array(formInputType.length).fill(null));
 
   const [consultants, setConsultants] = useState([]);
-  const [consultantId, setConsulantId] = useState("");
+  const [consultantId, setConsultantId] = useState("");
+
 
   const [sales, setSales] = useState([]);
   const [salesId, setSalesId] = useState("");
@@ -47,6 +48,9 @@ export default function FormGrid() {
   const [copySuccess, setCopySuccess] = useState<any>("");
 
   const [open, setOpen] = useState(false);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+
+  const isFormValid = consultantId && salesId && customerId;
 
   // Day.js is a minimalist JavaScript library that parses, validates, manipulates, and displays dates and times for modern browsers with a largely Moment.js-compatible API.
   const dayjs = require("dayjs");
@@ -90,7 +94,10 @@ export default function FormGrid() {
     const newInputValues = [...inputValues];
     const inputValue = event.target.value;
 
-    if (formQuestions[activeStep].inputType === "rating") {
+    console.log("inputValues:", inputValues);
+    console.log("formInputType:", formInputType);
+
+    if (formInputType[activeStep] === "rating") {
       newInputValues[activeStep] = parseFloat(inputValue);
     } else {
       newInputValues[activeStep] = inputValue;
@@ -100,7 +107,7 @@ export default function FormGrid() {
   };
 
   const handleConsultantChange = (event: any) => {
-    setConsulantId(event.target.value);
+    setConsultantId(event.target.value);
   };
 
   const handleSalesChange = (event: any) => {
@@ -132,9 +139,6 @@ export default function FormGrid() {
       body: JSON.stringify(requestBody),
     })
       .then((response) => {
-        //const generatedHash = response.headers.get("X-Generated-Hash");
-        //console.log("Generated Hash from Header:", generatedHash);
-        console.log(response);
         return response.json();
       })
       .then((data) => {
@@ -157,7 +161,6 @@ export default function FormGrid() {
       date: createdDate.format("YYYY-MM-DD"),
       formResponseValues: inputValues,
     };
-    console.log(JSON.stringify(requestBody));
 
     fetch(`${API_BASE_URL}/save-form`, {
       method: "POST",
@@ -197,9 +200,7 @@ export default function FormGrid() {
 
   return (
     <Grid container spacing={2} className="outerGrid">
-      {/* First row */}
 
-      {/* Second row */}
       <Grid
         item
         xs={false}
@@ -208,13 +209,13 @@ export default function FormGrid() {
         sx={{ flexDirection: "column" }}
         className="middleRow"
       >
-        <Typography variant="h6">Kapitel</Typography>
-        {formQuestions.map((q, index) => {
+        <Typography variant="h6">{t('chapter')}</Typography>
+        {formInputType.map((q, index) => {
           return (
             <div
-              key={q.id}
+              key={index}
               className="formChapterList"
-              onClick={() => setActiveStep(index)}
+              onClick={() => (isFormValid ? setActiveStep(index) : setOpenSnackbar(true))}
             >
               {index === activeStep ? (
                 <Typography
@@ -223,10 +224,10 @@ export default function FormGrid() {
                     color: "#ff329f",
                   }}
                 >
-                  {q.question}
+                  {t(`q${index}`)}
                 </Typography>
               ) : (
-                <Typography variant="overline">{q.question}</Typography>
+                <Typography variant="overline">{t(`q${index}`)}</Typography>
               )}
             </div>
           );
@@ -240,27 +241,27 @@ export default function FormGrid() {
         sx={{ flexDirection: "column", overflowY: "auto" }}
         className="middleRow"
       >
-        {activeStep < formQuestions.length ? (
+        {activeStep < formInputType.length ? (
           <>
             <Typography variant="h5" sx={{ textAlign: "center" }}>
-              {formQuestions[activeStep].question}
+              {t(`q${activeStep}`)}
             </Typography>
             <Typography variant="subtitle1" sx={{ textAlign: "center" }}>
-              {formQuestions[activeStep].description}
+              {t(`d${activeStep}`)}
             </Typography>
             <Box className="centerContent">
-              {formQuestions[activeStep].inputType === "text" && (
+              {formInputType[activeStep] === "text" && (
                 <TextField
                   value={inputValues[activeStep]}
                   onChange={handleInputChange}
-                  placeholder="Skriv ditt svar här ..."
+                  placeholder={t('inputPlaceholder')}
                   multiline
                   fullWidth
                   rows={4}
                   variant="outlined"
                 />
               )}
-              {formQuestions[activeStep].inputType === "rating" && (
+              {formInputType[activeStep] === "rating" && (
                 <Rating
                   value={inputValues[activeStep]}
                   onChange={handleInputChange}
@@ -268,18 +269,21 @@ export default function FormGrid() {
                   size="large"
                 />
               )}
-              {formQuestions[activeStep].inputType === "info" && (
+
+              {formInputType[activeStep] === "info" && (
                 <Box>
                   <div
                     style={{
-                      width: "45vh",
-                      margin: "20px",
+                      width: "55vh",
+                      margin: "10px",
                     }}
                   >
-                    <InputLabel id="select-label-consultant">
-                      Konsult
-                    </InputLabel>
-                    <Box>
+
+                    <FormControl required fullWidth margin="normal">
+                      <InputLabel id="select-label-consultant">
+                        {t('consultant')}
+                      </InputLabel>
+
                       <Select
                         labelId="select-label-consultant"
                         fullWidth
@@ -292,8 +296,12 @@ export default function FormGrid() {
                           </MenuItem>
                         ))}
                       </Select>
+                    </FormControl>
 
-                      <InputLabel id="select-label-sales">Säljare</InputLabel>
+                    <FormControl required fullWidth margin="normal">
+                      <InputLabel id="select-label-sales">
+                        {t('salesperson')}
+                      </InputLabel>
                       <Select
                         labelId="select-label-sales"
                         fullWidth
@@ -306,8 +314,12 @@ export default function FormGrid() {
                           </MenuItem>
                         ))}
                       </Select>
+                    </FormControl>
 
-                      <InputLabel id="select-label-customer">Kund</InputLabel>
+                    <FormControl required fullWidth margin="normal">
+                      <InputLabel id="select-label-customer">
+                        {t('customer')}
+                      </InputLabel>
                       <Select
                         labelId="select-label-customer"
                         fullWidth
@@ -320,43 +332,47 @@ export default function FormGrid() {
                           </MenuItem>
                         ))}
                       </Select>
+                    </FormControl>
 
-                      <InputLabel id="select-date">Datum</InputLabel>
-                      <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DemoContainer components={["DatePicker"]}>
-                          <DatePicker
-                            value={createdDate}
-                            format="YYYY-MM-DD"
-                            onChange={handleDateChange}
-                          />
-                        </DemoContainer>
-                      </LocalizationProvider>
-                    </Box>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <FormControl required fullWidth margin="normal">
+                        <DatePicker
+                          label="Datum"
+                          value={createdDate}
+                          format="YYYY-MM-DD"
+                          onChange={handleDateChange}
+                        />
+                      </FormControl>
+                    </LocalizationProvider>
+
                   </div>
                 </Box>
-              )}
-            </Box>
+
+              )
+              }
+            </Box >
           </>
         ) : (
           <>
-            <h2>Sammanfattning</h2>
-            {formQuestions.map((q, index) => {
+            <h2>{t('summary')}</h2>
+            {formInputType.map((q, index) => {
               return (
                 <>
-                  <h4>{q.question}</h4>
+                  <h4>{t(`q${index}`)}</h4>
                   <Box sx={{ marginBottom: "10px" }}>
                     {inputValues[index] ? (
                       <p>{inputValues[index]}</p>
                     ) : (
-                      <p>Inget svar...</p>
+                      <p>{t('noAnswer')}</p>
                     )}
                   </Box>
                 </>
               );
             })}
           </>
-        )}
-      </Grid>
+        )
+        }
+      </Grid >
 
       <Grid
         item
@@ -367,14 +383,19 @@ export default function FormGrid() {
       >
         <Grid container spacing={2} sx={{ flexDirection: "column" }}>
           <Grid item xs={10} className="centerContent">
-            <Button
-              variant="contained"
-              onClick={sendJsonCustomerForm}
-              sx={{ width: "70%", height: "100%" }}
-            >
-              Generera länk
-            </Button>
-          </Grid>
+
+            <Alert severity='info'>
+              Om du istället önskar generera en länk till en kund, klickar du här:
+              <Button
+                variant="contained"
+                onClick={isFormValid ? sendJsonCustomerForm : () => setOpenSnackbar(true)}
+                sx={{ width: "90%", height: "30%", mt: "2px" }}
+              >
+                {t('generateLinkButton')}
+              </Button>
+            </Alert>
+
+          </Grid >
           <Grid item xs={14}>
             <Collapse in={open}>
               <Alert
@@ -396,46 +417,72 @@ export default function FormGrid() {
                 <p onClick={handleCopyToClipboard}> {generatedLink}</p>
               </Alert>
             </Collapse>
-            {copySuccess && <Alert severity="success">Kopierad!</Alert>}{" "}
+            {copySuccess && <Alert severity="success">{t('copyLinkAlert')}!</Alert>}{" "}
           </Grid>
-        </Grid>
-      </Grid>
+        </Grid >
+      </Grid >
 
       {/* Third row */}
 
-      <Grid item xs={4} className="bottomRow centerContent">
+      < Grid item xs={4} className="bottomRow centerContent" >
         {activeStep != 0 && (
           <Button variant="contained" onClick={handleBack}>
-            Tillbaka
+            {t('goBackButton')}
           </Button>
-        )}
-      </Grid>
+        )
+        }
+      </Grid >
       <Grid item xs={4} className="bottomRow centerContent">
         <Box sx={{ width: "100%" }}>
           <LinearProgressWithLabel
-            value={(activeStep / formQuestions.length) * 100}
+            value={(activeStep / formInputType.length) * 100}
           />
         </Box>
       </Grid>
       <Grid item xs={4} className="bottomRow centerContent">
-        {activeStep < formQuestions.length - 1 && (
-          <Button variant="contained" onClick={handleNext}>
-            Nästa
-          </Button>
-        )}
-        {activeStep == formQuestions.length - 1 && (
-          <Button variant="contained" onClick={handleNext}>
-            Klar
-          </Button>
-        )}
-        {activeStep == formQuestions.length && (
-          <Link href={appRoutes.ACCOUNT_PAGE}>
-            <Button variant="contained" onClick={sendJsonForm}>
-              Skicka
+
+        {
+          activeStep == 0 && (
+            <Button
+              variant="contained"
+              onClick={isFormValid ? handleNext : () => setOpenSnackbar(true)}
+            >
+              Starta
             </Button>
-          </Link>
-        )}
-      </Grid>
-    </Grid>
+          )
+        }
+
+
+        {
+          (activeStep > 0) && (activeStep < formInputType.length - 1) && (
+
+            <Button variant="contained" onClick={handleNext}>
+              {t('nextButton')}
+            </Button>
+          )
+        }
+        {
+          activeStep == formInputType.length - 1 && (
+            <Button variant="contained" onClick={handleNext}>
+              {t('doneButton')}
+            </Button>
+          )
+        }
+        {
+          activeStep == formInputType.length && (
+            <Link href={appRoutes.ACCOUNT_PAGE}>
+              <Button variant="contained" onClick={sendJsonForm}>
+                {t('sendButton')}
+              </Button>
+            </Link>
+          )
+        }
+        <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={() => setOpenSnackbar(false)}>
+          <Alert severity='error'>
+            Fyll i alla obligatoriska fält innan du fortsätter!
+          </Alert>
+        </Snackbar>
+      </Grid >
+    </Grid >
   );
 }
