@@ -19,11 +19,14 @@ import DialogBox from "./dialogbox";
 import HeaderCustomerForm from "@/app/components/headercustomerform";
 import { useLocale } from "next-intl";
 import { usePathname, useRouter } from "next-intl/client";
+import { useTranslations } from "next-intl";
 
 export default function CustomerFormGrid() {
   const router = useRouter();
   const currentPathname = usePathname();
   const locale = useLocale();
+
+  const t = useTranslations("QualityForm");
 
   console.log(locale);
 
@@ -97,13 +100,13 @@ export default function CustomerFormGrid() {
     Array(questions.length).fill("")
   );
 
-  const [consultantName, setConsulantName] = useState(" ");
+  const [consultantName, setConsulantName] = useState("");
 
-  const [salesName, setSalesName] = useState(" ");
+  const [salesName, setSalesName] = useState("");
 
-  const [customerName, setCustomerName] = useState(" ");
+  const [customerName, setCustomerName] = useState("");
 
-  const [createdDate, setCreatedDate] = useState(" ");
+  const [createdDate, setCreatedDate] = useState("");
 
   const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -242,47 +245,13 @@ export default function CustomerFormGrid() {
       />
       <Grid container spacing={4} className="outerGrid">
         {/* First row */}
-        <Grid item xs={10} className="topRow">
-          <TextField
-            id="outlined-disabled"
-            label="Konsult"
-            defaultValue={consultantName}
-            InputProps={{
-              readOnly: true,
-            }}
-            margin="normal"
-            variant="filled"
-          />
-          <TextField
-            id="outlined-disabled"
-            label="Säljare"
-            defaultValue={salesName}
-            InputProps={{
-              readOnly: true,
-            }}
-            margin="normal"
-            variant="filled"
-          />
-          <TextField
-            id="outlined-disabled"
-            label="Kund"
-            defaultValue={customerName}
-            InputProps={{
-              readOnly: true,
-            }}
-            margin="normal"
-            variant="filled"
-          />
-          <TextField
-            id="outlined-disabled"
-            label="Datum"
-            defaultValue={createdDate}
-            InputProps={{
-              readOnly: true,
-            }}
-            margin="normal"
-            variant="filled"
-          />
+        <Grid item xs={10} md={10} className="topRow">
+          <Box sx={{ flexDirection: "row", display: "flex" }}>
+            <Box className="infoBoxes">Konsult: {consultantName}</Box>
+            <Box className="infoBoxes">Säljare: {salesName}</Box>
+            <Box className="infoBoxes">Kund: {customerName}</Box>
+            <Box className="infoBoxes">Datum: {createdDate}</Box>
+          </Box>
         </Grid>
         {/* Second row */}
         <Grid container spacing={4}>
@@ -378,16 +347,16 @@ export default function CustomerFormGrid() {
               </>
             ) : (
               <>
-                <h2>Sammanfattning</h2>
+                <h2>{t("summary")}</h2>
                 {questions.map((q, index) => {
                   return (
                     <>
-                      <h4>{q.question}</h4>
+                      <h4>{t(`q${index}`)}</h4>
                       <Box sx={{ marginBottom: "10px" }}>
                         {inputValues[index] ? (
                           <p>{inputValues[index]}</p>
                         ) : (
-                          <p>Inget svar...</p>
+                          <p>{t("noAnswer")}</p>
                         )}
                       </Box>
                     </>
@@ -398,6 +367,7 @@ export default function CustomerFormGrid() {
           </Grid>
         </Grid>
         {/* Third row */}
+
         <Grid item xs={4} className="bottomRow centerContent">
           {activeStep != 0 && (
             <Button variant="contained" onClick={handleBack}>
