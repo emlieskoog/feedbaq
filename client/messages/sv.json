@@ -58,6 +58,7 @@
             "QualityForm":{
 
                 "chapter": "Kapitel",
+                "chapterBottomToggler": "KAPITEL",
                 "customer": "Kund",
                 "consultant": "Konsult",
                 "manager": "Konsultchef",
@@ -67,11 +68,15 @@
                 "summary": "Sammanfattning",
                 "noAnswer": "Inget svar.",
                 "generateLinkButton": "Generera länk",
+                "generateLink": "Om du istället önskar generera en länk till en kund klickar du här:",
                 "copyLinkAlert": "Kopierad!",
+                "startButton": "Starta",
                 "goBackButton": "Tillbaka",
                 "nextButton": "Nästa",
                 "doneButton": "Klar",
                 "sendButton": "Skicka",
+
+                "linkDialogText": "Länk skapad",
 
                 "q0": "Info",
                 "d0": "",

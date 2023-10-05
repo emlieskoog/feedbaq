@@ -12,21 +12,23 @@
   padding: 0 !important;
 }
 
-.middleRow {
-  height: 70%;
-  margin: 0 !important;
-}
-
-.topRow {
-  height: 10%;
-  margin: 0 !important;
-  padding: 10px 10px !important;
+.boxPadding{
+  margin-top: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
+  height: 50vh;
 }
 
 .bottomRow {
-  height: 15%;
   margin: 0 !important;
-  padding: 10px 10px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.linkBox{
+  margin-top: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
 }
 
 .centerContent {
