@@ -1,124 +1,176 @@
 {
-    "Login":{
-        "email":"Email",
-        "password":"Lösenord",
-        "login": "Logga in",
-        "registerNewButton": "Registrera ny användare",
-        "registerTitle": "Registrera ny användare",
-        "name": "Namn",
-        "role": "Roll",
-        "sales": "Säljare",
-        "manager": "Konsultchef",
-        "consultant": "Konsult",
-        "cancelButton":"Avbryt",
-        "registerButton": "Registrera"
-        },
+  "Login": {
+    "email": "Email",
+    "password": "Lösenord",
+    "login": "Logga in",
+    "registerNewButton": "Registrera ny användare",
+    "registerTitle": "Registrera ny användare",
+    "name": "Namn",
+    "role": "Roll",
+    "sales": "Säljare",
+    "manager": "Konsultchef",
+    "consultant": "Konsult",
+    "cancelButton": "Avbryt",
+    "registerButton": "Registrera"
+  },
 
-        "Account":{
-            "qualityHeader": "Kvalitetsuppföljning",
-            "localeSwitcherLabel": "Change Language",
+  "Account": {
+    "qualityHeader": "Kvalitetsuppföljning",
+    "localeSwitcherLabel": "Change Language",
 
-            "sales": "Säljare",
-            "manager": "Konsultchef",
-            "consultant": "Konsult",
-            "business": "Företag",
-            "newQualityForm": "Skapa ny kvalitetsuppföljning",
-            "sortControl": "Sortera på:",
-            "myConsultants": "Mina Konsulter",
+    "sales": "Säljare",
+    "manager": "Konsultchef",
+    "consultant": "Konsult",
+    "business": "Företag",
+    "newQualityForm": "Skapa ny kvalitetsuppföljning",
+    "sortControl": "Sortera på:",
+    "myConsultants": "Mina Konsulter",
 
-            "profileDrawer": "Profil",
-            "settingsDrawer": "Inställningar",
-            "signOutDrawer": "Logga ut",
+    "profileDrawer": "Profil",
+    "settingsDrawer": "Inställningar",
+    "signOutDrawer": "Logga ut",
 
-            "tableHeadingConsultant": "Konsult",
-            "tableHeadingDate": "Datum",
-            "tableHeadingCompany": "Företag",
-            "tableOpenButton": "Öppna",
+    "tableHeadingConsultant": "Konsult",
+    "tableHeadingDate": "Datum",
+    "tableHeadingCompany": "Företag",
+    "tableOpenButton": "Öppna",
 
-            "locale": {
-                "en": "English",
-                "sv": "Svenska"
-              }
-            },
-
-            "Settings":{
-                "settingsHeading": "Inställningar",
-                "nameField": "Namn",
-                "roleInput": "Roll",
-                "salesSelect": "Säljare",
-                "managerSelect": "Konsultchef",
-                "consultantSelect": "Konsult",
-                "passwordField": "Lösenord",
-                "passwordConfirmField": "Bekräfta ditt nya lösenord",
-                "regretButton": "Ångra ändringar",
-                "saveButton": "Spara ändringar",
-                "avatarDialogHeader": "Välj din nya avatar :D"
-            },
-
-            "QualityForm":{
-
-                "chapter": "Kapitel",
-                "chapterBottomToggler": "KAPITEL",
-                "customer": "Kund",
-                "consultant": "Konsult",
-                "manager": "Konsultchef",
-                "salesperson": "Säljare",
-                "date": "Datum",
-                "inputPlaceholder": "Skriv ditt svar här ...",
-                "summary": "Sammanfattning",
-                "noAnswer": "Inget svar.",
-                "generateLinkButton": "Generera länk",
-                "generateLink": "Om du istället önskar generera en länk till en kund klickar du här:",
-                "copyLinkAlert": "Kopierad!",
-                "startButton": "Starta",
-                "goBackButton": "Tillbaka",
-                "nextButton": "Nästa",
-                "doneButton": "Klar",
-                "sendButton": "Skicka",
-
-                "linkDialogText": "Länk skapad",
-
-                "q0": "Info",
-                "d0": "",
-
-                "q1": "Uppstart",
-                "d1": "Förståelse, startsträcka, rätt förutsättningar för att klara uppdraget, dator och miljöer.",
-                
-                "q2": "Resultat",
-                "d2": "Kompetens, levererans, kvalitet, tid.",
-                
-                "q3": "Ansvar",
-                "d3": "Samarbete, hjälpsam, ställer frågar, står för åtaganden, flaggar.",
-
-                "q4": "Enkelhet",
-                "d4": "Göra det svåra enkelt, enkel kommunikation.",
-
-                "q5": "Glädje",
-                "d5": "Tillför energi, kul att jobba med",
-
-                "q6": "Innovation",
-                "d6": "Kreativitet, kommer med förslag och idéer, kliver fram.",
-
-                "q7": "Nöjdhet (konsult)",
-                "d7": "Hur nöjd är kunden med konsulten på en skala 1-10?",
-
-                "q8": "Nöjdhet (HiQ)",
-                "d8": "Hur nöjd är kunden med HiQ på en skala 1-10?",
-
-                "q9": "Förbättringar",
-                "d9": "Vad kan förbättras?",
-
-                "q10": "Värdeomdömen (positivt)",
-                "d10": "Positiv feedback/beröm från kunder eller användare.",
-                
-                "q11": "Värdeomdömen (negativt)",
-                "d11": "Negativ feedback/kritik från kunder eller användare.",
-
-                "q12": "Övrigt",
-                "d12": "Allmänt utrymme för ytterligare kommentarer eller ämnen som inte täcks av andra frågor.",
-
-                "q13": "Nästa uppföljning",
-                "d13": "Planerad tidpunkt, eller åtgärder för nästa uppföljning."
-
-            }
+    "locale": {
+      "en": "English",
+      "sv": "Svenska"
     }
+  },
+
+  "Settings": {
+    "settingsHeading": "Inställningar",
+    "nameField": "Namn",
+    "roleInput": "Roll",
+    "salesSelect": "Säljare",
+    "managerSelect": "Konsultchef",
+    "consultantSelect": "Konsult",
+    "passwordField": "Lösenord",
+    "passwordConfirmField": "Bekräfta ditt nya lösenord",
+    "regretButton": "Ångra ändringar",
+    "saveButton": "Spara ändringar",
+    "avatarDialogHeader": "Välj din nya avatar :D"
+  },
+
+  "QualityForm": {
+    "chapter": "Kapitel",
+    "chapterBottomToggler": "KAPITEL",
+    "customer": "Kund",
+    "consultant": "Konsult",
+    "manager": "Konsultchef",
+    "salesperson": "Säljare",
+    "date": "Datum",
+    "inputPlaceholder": "Skriv ditt svar här ...",
+    "summary": "Sammanfattning",
+    "noAnswer": "Inget svar.",
+    "generateLinkButton": "Generera länk",
+    "generateLink": "Om du istället önskar generera en länk till en kund klickar du här:",
+    "copyLinkAlert": "Kopierad!",
+    "startButton": "Starta",
+    "goBackButton": "Tillbaka",
+    "nextButton": "Nästa",
+    "doneButton": "Klar",
+    "sendButton": "Skicka",
+
+    "linkDialogText": "Länk skapad",
+
+    "q0": "Info",
+    "d0": "",
+
+    "q1": "Uppstart",
+    "d1": "Förståelse, startsträcka, rätt förutsättningar för att klara uppdraget, dator och miljöer.",
+
+    "q2": "Resultat",
+    "d2": "Kompetens, levererans, kvalitet, tid.",
+
+    "q3": "Ansvar",
+    "d3": "Samarbete, hjälpsam, ställer frågar, står för åtaganden, flaggar.",
+
+    "q4": "Enkelhet",
+    "d4": "Göra det svåra enkelt, enkel kommunikation.",
+
+    "q5": "Glädje",
+    "d5": "Tillför energi, kul att jobba med",
+
+    "q6": "Innovation",
+    "d6": "Kreativitet, kommer med förslag och idéer, kliver fram.",
+
+    "q7": "Nöjdhet (konsult)",
+    "d7": "Hur nöjd är kunden med konsulten på en skala 1-10?",
+
+    "q8": "Nöjdhet (HiQ)",
+    "d8": "Hur nöjd är kunden med HiQ på en skala 1-10?",
+
+    "q9": "Förbättringar",
+    "d9": "Vad kan förbättras?",
+
+    "q10": "Värdeomdömen (positivt)",
+    "d10": "Positiv feedback/beröm från kunder eller användare.",
+
+    "q11": "Värdeomdömen (negativt)",
+    "d11": "Negativ feedback/kritik från kunder eller användare.",
+
+    "q12": "Övrigt",
+    "d12": "Allmänt utrymme för ytterligare kommentarer eller ämnen som inte täcks av andra frågor.",
+
+    "q13": "Nästa uppföljning",
+    "d13": "Planerad tidpunkt, eller åtgärder för nästa uppföljning."
+  },
+
+  "CustomerForm": {
+    "customer": "Kund",
+    "consultant": "Konsult",
+    "manager": "Konsultchef",
+    "salesperson": "Säljare",
+    "date": "Datum",
+    "summary": "Sammanfattning",
+    "noAnswer": "Inget svar.",
+    "goBackButton": "Tillbaka",
+    "nextButton": "Nästa",
+    "doneButton": "Klar",
+    "sendButton": "Skicka",
+    "comment": "Kommentar...",
+    "doNotAgreeAtAll": "Jag håller inte med alls",
+    "doNotAgree": "Jag håller inte med",
+    "doAgree": "Jag håller med",
+    "doAgreeCompletely": "Jag håller med helt och hållet",
+
+    "q0": "Uppstart",
+    "d0": "Jag anser att konsulten haft bra förståelse för uppdraget",
+
+    "q1": "Resultat",
+    "d1": "Jag anser att konsulten haft god kompetens och levererat goda resultat",
+
+    "q2": "Ansvar",
+    "d2": "Jag anser att konsulten varit kommunikativ och samarbetsvillig",
+
+    "q3": "Enkelhet",
+    "d3": "Jag anser att konsulten har kunnat göra det svåra enklare",
+
+    "q4": "Nöjdhet (konsult)",
+    "d4": "Jag är mycket nöjd med konsulten",
+
+    "q5": "Nöjdhet (HiQ)",
+    "d5": "Jag är mycket nöjd med HiQ",
+
+    "q6": "Förbättringar (konsult)",
+    "d6": "Vad är några saker som konsulten kan förbättra?",
+
+    "q7": "Förbättringar (HiQ)",
+    "d7": "Vad är några saker som HiQ kan förbättra?",
+
+    "q8": "Övrigt",
+    "d8": "Är det något övrigt som du vill anmärka?"
+  },
+
+  "DialogBoxCForm": {
+    "successTitle": "Ditt svar är inskickat!",
+    "sucessMessage": "Tack! Kvalitetsuppföljningen har skickats in till HiQ.",
+    "failTitle": "Något gick fel!",
+    "failMessage": "Tyvärr är länken till detta formulär inte giltig längre. \nDet kan vara på grund av att ett svar redan skickats in. \n\nDu kan alltid kontakta HiQ för att få en ny länk.",
+    "close": "Stäng"
+  }
+}

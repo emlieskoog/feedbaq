@@ -5,6 +5,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
+import { useTranslations } from "next-intl";
 
 interface DialogBoxProps {
   open: boolean;
@@ -19,6 +20,8 @@ const DialogBox: React.FC<DialogBoxProps> = ({
   dialogTitle,
   dialogMessage,
 }) => {
+  const t = useTranslations("DialogBoxCForm");
+
   return (
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle>{dialogTitle}</DialogTitle>
@@ -29,7 +32,7 @@ const DialogBox: React.FC<DialogBoxProps> = ({
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} color="primary" autoFocus>
-          Stäng
+          {t("close")}
         </Button>
       </DialogActions>
     </Dialog>

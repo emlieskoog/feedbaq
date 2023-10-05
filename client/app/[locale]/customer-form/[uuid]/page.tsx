@@ -13,7 +13,7 @@ import {
   ToggleButton,
 } from "@mui/material";
 import "../../../styles/form.css";
-import { API_BASE_URL } from "../../../constants";
+import { API_BASE_URL, customerFormInput } from "../../../constants";
 import { useParams } from "next/navigation";
 import DialogBox from "./dialogbox";
 import HeaderCustomerForm from "@/app/components/headercustomerform";
@@ -26,78 +26,19 @@ export default function CustomerFormGrid() {
   const currentPathname = usePathname();
   const locale = useLocale();
 
-  const t = useTranslations("QualityForm");
+  const t = useTranslations("CustomerForm");
 
-  console.log(locale);
-
-  const questions = [
-    {
-      id: "1",
-      question: "Uppstart",
-      description: "Jag anser att konsulten haft bra förståelse för uppdraget",
-      inputType: "rating",
-    },
-    {
-      id: "2",
-      question: "Resultat",
-      description:
-        "Jag anser att konsulten haft god kompetens och levererat goda resultat",
-      inputType: "rating",
-    },
-    {
-      id: "3",
-      question: "Ansvar",
-      description:
-        "Jag anser att konsulten varit kommunikativ och samarbetsvillig",
-      inputType: "rating",
-    },
-    {
-      id: "4",
-      question: "Enkelhet",
-      description: "Jag anser att konsulten har kunnat göra det svåra enklare",
-      inputType: "rating",
-    },
-    {
-      id: "5",
-      question: "Nöjdhet (Konsult)",
-      description: "Jag är mycket nöjd med konsulten",
-      inputType: "rating",
-    },
-    {
-      id: "6",
-      question: "Nöjdhet (HiQ)",
-      description: "Jag är mycket nöjd med HiQ",
-      inputType: "rating",
-    },
-    {
-      id: "7",
-      question: "Förbättringar (Konsult)",
-      description: "Vad är några saker som konsulten kan förbättra?",
-      inputType: "text",
-    },
-    {
-      id: "8",
-      question: "Förbättringar (HiQ)",
-      description: "Vad är några saker som HiQ kan förbättra?",
-      inputType: "text",
-    },
-    {
-      id: "9",
-      question: "Övrigt",
-      description: "Är det något övrigt som du vill anmärka?",
-      inputType: "text",
-    },
-  ];
+  const dt = useTranslations("DialogBoxCForm");
 
   const params = useParams();
 
   const [activeStep, setActiveStep] = useState(0);
   const [inputValues, setInputValues] = useState(
-    Array(questions.length).fill("")
+    Array(customerFormInput.length).fill("")
   );
 
   const [buttonValues, setButtonValues] = useState(
-    Array(questions.length).fill("")
+    Array(customerFormInput.length).fill("")
   );
 
   const [consultantName, setConsulantName] = useState("");
@@ -203,21 +144,12 @@ export default function CustomerFormGrid() {
         console.log("Response from server:", data);
         if (data === "Data saved successfully!") {
           setDialogOpen(true);
-          setDialogMessage(
-            "Tack! Kvalitetsuppföljningen har skickats in till HiQ."
-          );
-          setDialogTitle("Kvalitetsuppföljning är inskickad!");
-        } else if (
-          data ===
-          "Customer form with uuid " +
-            params.uuid +
-            " does not exist or is not valid."
-        ) {
+          setDialogMessage(dt("sucessMessage"));
+          setDialogTitle(dt("successTitle"));
+        } else {
           setDialogOpen(true);
-          setDialogMessage(
-            "Tyvärr är länken till detta formulär inte giltig längre. \nDet kan vara på grund av att ett svar redan skickats in. \n\nDu kan alltid kontakta HiQ för att få en ny länk."
-          );
-          setDialogTitle("Något gick fel!");
+          setDialogMessage(dt("failMessage"));
+          setDialogTitle(dt("failTitle"));
         }
       })
       .catch((error) => {
@@ -227,22 +159,6 @@ export default function CustomerFormGrid() {
 
   return (
     <>
-      {/* <AppBar position="relative">
-        <Toolbar>
-          <img
-            src="/HiQ_logo_white.png"
-            alt="HiQ Logo"
-            style={{ height: "35px", marginLeft: "15px", marginRight: "15px" }}
-          ></img>
-          <Typography variant="h5">Kvalitetsuppföljning</Typography>
-          <LocaleSwitcher
-            router={router}
-            currentPathname={currentPathname}
-            locale={locale}
-          />
-        </Toolbar>
-      </AppBar> */}
-
       <HeaderCustomerForm
         router={router}
         currentPathname={currentPathname}
@@ -252,10 +168,18 @@ export default function CustomerFormGrid() {
         {/* First row */}
         <Grid item xs={10} md={10} className="topRow">
           <Box sx={{ flexDirection: "row", display: "flex" }}>
-            <Box className="infoBoxes">Konsult: {consultantName}</Box>
-            <Box className="infoBoxes">Säljare: {salesName}</Box>
-            <Box className="infoBoxes">Kund: {customerName}</Box>
-            <Box className="infoBoxes">Datum: {createdDate}</Box>
+            <Box className="infoBoxes">
+              {t("consultant")}: {consultantName}
+            </Box>
+            <Box className="infoBoxes">
+              {t("salesperson")}: {salesName}
+            </Box>
+            <Box className="infoBoxes">
+              {t("customer")}: {customerName}
+            </Box>
+            <Box className="infoBoxes">
+              {t("date")}: {createdDate}
+            </Box>
           </Box>
         </Grid>
         {/* Second row */}
@@ -268,10 +192,10 @@ export default function CustomerFormGrid() {
             sx={{ flexDirection: "column" }}
             className="middleRow"
           >
-            {questions.map((q, index) => {
+            {customerFormInput.map((q, index) => {
               return (
                 <div
-                  key={q.id}
+                  key={index}
                   className="formChapterList"
                   onClick={() => setActiveStep(index)}
                   style={{
@@ -287,11 +211,11 @@ export default function CustomerFormGrid() {
                         color: "#ff329f",
                       }}
                     >
-                      {q.question}
+                      {t(`q${index}`)}
                     </Typography>
                   ) : (
                     <Typography variant="overline" fontSize={14}>
-                      {q.question}
+                      {t(`q${index}`)}
                     </Typography>
                   )}
                 </div>
@@ -303,18 +227,18 @@ export default function CustomerFormGrid() {
             item
             xs={12}
             sm={9}
-            md={6}
+            md={7}
             sx={{ flexDirection: "column", overflowY: "auto" }}
             className="middleRow"
           >
-            {activeStep < questions.length ? (
+            {activeStep < customerFormInput.length ? (
               <>
                 <Typography variant="h5" sx={{ textAlign: "center" }}>
-                  {questions[activeStep].description}
+                  {t(`d${activeStep}`)}
                 </Typography>
                 <Box className="centerContent">
-                  {questions[activeStep].inputType === "rating" && (
-                    <Box sx={{ "& button": { m: 4, marginTop: "4em" } }}>
+                  {customerFormInput[activeStep] === "rating" && (
+                    <Box sx={{ "& button": { m: 3, marginTop: "4em" } }}>
                       <ToggleButtonGroup
                         onChange={(event, newAlignment) =>
                           handleButtonChange(event, newAlignment, activeStep)
@@ -322,22 +246,22 @@ export default function CustomerFormGrid() {
                         exclusive
                         value={buttonValues[activeStep]}
                       >
-                        <ToggleButton value="Jag håller inte med alls">
-                          Jag håller inte med alls
+                        <ToggleButton value={t(`doNotAgreeAtAll`)}>
+                          {t(`doNotAgreeAtAll`)}
                         </ToggleButton>
-                        <ToggleButton value="Jag håller inte med">
-                          Jag håller inte med
+                        <ToggleButton value={t(`doNotAgree`)}>
+                          {t(`doNotAgree`)}
                         </ToggleButton>
-                        <ToggleButton value="Jag håller med">
-                          Jag håller med
+                        <ToggleButton value={t(`doAgree`)}>
+                          {t(`doAgree`)}
                         </ToggleButton>
-                        <ToggleButton value="Jag håller med helt och hållet">
-                          Jag håller med helt och hållet
+                        <ToggleButton value={t(`doAgreeCompletely`)}>
+                          {t(`doAgreeCompletely`)}
                         </ToggleButton>
                       </ToggleButtonGroup>
                     </Box>
                   )}
-                  {questions[activeStep].inputType === "text" && (
+                  {customerFormInput[activeStep] === "text" && (
                     <TextField
                       value={inputValues[activeStep]}
                       onChange={handleInputChange}
@@ -353,7 +277,7 @@ export default function CustomerFormGrid() {
             ) : (
               <>
                 <h2>{t("summary")}</h2>
-                {questions.map((q, index) => {
+                {customerFormInput.map((q, index) => {
                   return (
                     <>
                       <h4>{t(`q${index}`)}</h4>
@@ -376,31 +300,31 @@ export default function CustomerFormGrid() {
         <Grid item xs={4} className="bottomRow centerContent">
           {activeStep != 0 && (
             <Button variant="contained" onClick={handleBack}>
-              Tillbaka
+              {t("goBackButton")}
             </Button>
           )}
         </Grid>
         <Grid item xs={4} className="bottomRow centerContent">
           <Box sx={{ width: "100%" }}>
             <LinearProgressWithLabel
-              value={(activeStep / questions.length) * 100}
+              value={(activeStep / customerFormInput.length) * 100}
             />
           </Box>
         </Grid>
         <Grid item xs={4} className="bottomRow centerContent">
-          {activeStep < questions.length - 1 && (
+          {activeStep < customerFormInput.length - 1 && (
             <Button variant="contained" onClick={handleNext}>
-              Nästa
+              {t("nextButton")}
             </Button>
           )}
-          {activeStep == questions.length - 1 && (
+          {activeStep == customerFormInput.length - 1 && (
             <Button variant="contained" onClick={handleNext}>
-              Klar
+              {t("doneButton")}
             </Button>
           )}
-          {activeStep == questions.length && (
+          {activeStep == customerFormInput.length && (
             <Button variant="contained" onClick={sendJsonCustomerFormResponses}>
-              Skicka
+              {t("sendButton")}
             </Button>
           )}
           <DialogBox

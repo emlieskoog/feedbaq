@@ -1,125 +1,171 @@
 {
-    "Login":{
-        "email":"Email",
-        "password":"Password",
-        "login": "Log in",
-        "registerNewButton": "Register new user",
-        "registerTitle": "Register new user",
-        "name": "Name",
-        "role": "Role",
-        "sales": "Salesperson",
-        "manager": "Manager",
-        "consultant": "Consultant",
-        "cancelButton":"Cancel",
-        "registerButton": "Register"
-    },
-    "Account":{
-        "qualityHeader": "Quality Follow-up",
-        "localeSwitcherLabel": "Change Language",
+  "Login": {
+    "email": "Email",
+    "password": "Password",
+    "login": "Log in",
+    "registerNewButton": "Register new user",
+    "registerTitle": "Register new user",
+    "name": "Name",
+    "role": "Role",
+    "sales": "Salesperson",
+    "manager": "Manager",
+    "consultant": "Consultant",
+    "cancelButton": "Cancel",
+    "registerButton": "Register"
+  },
+  "Account": {
+    "qualityHeader": "Quality Follow-up",
+    "localeSwitcherLabel": "Change Language",
 
-        "sales": "Salesperson",
-        "manager": "Manager",
-        "consultant": "Consultant",
-        "business": "Business",
-        "newQualityForm": "Create new quality form",
-        "sortControl": "Sort by:",
-        "myConsultants": "My Consultants",
+    "sales": "Salesperson",
+    "manager": "Manager",
+    "consultant": "Consultant",
+    "business": "Business",
+    "newQualityForm": "Create new quality form",
+    "sortControl": "Sort by:",
+    "myConsultants": "My Consultants",
 
-        "profileDrawer": "Profile",
-        "settingsDrawer": "Settings",
-        "signOutDrawer": "Sign out",
+    "profileDrawer": "Profile",
+    "settingsDrawer": "Settings",
+    "signOutDrawer": "Sign out",
 
-        "tableHeadingConsultant": "Consultant",
-        "tableHeadingDate": "Date",
-        "tableHeadingCompany": "Company",
-        "tableOpenButton": "Open",
+    "tableHeadingConsultant": "Consultant",
+    "tableHeadingDate": "Date",
+    "tableHeadingCompany": "Company",
+    "tableOpenButton": "Open",
 
-        "locale": {
-            "en": "English",
-            "sv": "Svenska"
-          }
-        },
+    "locale": {
+      "en": "English",
+      "sv": "Svenska"
+    }
+  },
 
-        "Settings":{
-            "settingsHeading": "Settings",
-            "nameField": "Name",
-            "roleInput": "Role",
-            "salesSelect": "Salesperson",
-            "managerSelect": "Manager",
-            "consultantSelect": "Consultant",
-            "passwordField": "Password",
-            "passwordConfirmField": "Confirm your new password",
-            "regretButton": "Reset changes",
-            "saveButton": "Save changes",
-            "avatarDialogHeader": "Choose your new avatar :D"
+  "Settings": {
+    "settingsHeading": "Settings",
+    "nameField": "Name",
+    "roleInput": "Role",
+    "salesSelect": "Salesperson",
+    "managerSelect": "Manager",
+    "consultantSelect": "Consultant",
+    "passwordField": "Password",
+    "passwordConfirmField": "Confirm your new password",
+    "regretButton": "Reset changes",
+    "saveButton": "Save changes",
+    "avatarDialogHeader": "Choose your new avatar :D"
+  },
 
-        },
+  "QualityForm": {
+    "chapter": "Chapters",
+    "customer": "Customer",
+    "consultant": "Consultant",
+    "manager": "Manager",
+    "salesperson": "Salesperson",
+    "date": "Date",
+    "inputPlaceholder": "Write your answer here ...",
+    "summary": "Summary",
+    "noAnswer": "No answer.",
+    "generateLinkButton": "Create link",
+    "copyLinkAlert": "Copied!",
+    "goBackButton": "Go back",
+    "nextButton": "Next",
+    "doneButton": "Done",
+    "sendButton": "Send",
 
-    
-        "QualityForm": {
+    "q0": "Info",
+    "d0": "",
 
-            "chapter": "Chapters",
-            "chapterBottomToggler": "CHAPTERS",
-            "customer": "Customer",
-            "consultant": "Consultant",
-            "manager": "Manager",
-            "salesperson": "Salesperson",
-            "date": "Date",
-            "inputPlaceholder": "Write your answer here ...",
-            "summary": "Summary",
-            "noAnswer": "No answer.",
-            "generateLinkButton": "Create link",
-            "generateLink": "If you wish to generate a link to a customer instead press here:",
-            "copyLinkAlert": "Copied!",
-            "startButton": "Start",
-            "goBackButton": "Go back",
-            "nextButton": "Next",
-            "doneButton": "Done",
-            "sendButton": "Send",
-            "linkDialogText": "Link created",
+    "q1": "Start-up",
+    "d1": "Knowledge, right conditions to complete the assignment, computer and environment.",
 
-            "q0": "Info",
-            "d0": "",
-        
-            "q1": "Start-up",
-            "d1": "Knowledge, right conditions to complete the assignment, computer and environment.",
-        
-            "q2": "Results",
-            "d2": "Competence, delivery, quality, time.",
-        
-            "q3": "Responsibility",
-            "d3": "Collaboration, helpful, asks questions, commited, signals if something is wrong.",
-        
-            "q4": "Simplicity",
-            "d4": "Making the difficult simple, simple communication.",
-        
-            "q5": "Joy",
-            "d5": "Brings energy, fun to work with.",
-        
-            "q6": "Innovation",
-            "d6": "Creativity, comes up with new suggestions and ideas.",
-        
-            "q7": "Satisfaction (consultant)",
-            "d7": "How satisfied is the customer with the consultant on a scale of 1-10?",
-        
-            "q8": "Satisfaction (HiQ)",
-            "d8": "How satisfied is the customer with HiQ on a scale of 1-10?",
-        
-            "q9": "Improvements",
-            "d9": "What can be improved?",
-        
-            "q10": "Feedback (positive)",
-            "d10": "Positive feedback/praise from customers or users.",
-        
-            "q11": "Feedback (negative)",
-            "d11": "Negative feedback/criticism from customers or users.",
-        
-            "q12": "Other",
-            "d12": "General space for additional comments or topics not covered by other questions.",
-        
-            "q13": "Next Follow-up",
-            "d13": "Planned date or actions for the next follow-up."
-        }
-        
-          
+    "q2": "Results",
+    "d2": "Competence, delivery, quality, time.",
+
+    "q3": "Responsibility",
+    "d3": "Collaboration, helpful, asks questions, commited, signals if something is wrong.",
+
+    "q4": "Simplicity",
+    "d4": "Making the difficult simple, simple communication.",
+
+    "q5": "Joy",
+    "d5": "Brings energy, fun to work with.",
+
+    "q6": "Innovation",
+    "d6": "Creativity, comes up with new suggestions and ideas.",
+
+    "q7": "Satisfaction (consultant)",
+    "d7": "How satisfied is the customer with the consultant on a scale of 1-10?",
+
+    "q8": "Satisfaction (HiQ)",
+    "d8": "How satisfied is the customer with HiQ on a scale of 1-10?",
+
+    "q9": "Improvements",
+    "d9": "What can be improved?",
+
+    "q10": "Feedback (positive)",
+    "d10": "Positive feedback/praise from customers or users.",
+
+    "q11": "Feedback (negative)",
+    "d11": "Negative feedback/criticism from customers or users.",
+
+    "q12": "Other",
+    "d12": "General space for additional comments or topics not covered by other questions.",
+
+    "q13": "Next Follow-up",
+    "d13": "Planned date or actions for the next follow-up."
+  },
+
+  "CustomerForm": {
+    "customer": "Business",
+    "salesperson": "Salesperson",
+    "manager": "Manager",
+    "consultant": "Consultant",
+    "business": "Business",
+    "date": "Date",
+    "summary": "Summary",
+    "noAnswer": "No answer.",
+    "goBackButton": "Go back",
+    "nextButton": "Next",
+    "doneButton": "Done",
+    "sendButton": "Send",
+    "comment": "Comment...",
+    "doNotAgreeAtAll": "I do not agree at all",
+    "doNotAgree": "I do not agree",
+    "doAgree": "I agree",
+    "doAgreeCompletely": "I agree completely",
+
+    "q0": "Start-up",
+    "d0": "I think the consultant had a good understanding of the project",
+
+    "q1": "Results",
+    "d1": "I think the consultant has had good competence and delivered good results",
+
+    "q2": "Responsibility",
+    "d2": "I think the consultant has been communicative and cooperative",
+
+    "q3": "Simplicity",
+    "d3": "I think the consultant has made the difficult more easy",
+
+    "q4": "Satisfaction (consultant)",
+    "d4": "I am very pleased with the consultant",
+
+    "q5": "Satisfaction (HiQ)",
+    "d5": "I am very pleased with HiQ",
+
+    "q6": "Improvements (consultant)",
+    "d6": "What are some things the consultant could improve?",
+
+    "q7": "Improvements (HiQ)",
+    "d7": "What are some things HiQ could improve?",
+
+    "q8": "Other",
+    "d8": "Is there something else you would like to comment?"
+  },
+
+  "DialogBoxCForm": {
+    "successTitle": "Your answer is sent!",
+    "sucessMessage": "Thank you! The quality ensurance has been sent to HiQ.",
+    "failTitle": "Oops! Something went wrong!",
+    "failMessage": "Unfortunately, the link to this form is no longer valid. \nThis may be because a response has already been submitted. \n\nYou can always contact HiQ to get a new link.",
+    "close": "Close"
+  }
 }

@@ -24,22 +24,27 @@ import CloseIcon from "@mui/icons-material/Close";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+<<<<<<< Updated upstream
 import "../../../styles/form.css"
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+=======
+import "../../../styles/form.css";
+import CloseIcon from "@mui/icons-material/Close";
+>>>>>>> Stashed changes
 import Link from "next/link";
 import { API_BASE_URL, appRoutes, formInputType } from "../../../constants";
 import { useTranslations } from "next-intl";
 import { ConstructionOutlined } from "@mui/icons-material";
 
 export default function FormGrid() {
-
-  const t = useTranslations('QualityForm');
+  const t = useTranslations("QualityForm");
   const [activeStep, setActiveStep] = useState(0);
-  const [inputValues, setInputValues] = useState(Array(formInputType.length).fill(null));
+  const [inputValues, setInputValues] = useState(
+    Array(formInputType.length).fill(null)
+  );
 
   const [consultants, setConsultants] = useState([]);
   const [consultantId, setConsultantId] = useState("");
-
 
   const [sales, setSales] = useState([]);
   const [salesId, setSalesId] = useState("");
@@ -192,11 +197,11 @@ export default function FormGrid() {
 
   useEffect(() => {
     fetch(`${API_BASE_URL}/get-consultants-sales-customers`, {
-      method: 'GET',
-      credentials: 'include',
+      method: "GET",
+      credentials: "include",
       headers: {
-        'Content-Type': 'application/json'
-      }
+        "Content-Type": "application/json",
+      },
     })
       .then((response) => response.json())
       .then((data) => {
@@ -206,9 +211,10 @@ export default function FormGrid() {
       })
       .catch((error) => {
         console.error("Error:", error);
-      })
+      });
   }, []);
 
+<<<<<<< Updated upstream
 
 
   const chapter = () => (
@@ -216,11 +222,27 @@ export default function FormGrid() {
       <Typography variant="h6" >{t('chapter')}</Typography>
       {
         formInputType.map((q, index) => {
+=======
+  return (
+    <Grid container spacing={2} className="outerGrid">
+      <Grid
+        item
+        xs={false}
+        sm={3}
+        md={3}
+        sx={{ flexDirection: "column" }}
+        className="middleRow"
+      >
+        <Typography variant="h6">{t("chapter")}</Typography>
+        {formInputType.map((q, index) => {
+>>>>>>> Stashed changes
           return (
             <div
               key={index}
               className="formChapterList"
-              onClick={() => (isFormValid ? setActiveStep(index) : setOpenSnackbar(true))}
+              onClick={() =>
+                isFormValid ? setActiveStep(index) : setOpenSnackbar(true)
+              }
             >
               {index === activeStep ? (
                 <Typography
@@ -300,6 +322,7 @@ export default function FormGrid() {
           display: { xs: 'block', sm: 'none' },
         }}
       >
+<<<<<<< Updated upstream
         {formInputType[activeStep] === "info" && (
           <div >
             {generateLink()}
@@ -369,6 +392,101 @@ export default function FormGrid() {
 
                     <Box>
 
+=======
+        {activeStep < formInputType.length ? (
+          <>
+            <Typography variant="h5" sx={{ textAlign: "center" }}>
+              {t(`q${activeStep}`)}
+            </Typography>
+            <Typography variant="subtitle1" sx={{ textAlign: "center" }}>
+              {t(`d${activeStep}`)}
+            </Typography>
+            <Box className="centerContent">
+              {formInputType[activeStep] === "text" && (
+                <TextField
+                  value={inputValues[activeStep]}
+                  onChange={handleInputChange}
+                  placeholder={t("inputPlaceholder")}
+                  multiline
+                  fullWidth
+                  rows={4}
+                  variant="outlined"
+                />
+              )}
+              {formInputType[activeStep] === "rating" && (
+                <Rating
+                  value={inputValues[activeStep]}
+                  onChange={handleInputChange}
+                  max={10}
+                  size="large"
+                />
+              )}
+
+              {formInputType[activeStep] === "info" && (
+                <Box>
+                  <div
+                    style={{
+                      width: "55vh",
+                      margin: "10px",
+                    }}
+                  >
+                    <FormControl required fullWidth margin="normal">
+                      <InputLabel id="select-label-consultant">
+                        {t("consultant")}
+                      </InputLabel>
+
+                      <Select
+                        labelId="select-label-consultant"
+                        fullWidth
+                        value={consultantId}
+                        onChange={handleConsultantChange}
+                      >
+                        {consultants.map((consultant: any) => (
+                          <MenuItem value={consultant.id} key={consultant.id}>
+                            {consultant.name}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+
+                    <FormControl required fullWidth margin="normal">
+                      <InputLabel id="select-label-sales">
+                        {t("salesperson")}
+                      </InputLabel>
+                      <Select
+                        labelId="select-label-sales"
+                        fullWidth
+                        value={salesId}
+                        onChange={handleSalesChange}
+                      >
+                        {sales.map((salesperson: any) => (
+                          <MenuItem value={salesperson.id} key={salesperson.id}>
+                            {salesperson.name}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+
+                    <FormControl required fullWidth margin="normal">
+                      <InputLabel id="select-label-customer">
+                        {t("customer")}
+                      </InputLabel>
+                      <Select
+                        labelId="select-label-customer"
+                        fullWidth
+                        value={customerId}
+                        onChange={handleCustomerChange}
+                      >
+                        {customers.map((customer: any) => (
+                          <MenuItem value={customer.id} key={customer.id}>
+                            {customer.customer_name}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+>>>>>>> Stashed changes
                       <FormControl required fullWidth margin="normal">
                         <InputLabel id="select-label-consultant">
                           {t('consultant')}
@@ -387,6 +505,7 @@ export default function FormGrid() {
                           ))}
                         </Select>
                       </FormControl>
+<<<<<<< Updated upstream
 
                       <FormControl required fullWidth margin="normal">
                         <InputLabel id="select-label-sales">
@@ -461,9 +580,91 @@ export default function FormGrid() {
             )
             }
           </div>
+=======
+                    </LocalizationProvider>
+                  </div>
+                </Box>
+              )}
+            </Box>
+          </>
+        ) : (
+          <>
+            <h2>{t("summary")}</h2>
+            {formInputType.map((q, index) => {
+              return (
+                <>
+                  <h4>{t(`q${index}`)}</h4>
+                  <Box sx={{ marginBottom: "10px" }}>
+                    {inputValues[index] ? (
+                      <p>{inputValues[index]}</p>
+                    ) : (
+                      <p>{t("noAnswer")}</p>
+                    )}
+                  </Box>
+                </>
+              );
+            })}
+          </>
+        )}
+      </Grid>
+
+      <Grid
+        item
+        xs={false}
+        sm={false}
+        md={3}
+        className="middleRow centerContent"
+      >
+        <Grid container spacing={2} sx={{ flexDirection: "column" }}>
+          <Grid item xs={10} className="centerContent">
+            <Alert severity="info">
+              Om du istället önskar generera en länk till en kund, klickar du
+              här:
+              <Button
+                variant="contained"
+                onClick={
+                  isFormValid
+                    ? sendJsonCustomerForm
+                    : () => setOpenSnackbar(true)
+                }
+                sx={{ width: "90%", height: "30%", mt: "2px" }}
+              >
+                {t("generateLinkButton")}
+              </Button>
+            </Alert>
+          </Grid>
+          <Grid item xs={14}>
+            <Collapse in={open}>
+              <Alert
+                action={
+                  <IconButton
+                    aria-label="close"
+                    color="inherit"
+                    size="small"
+                    onClick={() => {
+                      setOpen(false);
+                    }}
+                  >
+                    <CloseIcon fontSize="inherit" />
+                  </IconButton>
+                }
+                severity="info"
+                sx={{ cursor: "pointer" }}
+              >
+                <p onClick={handleCopyToClipboard}> {generatedLink}</p>
+              </Alert>
+            </Collapse>
+            {copySuccess && (
+              <Alert severity="success">{t("copyLinkAlert")}!</Alert>
+            )}{" "}
+          </Grid>
+        </Grid>
+      </Grid>
+>>>>>>> Stashed changes
 
         </Grid >
 
+<<<<<<< Updated upstream
         {/* Generate link column, only visible on info page and large screens */}
         <Grid
           item
@@ -581,5 +782,59 @@ export default function FormGrid() {
       </Grid>
     </Grid >
 
+=======
+      <Grid item xs={4} className="bottomRow centerContent">
+        {activeStep != 0 && (
+          <Button variant="contained" onClick={handleBack}>
+            {t("goBackButton")}
+          </Button>
+        )}
+      </Grid>
+      <Grid item xs={4} className="bottomRow centerContent">
+        <Box sx={{ width: "100%" }}>
+          <LinearProgressWithLabel
+            value={(activeStep / formInputType.length) * 100}
+          />
+        </Box>
+      </Grid>
+      <Grid item xs={4} className="bottomRow centerContent">
+        {activeStep == 0 && (
+          <Button
+            variant="contained"
+            onClick={isFormValid ? handleNext : () => setOpenSnackbar(true)}
+          >
+            Starta
+          </Button>
+        )}
+
+        {activeStep > 0 && activeStep < formInputType.length - 1 && (
+          <Button variant="contained" onClick={handleNext}>
+            {t("nextButton")}
+          </Button>
+        )}
+        {activeStep == formInputType.length - 1 && (
+          <Button variant="contained" onClick={handleNext}>
+            {t("doneButton")}
+          </Button>
+        )}
+        {activeStep == formInputType.length && (
+          <Link href={appRoutes.ACCOUNT_PAGE}>
+            <Button variant="contained" onClick={sendJsonForm}>
+              {t("sendButton")}
+            </Button>
+          </Link>
+        )}
+        <Snackbar
+          open={openSnackbar}
+          autoHideDuration={6000}
+          onClose={() => setOpenSnackbar(false)}
+        >
+          <Alert severity="error">
+            Fyll i alla obligatoriska fält innan du fortsätter!
+          </Alert>
+        </Snackbar>
+      </Grid>
+    </Grid>
+>>>>>>> Stashed changes
   );
 }
