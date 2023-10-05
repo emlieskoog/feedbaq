@@ -30,7 +30,6 @@ public class ConsultantControllerTests {
     @InjectMocks
     private ConsultantController consultantController;    
     
-    
     @Test
     public void testGetAllConsultantsSuccess() {
         
@@ -40,9 +39,14 @@ public class ConsultantControllerTests {
         consultant.put("id", 1);
         consultant.put("name", "consultant1");
         mockData.add(consultant);
+
+        String sql = "SELECT uc.id, uc.name, uc.role, um.name AS manager_name FROM users uc "+
+        "LEFT JOIN consultants_managers cm ON uc.id=cm.consultant_id "+
+        "LEFT JOIN users um ON cm.manager_id=um.id "+
+        "WHERE uc.role='CONSULTANT';";
         
         // Mock the behavior of jdbcTemplate.queryForList to return mock data above
-        when(jdbcTemplate.queryForList("SELECT * FROM users WHERE role='CONSULTANT';")).thenReturn(mockData);
+        when(jdbcTemplate.queryForList(sql)).thenReturn(mockData);
 
         // Act
         ResponseEntity<Object> response = consultantController.getAllConsultants();
@@ -56,8 +60,13 @@ public class ConsultantControllerTests {
     @Test
     public void testGetAllConsultantsThrowsException() {
         
+        String sql = "SELECT uc.id, uc.name, uc.role, um.name AS manager_name FROM users uc "+
+        "LEFT JOIN consultants_managers cm ON uc.id=cm.consultant_id "+
+        "LEFT JOIN users um ON cm.manager_id=um.id "+
+        "WHERE uc.role='CONSULTANT';";
+
         // Mock the behavior of jdbcTemplate.queryForList to throw a DataAccessException
-        doThrow(new DataAccessException("Test DataAccessException") {}).when(jdbcTemplate).queryForList("SELECT * FROM users WHERE role='CONSULTANT';");
+        doThrow(new DataAccessException("Test DataAccessException") {}).when(jdbcTemplate).queryForList(sql);
 
         // Act
         ResponseEntity<Object> response = consultantController.getAllConsultants();
@@ -66,8 +75,6 @@ public class ConsultantControllerTests {
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
         assertEquals("An error occurred while fetching consultants: Test DataAccessException", response.getBody());
     }
-    
-    
     
     
 }

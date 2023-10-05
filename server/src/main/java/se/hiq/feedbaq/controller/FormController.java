@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,5 +92,76 @@ public class FormController {
             return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/get-consultants-sales-customers")
+    @PreAuthorize("hasAnyAuthority('SALES', 'MANAGER')")
+    public ResponseEntity<Object> getConsultantsSalesCustomers() {
+
+        Map<String, Object> responseMap = new HashMap<>();
+
+        // Get all consultants
+        ResponseEntity<Object> consultantsResponse = getAllConsultants();
+
+        // Get all sales
+        ResponseEntity<Object> salesResponse = getAllSales();
+
+        // Get all customers
+        ResponseEntity<Object> customersResponse = getAllCustomers();
+
+        // Check if any errors occured while fetching data
+        if (consultantsResponse.getStatusCode() == HttpStatus.INTERNAL_SERVER_ERROR) {
+            return consultantsResponse;
+        }
+
+        if (salesResponse.getStatusCode() == HttpStatus.INTERNAL_SERVER_ERROR) {
+            return salesResponse;
+        }
+
+        if (customersResponse.getStatusCode() == HttpStatus.INTERNAL_SERVER_ERROR) {
+            return customersResponse;
+        }
+
+        responseMap.put("consultants", consultantsResponse.getBody());
+        responseMap.put("sales", salesResponse.getBody());
+        responseMap.put("customers", customersResponse.getBody());
+
+        return new ResponseEntity<>(responseMap, HttpStatus.OK);
+
+    }
     
+    private ResponseEntity<Object> getAllConsultants() {
+        try {
+            List<Map<String, Object>> result = jdbcTemplate.queryForList("SELECT uc.id, uc.name, uc.role, um.name AS manager_name FROM users uc "+
+                "LEFT JOIN consultants_managers cm ON uc.id=cm.consultant_id "+
+                "LEFT JOIN users um ON cm.manager_id=um.id "+
+                "WHERE uc.role='CONSULTANT';");
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (DataAccessException e) {
+            return handleDataAccessException(e, "consultants");
+        }
+    }
+
+    private ResponseEntity<Object> getAllSales() {
+        try {
+            List<Map<String, Object>> result = jdbcTemplate.queryForList("SELECT id, name FROM users WHERE role='SALES';");
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (DataAccessException e) {
+            return handleDataAccessException(e, "sales");
+        }
+    }
+
+    private ResponseEntity<Object> getAllCustomers() {
+        try {
+            List<Map<String, Object>> result = jdbcTemplate.queryForList("SELECT * FROM customers;");
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (DataAccessException e) {
+            return handleDataAccessException(e, "customers");
+        }
+    }
+
+    private ResponseEntity<Object> handleDataAccessException(DataAccessException e, String entityType) {
+        String errorMessage = "An error occurred while fetching " + entityType + ": " + e.getMessage();
+        return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 }

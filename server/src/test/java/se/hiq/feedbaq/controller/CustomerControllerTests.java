@@ -258,7 +258,7 @@ public class CustomerControllerTests {
 
         String errorMessage = "Customer form with uuid " + uuid + " does not exist or is not valid.";
 
-        ResponseEntity<Object> response = customerController.saveCustomerForm(requestBody);
+        ResponseEntity<Object> response = customerController.saveForm(requestBody);
 
         assertNotNull(response);
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());

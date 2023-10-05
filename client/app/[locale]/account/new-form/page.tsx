@@ -177,57 +177,22 @@ export default function FormGrid() {
   };
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/consultants`, {
-      method: "GET",
-      credentials: "include",
+    fetch(`${API_BASE_URL}/get-consultants-sales-customers`, {
+      method: 'GET',
+      credentials: 'include',
       headers: {
-        "Content-Type": "application/json",
-      },
+        'Content-Type': 'application/json'
+      }
     })
       .then((response) => response.json())
       .then((data) => {
-        setConsultants(data);
-        console.log("Consultant data received", data);
+        setConsultants(data.consultants);
+        setSales(data.sales);
+        setCustomers(data.customers);
       })
       .catch((error) => {
         console.error("Error:", error);
-      });
-  }, []);
-
-  useEffect(() => {
-    fetch(`${API_BASE_URL}/sales`, {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setSales(data);
-        console.log("Sales data received", data);
       })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  }, []);
-
-  useEffect(() => {
-    fetch(`${API_BASE_URL}/customers`, {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setCustomers(data);
-        console.log("Customer data received", data);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
   }, []);
 
   return (
