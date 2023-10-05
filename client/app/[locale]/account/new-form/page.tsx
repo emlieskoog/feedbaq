@@ -13,28 +13,20 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  Collapse,
   Alert,
   IconButton,
   FormControl,
   Snackbar,
-  Drawer,
-  Dialog, DialogTitle, DialogContent, DialogContentText
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-<<<<<<< Updated upstream
-import "../../../styles/form.css"
-import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
-=======
 import "../../../styles/form.css";
 import CloseIcon from "@mui/icons-material/Close";
->>>>>>> Stashed changes
 import Link from "next/link";
 import { API_BASE_URL, appRoutes, formInputType } from "../../../constants";
 import { useTranslations } from "next-intl";
-import { ConstructionOutlined } from "@mui/icons-material";
 
 export default function FormGrid() {
   const t = useTranslations("QualityForm");
@@ -53,9 +45,9 @@ export default function FormGrid() {
   const [customerId, setCustomerId] = useState("");
 
   const [generatedLink, setGeneratedLink] = useState<any>("");
-  const [copySuccess, setCopySuccess] = useState(false);
+  const [copySuccess, setCopySuccess] = useState<any>("");
 
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [open, setOpen] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
 
   const isFormValid = consultantId && salesId && customerId;
@@ -96,7 +88,6 @@ export default function FormGrid() {
         }, 3000);
       })
       .catch((err) => console.error("Failed to copy: ", err));
-    setDialogOpen(false);
   };
 
   const handleInputChange = (event: any) => {
@@ -131,13 +122,6 @@ export default function FormGrid() {
     setCreatedDate(event);
   };
 
-  const [drawerOpen, setDrawerOpen] = useState(false);
-
-  const toggleDrawer = () => {
-    setDrawerOpen(!drawerOpen);
-  };
-
-
   const sendJsonCustomerForm = () => {
     const requestBody = {
       consultantId: consultantId,
@@ -162,7 +146,7 @@ export default function FormGrid() {
 
         const link = "http://localhost:3000/customer-form/" + data.uuid;
         setGeneratedLink(link);
-        setDialogOpen(true);
+        setOpen(true);
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -214,15 +198,6 @@ export default function FormGrid() {
       });
   }, []);
 
-<<<<<<< Updated upstream
-
-
-  const chapter = () => (
-    <>
-      <Typography variant="h6" >{t('chapter')}</Typography>
-      {
-        formInputType.map((q, index) => {
-=======
   return (
     <Grid container spacing={2} className="outerGrid">
       <Grid
@@ -235,7 +210,6 @@ export default function FormGrid() {
       >
         <Typography variant="h6">{t("chapter")}</Typography>
         {formInputType.map((q, index) => {
->>>>>>> Stashed changes
           return (
             <div
               key={index}
@@ -258,141 +232,16 @@ export default function FormGrid() {
               )}
             </div>
           );
-        })
-      }
-    </>
-  );
-
-  const generateLink = () => (
-
-    <>
-      <Alert icon={false} sx={{ flexDirection: 'column', alignItems: 'center' }}>
-        <Typography>
-          {t('generateLink')}
-        </Typography>
-        <Button
-          variant="contained"
-          onClick={isFormValid ? sendJsonCustomerForm : () => setOpenSnackbar(true)}
-          sx={{ width: "90%", height: "20%", m: "10px" }}
-        >
-          {t('generateLinkButton')}
-        </Button>
-      </Alert>
-      {linkAlert()}
-    </>
-
-  );
-
-  const linkAlert = () => (
-    <>
-      <Dialog open={dialogOpen} onClose={() => {
-        setDialogOpen(false);
-      }} >
-        <DialogTitle>{t('linkDialogText')}</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            < Alert
-              severity="info"
-              sx={{ cursor: "pointer" }}
-            >
-              <p onClick={handleCopyToClipboard}> {generatedLink}</p>
-            </Alert>
-
-
-          </DialogContentText>
-        </DialogContent>
-
-
-      </Dialog>
-
-
-    </>
-  );
-
-
-
-  return (
-    <Grid container className="outerGrid" >
-
-      {/* Generate link item, only visible on info page and small screens */}
+        })}
+      </Grid>
       <Grid
         item
         xs={12}
-        sx={{
-          display: { xs: 'block', sm: 'none' },
-        }}
+        sm={9}
+        md={6}
+        sx={{ flexDirection: "column", overflowY: "auto" }}
+        className="middleRow"
       >
-<<<<<<< Updated upstream
-        {formInputType[activeStep] === "info" && (
-          <div >
-            {generateLink()}
-          </div>)
-        }</Grid>
-
-
-      {/* First row */}
-      <Grid container >
-
-        {/* Chapter column, only visible on large screen */}
-        <Grid
-          item
-          xs={false}
-          sm={3}
-          md={3}
-          sx={{
-            display: { xs: 'none', sm: 'block' },
-          }}
-          className="middleRow"
-        >
-          <div className="boxPadding">
-            {chapter()}
-          </div>
-        </Grid>
-
-        {/* Question/answer column */}
-        <Grid
-          item
-          xs={12}
-          sm={6}
-          md={6}
-          sx={{ flexDirection: "column", overflowY: "auto" }}
-          className="middleRow"
-        >
-          <div className="boxPadding">
-            {activeStep < formInputType.length ? (
-              <>
-                <Typography variant="h5" sx={{ textAlign: "center", mb: "10px" }}>
-                  {t(`q${activeStep}`)}
-                </Typography>
-                <Typography variant="subtitle1" sx={{ textAlign: "center", mb: "30px" }}>
-                  {t(`d${activeStep}`)}
-                </Typography>
-                <Box className="centerContent">
-                  {formInputType[activeStep] === "text" && (
-                    <TextField
-                      value={inputValues[activeStep]}
-                      onChange={handleInputChange}
-                      placeholder={t('inputPlaceholder')}
-                      multiline
-                      fullWidth
-                      rows={8}
-                      variant="outlined"
-                    />
-                  )}
-                  {formInputType[activeStep] === "rating" && (
-                    <Rating
-                      value={inputValues[activeStep]}
-                      onChange={handleInputChange}
-                      max={10}
-                      size="large"
-                    />
-                  )}
-
-                  {formInputType[activeStep] === "info" && (
-
-                    <Box>
-
-=======
         {activeStep < formInputType.length ? (
           <>
             <Typography variant="h5" sx={{ textAlign: "center" }}>
@@ -486,101 +335,14 @@ export default function FormGrid() {
                     </FormControl>
 
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
->>>>>>> Stashed changes
                       <FormControl required fullWidth margin="normal">
-                        <InputLabel id="select-label-consultant">
-                          {t('consultant')}
-                        </InputLabel>
-
-                        <Select
-                          labelId="select-label-consultant"
-                          fullWidth
-                          value={consultantId}
-                          onChange={handleConsultantChange}
-                        >
-                          {consultants.map((consultant: any) => (
-                            <MenuItem value={consultant.id} key={consultant.id}>
-                              {consultant.name}
-                            </MenuItem>
-                          ))}
-                        </Select>
+                        <DatePicker
+                          label="Datum"
+                          value={createdDate}
+                          format="YYYY-MM-DD"
+                          onChange={handleDateChange}
+                        />
                       </FormControl>
-<<<<<<< Updated upstream
-
-                      <FormControl required fullWidth margin="normal">
-                        <InputLabel id="select-label-sales">
-                          {t('salesperson')}
-                        </InputLabel>
-                        <Select
-                          labelId="select-label-sales"
-                          fullWidth
-                          value={salesId}
-                          onChange={handleSalesChange}
-                        >
-                          {sales.map((salesperson: any) => (
-                            <MenuItem value={salesperson.id} key={salesperson.id}>
-                              {salesperson.name}
-                            </MenuItem>
-                          ))}
-                        </Select>
-                      </FormControl>
-
-                      <FormControl required fullWidth margin="normal">
-                        <InputLabel id="select-label-customer">
-                          {t('customer')}
-                        </InputLabel>
-                        <Select
-                          labelId="select-label-customer"
-                          fullWidth
-                          value={customerId}
-                          onChange={handleCustomerChange}
-                        >
-                          {customers.map((customer: any) => (
-                            <MenuItem value={customer.id} key={customer.id}>
-                              {customer.customer_name}
-                            </MenuItem>
-                          ))}
-                        </Select>
-                      </FormControl>
-
-                      <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <FormControl required fullWidth margin="normal">
-                          <DatePicker
-                            label="Datum"
-                            value={createdDate}
-                            format="YYYY-MM-DD"
-                            onChange={handleDateChange}
-                          />
-                        </FormControl>
-                      </LocalizationProvider>
-
-                    </Box>
-                  )
-                  }
-                </Box >
-              </>
-            ) : (
-              <>
-                <h2>{t('summary')}</h2>
-                {formInputType.map((q, index) => {
-                  return (
-                    <>
-                      <h4>{t(`q${index}`)}</h4>
-                      <Box sx={{ marginBottom: "10px" }}>
-                        {inputValues[index] ? (
-                          <p>{inputValues[index]}</p>
-                        ) : (
-                          <p>{t('noAnswer')}</p>
-                        )}
-                      </Box>
-                    </>
-                  );
-                })}
-              </>
-            )
-            }
-          </div>
-=======
                     </LocalizationProvider>
                   </div>
                 </Box>
@@ -660,129 +422,9 @@ export default function FormGrid() {
           </Grid>
         </Grid>
       </Grid>
->>>>>>> Stashed changes
 
-        </Grid >
+      {/* Third row */}
 
-<<<<<<< Updated upstream
-        {/* Generate link column, only visible on info page and large screens */}
-        <Grid
-          item
-          xs={false}
-          sm={3}
-          md={3}
-          sx={{
-            mt: '10px',
-            display: { xs: 'none', sm: 'block' },
-          }}
-          className="middleRow"
-        >
-          {formInputType[activeStep] === "info" && (
-            <div className="linkBox">
-              {generateLink()}
-            </div>)
-          }
-        </Grid>
-      </Grid >
-
-      <Grid container >
-        < Grid item xs={3} className="bottomRow centerContent" >
-          {activeStep != 0 && (
-            <Button variant="contained" onClick={handleBack}>
-              {t('goBackButton')}
-            </Button>
-          )
-          }
-        </Grid >
-        <Grid item xs={6} className="bottomRow centerContent">
-          <Box sx={{ width: "100%" }}>
-            <LinearProgressWithLabel
-              value={(activeStep / formInputType.length) * 100}
-            />
-          </Box>
-        </Grid>
-        <Grid item xs={3} className="bottomRow centerContent">
-          {
-            activeStep == 0 && (
-              <Button
-                variant="contained"
-                onClick={isFormValid ? handleNext : () => setOpenSnackbar(true)}
-              >
-                {t('startButton')}
-              </Button>
-            )
-          }
-
-
-          {
-            (activeStep > 0) && (activeStep < formInputType.length - 1) && (
-
-              <Button variant="contained" onClick={handleNext}>
-                {t('nextButton')}
-              </Button>
-            )
-          }
-          {
-            activeStep == formInputType.length - 1 && (
-              <Button variant="contained" onClick={handleNext}>
-                {t('doneButton')}
-              </Button>
-            )
-          }
-          {
-            activeStep == formInputType.length && (
-              <Link href={appRoutes.ACCOUNT_PAGE}>
-                <Button variant="contained" onClick={sendJsonForm}>
-                  {t('sendButton')}
-                </Button>
-              </Link>
-            )
-          }
-          <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={() => setOpenSnackbar(false)}>
-            <Alert severity='error'>
-              Fyll i alla obligatoriska fält innan du fortsätter!
-            </Alert>
-          </Snackbar>
-
-          <Snackbar open={copySuccess} autoHideDuration={6000} onClose={() => setCopySuccess(false)}>
-            <Alert severity="success">{t('copyLinkAlert')}</Alert>
-          </Snackbar>
-
-        </Grid >
-      </Grid >
-
-      {/* Chapter Drawer shown on small screens/mobile and on all pages not info*/}
-      <Grid
-        item
-        xs={12}
-        sx={{
-          display: { xs: 'block', sm: 'none' },
-        }}
-      >
-        {!(formInputType[activeStep] === "info") && (
-          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <Typography variant="h6" onClick={toggleDrawer} style={{ cursor: 'pointer', color: '#ff329f' }}>
-              {t('chapterBottomToggler')}
-              <IconButton size="small">
-                <ArrowDropUpIcon />
-              </IconButton>
-            </Typography>
-            <Drawer
-              anchor="bottom"
-              open={drawerOpen}
-              onClose={toggleDrawer}
-              sx={{ display: { xs: 'block', sm: 'none' } }}
-            >
-              <div className="boxPadding">
-                {chapter()}
-              </div>
-            </Drawer>
-          </Box>
-        )}
-      </Grid>
-    </Grid >
-
-=======
       <Grid item xs={4} className="bottomRow centerContent">
         {activeStep != 0 && (
           <Button variant="contained" onClick={handleBack}>
@@ -835,6 +477,5 @@ export default function FormGrid() {
         </Snackbar>
       </Grid>
     </Grid>
->>>>>>> Stashed changes
   );
 }
