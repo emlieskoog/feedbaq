@@ -8,26 +8,28 @@ import {
   TableRow,
 } from "@mui/material";
 import Link from "next/link";
-import { useTranslations } from 'next-intl';
+import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
 
 export default function GenericTable(props: any) {
-  const t = useTranslations('Account');
+  const t = useTranslations("Account");
+
+  const router = useRouter();
 
   const { formData, selectedOption } = props;
 
   const tableHeadings =
     selectedOption === "SALES"
-
-
-      ? [t('tableHeadingConsultant'), t('tableHeadingDate'), ""]
-      : [t('tableHeadingCompany'), t('tableHeadingDate'), ""];
+      ? [t("tableHeadingConsultant"), t("tableHeadingDate"), ""]
+      : [t("tableHeadingCompany"), t("tableHeadingDate"), ""];
 
   const handleOpenClick = (event: any, formId: number) => {
     // Prevent the default behavior of the link
     event.preventDefault();
 
     // Navigate to the form details page with the selected form's ID
-    window.location.href = `/account/formdetails?id=${formId}`;
+
+    router.replace(`account/formdetails?id=${formId}`);
   };
 
   return (
@@ -59,7 +61,7 @@ export default function GenericTable(props: any) {
                   href="/account/formdetails"
                   onClick={(event) => handleOpenClick(event, form.id)}
                 >
-                  {t('tableOpenButton')}
+                  {t("tableOpenButton")}
                 </Link>
               </TableCell>
             </TableRow>

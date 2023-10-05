@@ -1,20 +1,32 @@
 "use client";
 
 import React, { useState } from "react";
-import { Button, Avatar, TextField, Link, Paper, Box, Grid, Typography, Snackbar, Alert } from "@mui/material";
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import RegisterDialog from '../components/registerdialog';
-import { API_BASE_URL } from '../constants';
-import { useTranslations, useLocale } from 'next-intl';
+import {
+  Button,
+  Avatar,
+  TextField,
+  Link,
+  Paper,
+  Box,
+  Grid,
+  Typography,
+  Snackbar,
+  Alert,
+} from "@mui/material";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import RegisterDialog from "../components/registerdialog";
+import { API_BASE_URL } from "../constants";
+import { useTranslations, useLocale } from "next-intl";
 import LocaleSwitcher from "../components/localeswitcher";
-import { usePathname, useRouter } from 'next-intl/client';
+import { usePathname, useRouter } from "next-intl/client";
+import { useSearchParams } from "next/navigation";
 
 export default function LoginPage() {
-
-  const t = useTranslations('Login');
+  const t = useTranslations("Login");
   const router = useRouter();
   const currentPathname = usePathname();
   const locale = useLocale();
+  const query = useSearchParams();
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -25,7 +37,9 @@ export default function LoginPage() {
 
   const handleLogin = async (event: any) => {
     event.preventDefault();
-    const { email, password } = Object.fromEntries(new FormData(event.target).entries());
+    const { email, password } = Object.fromEntries(
+      new FormData(event.target).entries()
+    );
 
     const requestBody = { email, password };
 
@@ -35,44 +49,42 @@ export default function LoginPage() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(requestBody),
-      credentials: 'include'
-    })
-      .then(async (response) => {
-        if (response.status === 401) {
-          console.error('Error authenticating user!');
-          setOpenSnackbar(true);
-        } else if (!response.ok) {
-          console.error('HTTP error! Status:', response.status);
-        } else {
-          console.log('Woho du angav rätt mail och lösenord :-D');
+      credentials: "include",
+    }).then(async (response) => {
+      if (response.status === 401) {
+        console.error("Error authenticating user!");
+        setOpenSnackbar(true);
+      } else if (!response.ok) {
+        console.error("HTTP error! Status:", response.status);
+      } else {
+        console.log("Woho du angav rätt mail och lösenord :-D");
 
-          router.push('/account');
-        }
-      });
+        router.push("/account");
+      }
+    });
   };
 
   return (
-    <Grid container component="main" sx={{ height: '100vh' }}>
-
+    <Grid container component="main" sx={{ height: "100vh" }}>
       <Grid
         item
         xs={false}
         sm={false}
         md={5}
         sx={{
-          backgroundImage: 'url(/feedbaqlogin-vertical.png)',
-          backgroundRepeat: 'no-repeat',
-          backgroundColor: 'white',
-          backgroundPosition: 'center',
+          backgroundImage: "url(/feedbaqlogin-vertical.png)",
+          backgroundRepeat: "no-repeat",
+          backgroundColor: "white",
+          backgroundPosition: "center",
         }}
       />
       <Grid item xs={12} sm={12} md={7} component={Paper} elevation={10} square>
         <Box
           sx={{
             mx: 5,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
           }}
         >
           <Avatar sx={{ m: 5 }}>
@@ -87,7 +99,7 @@ export default function LoginPage() {
               required
               fullWidth
               id="email"
-              label={t('email')}
+              label={t("email")}
               name="email"
               autoComplete="email"
               autoFocus
@@ -97,7 +109,7 @@ export default function LoginPage() {
               required
               fullWidth
               name="password"
-              label={t('password')}
+              label={t("password")}
               type="password"
               id="password"
               autoComplete="current-password"
@@ -108,24 +120,40 @@ export default function LoginPage() {
               variant="contained"
               sx={{ mt: 5, mb: 2 }}
             >
-              {t('login')}
+              {t("login")}
             </Button>
           </form>
 
-          <Link href="#" onClick={handleOpenDialog} sx={{ mb: '20px' }}>
-            {t('registerNewButton')}
+          <Link href="#" onClick={handleOpenDialog} sx={{ mb: "20px" }}>
+            {t("registerNewButton")}
           </Link>
-          <LocaleSwitcher router={router} currentPathname={currentPathname} locale={locale} />
+          <LocaleSwitcher
+            router={router}
+            currentPathname={currentPathname}
+            locale={locale}
+            query={query}
+          />
 
-          <Typography variant="body2" sx={{ color: '#ff329f', mt: '30px' }}>Powered by WALE  &trade;</Typography>
-          {isDialogOpen && <RegisterDialog isOpen={isDialogOpen} onClose={() => setIsDialogOpen(false)} />}
+          <Typography variant="body2" sx={{ color: "#ff329f", mt: "30px" }}>
+            Powered by WALE &trade;
+          </Typography>
+          {isDialogOpen && (
+            <RegisterDialog
+              isOpen={isDialogOpen}
+              onClose={() => setIsDialogOpen(false)}
+            />
+          )}
         </Box>
       </Grid>
-      <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={() => setOpenSnackbar(false)}>
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={6000}
+        onClose={() => setOpenSnackbar(false)}
+      >
         <Alert severity="info">
           Fel mailadress eller lösenord, vänligen försök igen.
         </Alert>
       </Snackbar>
-    </Grid >
+    </Grid>
   );
 }

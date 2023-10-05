@@ -157,26 +157,31 @@ export default function CustomerFormGrid() {
   };
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/customer-form/${params.uuid}`, {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setConsulantName(data.consultant_name);
-        setSalesName(data.sales_name);
-        setCustomerName(data.customer_name);
-        setCreatedDate(data.date);
-
-        console.log("Data received", data);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+    fetchUniqueLinkData();
   }, []);
+
+  async function fetchUniqueLinkData() {
+    try {
+      await fetch(`${API_BASE_URL}/customer-form/${params.uuid}`, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          setConsulantName(data.consultant_name);
+          setSalesName(data.sales_name);
+          setCustomerName(data.customer_name);
+          setCreatedDate(data.date);
+
+          console.log("Data received", data);
+        });
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
 
   const sendJsonCustomerFormResponses = () => {
     const requestBody = {
