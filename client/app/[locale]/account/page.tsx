@@ -100,7 +100,7 @@ export default function LandingPage() {
           {/* First column (left) */}
           <Grid
             item
-            xs={6}
+            xs={12}
             sm={6}
             md={6}
             lg={6}
@@ -132,7 +132,7 @@ export default function LandingPage() {
           {/* Second column (right) */}
           <Grid
             item
-            xs={6}
+            xs={false}
             sm={6}
             md={6}
             lg={6}
@@ -156,7 +156,7 @@ export default function LandingPage() {
             <>
               {role === "SALES" && (
                 <div>
-                  <FormControl sx={{ minWidth: 200, mb: 2 }} size="medium">
+                  <FormControl sx={{ minWidth: 200, mt: 3, mb: 2 }} size="medium">
                     <InputLabel>{t('sortControl')}</InputLabel>
                     <Select
                       value={sortingIndex}
@@ -197,7 +197,7 @@ export default function LandingPage() {
             </>
           </Grid>
         </Grid>
-      </Grid>
+      </Grid >
     );
   }
 
