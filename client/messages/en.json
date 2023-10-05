@@ -56,6 +56,7 @@
 
   "QualityForm": {
     "chapter": "Chapters",
+    "chapterBottomToggler": "CHAPTERS",
     "customer": "Customer",
     "consultant": "Consultant",
     "manager": "Manager",
@@ -65,11 +66,14 @@
     "summary": "Summary",
     "noAnswer": "No answer.",
     "generateLinkButton": "Create link",
+    "generateLink": "If you wish to generate a link to a customer instead press here:",
     "copyLinkAlert": "Copied!",
+    "startButton": "Start",
     "goBackButton": "Go back",
     "nextButton": "Next",
     "doneButton": "Done",
     "sendButton": "Send",
+    "linkDialogText": "Link created",
 
     "q0": "Info",
     "d0": "",

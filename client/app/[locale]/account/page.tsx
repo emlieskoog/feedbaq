@@ -13,20 +13,19 @@ import {
 import { FormControl, MenuItem, Select } from "@mui/material";
 import GenericAccordion from "../../components/genericaccordion";
 import GenericTable from "../../components/generictable";
-import "../../styles/form.css"
-import "../../styles/landingpage.css"
+import "../../styles/form.css";
+import "../../styles/landingpage.css";
 import { API_BASE_URL, appRoutes } from "../../constants";
-import { useTranslations } from 'next-intl';
+import { useTranslations } from "next-intl";
 
 export default function LandingPage() {
-
-  const t = useTranslations('Account');
+  const t = useTranslations("Account");
 
   // Define the role mapping
   const roleMapping: Record<string, string> = {
-    SALES: t('sales'),
-    MANAGER: t('manager'),
-    CONSULTANT: t('consultant'),
+    SALES: t("sales"),
+    MANAGER: t("manager"),
+    CONSULTANT: t("consultant"),
   };
 
   //Profile picture for different type of users
@@ -48,13 +47,13 @@ export default function LandingPage() {
   const sortingOptions = [
     {
       type: "business",
-      menuItem: t('business'),
+      menuItem: t("business"),
       accordianType: "customer_name",
       accordianRole: "SALES",
     },
     {
       type: "consultant",
-      menuItem: t('consultant'),
+      menuItem: t("consultant"),
       accordianType: "name",
       accordianRole: "MANAGER",
     },
@@ -66,10 +65,9 @@ export default function LandingPage() {
 
   // Load form data for different roles
   useEffect(() => {
-
     fetch(`${API_BASE_URL}/profile`, {
-      method: 'GET',
-      credentials: 'include'
+      method: "GET",
+      credentials: "include",
     })
       .then((response) => response.json())
       .then((data) => {
@@ -80,23 +78,36 @@ export default function LandingPage() {
         setIsLoading(false);
       })
       .catch((error) => {
-        console.log('ERROR!', error);
+        console.log("ERROR!", error);
         setIsLoading(false);
-      })
-
+      });
   }, []);
 
   if (isLoading) {
     return (
-      <Box sx={{ height: '100vh', minWidth: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <Box
+        sx={{
+          height: "100vh",
+          minWidth: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
         <CircularProgress />
       </Box>
     );
   } else {
     return (
-      <Grid container component="main" sx={{ overflowX: 'auto', padding: '0% 15%' }}> {/* Overflow X? */}
+      <Grid
+        container
+        component="main"
+        sx={{ overflowX: "auto", padding: "0% 15%" }}
+      >
+        {" "}
+        {/* Overflow X? */}
         {/* Profile section */}
-        <Grid container sx={{ height: '30vh', m: '10px' }}>
+        <Grid container sx={{ height: "30vh", m: "10px" }}>
           {/* First column (left) */}
           <Grid
             item
@@ -105,8 +116,8 @@ export default function LandingPage() {
             md={6}
             lg={6}
             sx={{
-              display: 'flex',
-              alignItems: 'center',
+              display: "flex",
+              alignItems: "center",
             }}
           >
             <Avatar
@@ -116,9 +127,9 @@ export default function LandingPage() {
             <Box
               sx={{
                 mx: 2,
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'left',
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "left",
               }}
             >
               <Typography variant="h5" component="div">
@@ -137,27 +148,33 @@ export default function LandingPage() {
             md={6}
             lg={6}
             sx={{
-              display: 'flex',
-              justifyContent: 'right',
-              alignItems: 'center',
+              display: "flex",
+              justifyContent: "right",
+              alignItems: "center",
             }}
           >
             {(role === "SALES" || role === "MANAGER") && (
-              <Button href={appRoutes.NEW_FORM} variant="contained" className="qualityButton">
-                {t('newQualityForm')}
+              <Button
+                href={appRoutes.NEW_FORM}
+                variant="contained"
+                className="qualityButton"
+              >
+                {t("newQualityForm")}
               </Button>
             )}
           </Grid>
         </Grid>
-
         {/* Form section */}
         <Grid container>
           <Grid item xs={12} sm={12} md={12} lg={12}>
             <>
               {role === "SALES" && (
                 <div>
-                  <FormControl sx={{ minWidth: 200, mt: 3, mb: 2 }} size="medium">
-                    <InputLabel>{t('sortControl')}</InputLabel>
+                  <FormControl
+                    sx={{ minWidth: 200, mt: 3, mb: 2 }}
+                    size="medium"
+                  >
+                    <InputLabel>{t("sortControl")}</InputLabel>
                     <Select
                       value={sortingIndex}
                       onChange={handleSortingIndexChange}
@@ -179,7 +196,7 @@ export default function LandingPage() {
               {role === "MANAGER" && (
                 <div>
                   <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
-                    {t('myConsultants')}
+                    {t("myConsultants")}
                   </Typography>
                   <GenericAccordion
                     formData={formData}
@@ -189,17 +206,12 @@ export default function LandingPage() {
                 </div>
               )}
               {role === "CONSULTANT" && (
-                <GenericTable
-                  formData={formData}
-                  selectedOption={role}
-                />
+                <GenericTable formData={formData} selectedOption={role} />
               )}
             </>
           </Grid>
         </Grid>
-      </Grid >
+      </Grid>
     );
   }
-
-
 }
