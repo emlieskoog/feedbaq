@@ -79,6 +79,10 @@ public class CustomerController {
         List<Object> formResponseValues = (List<Object>) requestBody.get("formResponseValues");
         
         if (insertFormResponses(uuid, formResponseValues)) {
+            // Update is_valid in customer form metadata to false as insert form response succeeds
+            String sqlSetIsValidFalse = "UPDATE customer_form_metadata SET is_valid = false WHERE uuid=?";
+            jdbcTemplate.update(sqlSetIsValidFalse, uuid);
+
             return new ResponseEntity<>("Data saved successfully!", HttpStatus.OK);
         } else {
             String errorMessage = "An issue occurred when trying to insert form responses.";
@@ -100,9 +104,6 @@ public class CustomerController {
         List<Object> arguments = new ArrayList<>();
         arguments.add(uuid);
         arguments.addAll(formResponseValues);
-
-        String sqlSetIsValidFalse = "UPDATE customer_form_metadata SET is_valid = false WHERE uuid=?";
-        jdbcTemplate.update(sqlSetIsValidFalse, uuid);
     
         try {
             jdbcTemplate.update(sql, arguments.toArray());
