@@ -53,6 +53,7 @@ export default function LoginPage() {
 
   return (
     <Grid container component="main" sx={{ height: '100vh' }}>
+
       <Grid
         item
         xs={false}
@@ -68,7 +69,7 @@ export default function LoginPage() {
       <Grid item xs={12} sm={12} md={7} component={Paper} elevation={10} square>
         <Box
           sx={{
-            mx: 20,
+            mx: 5,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',

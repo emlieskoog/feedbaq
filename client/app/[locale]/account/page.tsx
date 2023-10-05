@@ -94,9 +94,9 @@ export default function LandingPage() {
     );
   } else {
     return (
-      <Grid container component="main" sx={{ overflowX: 'auto', padding: '0% 10%' }}> {/* Overflow X? */}
+      <Grid container component="main" sx={{ overflowX: 'auto', padding: '0% 15%' }}> {/* Overflow X? */}
         {/* Profile section */}
-        <Grid container sx={{ height: '30vh', mt: '40px' }}>
+        <Grid container sx={{ height: '30vh', m: '10px' }}>
           {/* First column (left) */}
           <Grid
             item
@@ -106,13 +106,12 @@ export default function LandingPage() {
             lg={6}
             sx={{
               display: 'flex',
-              justifyContent: 'center',
               alignItems: 'center',
             }}
           >
             <Avatar
               src={profilePicture[role]}
-              sx={{ width: 90, height: 90 }}
+              sx={{ width: 100, height: 100 }}
             />
             <Box
               sx={{
@@ -139,8 +138,8 @@ export default function LandingPage() {
             lg={6}
             sx={{
               display: 'flex',
-              justifyContent: 'center', // Align content to the right
-              alignItems: 'center', // Center content vertically
+              justifyContent: 'right',
+              alignItems: 'center',
             }}
           >
             {(role === "SALES" || role === "MANAGER") && (
