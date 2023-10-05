@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { Box, CircularProgress } from "@mui/material";
 import "../../../styles/form.css";
-
+import { formQuestions } from "../../../constants";
 export default function FormDetails() {
   const [formData, setFormData] = useState<any>([]);
 
@@ -76,26 +76,12 @@ export default function FormDetails() {
                 <p className="separator"> {formData.sales_name} </p>
                 <h3> Datum </h3>
                 <p className="separator"> {formData.form_data.date} </p>
-                <h3> Uppstart? </h3>
-                <p className="separator"> {formData.form_data.q1} </p>
-                <h3> Resultat? </h3>
-                <p className="separator"> {formData.form_data.q2}</p>
-                <h3> Ansvar? </h3>
-                <p className="separator"> {formData.form_data.q3} </p>
-                <h3> Enkelhet? </h3>
-                <p className="separator"> {formData.form_data.q4}</p>
-                <h3> Glädje? </h3>
-                <p className="separator"> {formData.form_data.q5}</p>
-                <h3> Innovation? </h3>
-                <p className="separator"> {formData.form_data.q6}</p>
-                <h3> Nöjdhet konsult? </h3>
-                <p className="separator"> {formData.form_data.q7}</p>
-                <h3> Nöjdhet HiQ? </h3>
-                <p className="separator"> {formData.form_data.q8}</p>
-                <h3> Förbättringar? </h3>
-                <p className="separator"> {formData.form_data.q9}</p>
-                <h3> Värdeomdömen? </h3>
-                <p> </p>
+                {formQuestions.slice(1).map((question, index) => (
+                  <div key={question.id}>
+                    <h3>{question.question}</h3>
+                    <p className="separator">{formData.form_data[`q${index + 2}`]}</p>
+                  </div>
+                ))}
               </div>
             </Box>
           </div>

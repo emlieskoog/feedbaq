@@ -19,110 +19,19 @@ import {
   FormControl,
   Snackbar,
 } from "@mui/material";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import "../../../styles/form.css"
 import CloseIcon from "@mui/icons-material/Close";
 import Link from "next/link";
-import { API_BASE_URL, appRoutes } from "../../../constants";
+import { API_BASE_URL, appRoutes, formQuestions } from "../../../constants";
 
 export default function FormGrid() {
-  const questions = [
-    {
-      id: "0",
-      question: "Info",
-      description: "",
-      inputType: "info",
-    },
-    {
-      id: "1",
-      question: "Uppstart",
-      description:
-        "Förståelse, startsträcka, rätt förutsättningar för att klara uppdraget, dator och miljöer...",
-      inputType: "text",
-    },
-    {
-      id: "2",
-      question: "Resultat",
-      description: "Kompetens, levererar, kvalitet, tid...",
-      inputType: "text",
-    },
-    {
-      id: "3",
-      question: "Ansvar",
-      description:
-        "Samarbete, hjälper & frågar, står för åtaganden, flaggar...",
-      inputType: "text",
-    },
-    {
-      id: "4",
-      question: "Enkelhet",
-      description: "Göra det svåra enkelt, enkel kommunikation...",
-      inputType: "text",
-    },
-    {
-      id: "5",
-      question: "Glädje",
-      description: "Tillför energi, kul att jobba med...",
-      inputType: "text",
-    },
-    {
-      id: "6",
-      question: "Innovation",
-      description: "Kreativ, kommer med förslag och idéer, kliver fram...",
-      inputType: "text",
-    },
-    {
-      id: "7",
-      question: "Nöjdhet (konsult)",
-      description: "Hur nöjd är kunden med konsulten på en skala 1-10?",
-      inputType: "rating",
-    },
-    {
-      id: "8",
-      question: "Nöjdhet (HiQ)",
-      description: "Hur nöjd är kunden med HiQ på en skala 1-10?",
-      inputType: "rating",
-    },
-    {
-      id: "9",
-      question: "Förbättringar",
-      description: "Vad kan förbättras?",
-      inputType: "text",
-    },
-    {
-      id: "10",
-      question: "Värdeomdömen (positivt)",
-      description: "Positiv feedback och beröm från kunder eller användare...",
-      inputType: "text",
-    },
-    {
-      id: "11",
-      question: "Värdeomdömen (negativt)",
-      description: "Negativ feedback och kritik från kunder eller användare...",
-      inputType: "text",
-    },
-    {
-      id: "12",
-      question: "Övrigt",
-      description:
-        "Allmänt utrymme för ytterligare kommentarer eller ämnen som inte täcks av andra frågor...",
-      inputType: "text",
-    },
-    {
-      id: "13",
-      question: "Nästa uppföljning",
-      description:
-        "Planerad tidpunkt eller åtgärder för den nästa uppföljningen...",
-      inputType: "text",
-    },
-  ];
 
   const [activeStep, setActiveStep] = useState(0);
   const [inputValues, setInputValues] = useState(
-    Array(questions.length).fill("")
+    Array(formQuestions.length).fill("")
   );
 
   const [consultants, setConsultants] = useState([]);
@@ -184,7 +93,7 @@ export default function FormGrid() {
     const newInputValues = [...inputValues];
     const inputValue = event.target.value;
 
-    if (questions[activeStep].inputType === "rating") {
+    if (formQuestions[activeStep].inputType === "rating") {
       newInputValues[activeStep] = parseFloat(inputValue);
     } else {
       newInputValues[activeStep] = inputValue;
@@ -334,7 +243,7 @@ export default function FormGrid() {
         className="middleRow"
       >
         <Typography variant="h6">Kapitel</Typography>
-        {questions.map((q, index) => {
+        {formQuestions.map((q, index) => {
           return (
             <div
               key={q.id}
@@ -365,16 +274,16 @@ export default function FormGrid() {
         sx={{ flexDirection: "column", overflowY: "auto" }}
         className="middleRow"
       >
-        {activeStep < questions.length ? (
+        {activeStep < formQuestions.length ? (
           <>
             <Typography variant="h5" sx={{ textAlign: "center" }}>
-              {questions[activeStep].question}
+              {formQuestions[activeStep].question}
             </Typography>
             <Typography variant="subtitle1" sx={{ textAlign: "center" }}>
-              {questions[activeStep].description}
+              {formQuestions[activeStep].description}
             </Typography>
             <Box className="centerContent">
-              {questions[activeStep].inputType === "text" && (
+              {formQuestions[activeStep].inputType === "text" && (
                 <TextField
                   value={inputValues[activeStep]}
                   onChange={handleInputChange}
@@ -385,7 +294,7 @@ export default function FormGrid() {
                   variant="outlined"
                 />
               )}
-              {questions[activeStep].inputType === "rating" && (
+              {formQuestions[activeStep].inputType === "rating" && (
                 <Rating
                   value={inputValues[activeStep]}
                   onChange={handleInputChange}
@@ -393,7 +302,7 @@ export default function FormGrid() {
                   size="large"
                 />
               )}
-              {questions[activeStep].inputType === "info" && (
+              {formQuestions[activeStep].inputType === "info" && (
                 <div
                   style={{
                     width: "45vh",
@@ -465,7 +374,7 @@ export default function FormGrid() {
         ) : (
           <>
             <h2>Sammanfattning</h2>
-            {questions.map((q, index) => {
+            {formQuestions.map((q, index) => {
               return (
                 <>
                   <h4>{q.question}</h4>
@@ -541,7 +450,7 @@ export default function FormGrid() {
       <Grid item xs={4} className="bottomRow centerContent">
         <Box sx={{ width: "100%" }}>
           <LinearProgressWithLabel
-            value={(activeStep / questions.length) * 100}
+            value={(activeStep / formQuestions.length) * 100}
           />
         </Box>
       </Grid>
@@ -554,17 +463,17 @@ export default function FormGrid() {
             Starta
           </Button>
         )}
-        {(activeStep > 0) && (activeStep < questions.length - 1) && (
+        {(activeStep > 0) && (activeStep < formQuestions.length - 1) && (
           <Button variant="contained" onClick={handleNext}>
             Nästa
           </Button>
         )}
-        {activeStep == questions.length - 1 && (
+        {activeStep == formQuestions.length - 1 && (
           <Button variant="contained" onClick={handleNext}>
             Klar
           </Button>
         )}
-        {activeStep == questions.length && (
+        {activeStep == formQuestions.length && (
           <Link href={appRoutes.ACCOUNT_PAGE}>
             <Button variant="contained" onClick={sendJsonForm}>
               Skicka
