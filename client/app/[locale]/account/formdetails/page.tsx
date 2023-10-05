@@ -3,8 +3,12 @@
 import React, { useEffect, useState } from "react";
 import { Box, CircularProgress } from "@mui/material";
 import "../../../styles/form.css";
-import { formQuestions } from "../../../constants";
+import { formInputType } from "../../../constants";
+import { useTranslations } from "next-intl";
+
 export default function FormDetails() {
+
+  const t = useTranslations("QualityForm");
   const [formData, setFormData] = useState<any>([]);
 
   const [isLoading, setIsLoading] = useState(true);
@@ -66,19 +70,19 @@ export default function FormDetails() {
               }}
             >
               <div>
-                <h3> Kund </h3>
+                <h3>{t('customer')}</h3>
                 <p className="separator"> {formData.customer_name} </p>
-                <h3> Konsult </h3>
+                <h3> {t('consultant')} </h3>
                 <p className="separator"> {formData.consultant_name} </p>
-                <h3> Konsultchef </h3>
+                <h3> {t('manager')} </h3>
                 <p className="separator"> {formData.manager_name} </p>
-                <h3> Säljare </h3>
+                <h3> {t('salesperson')} </h3>
                 <p className="separator"> {formData.sales_name} </p>
-                <h3> Datum </h3>
+                <h3> {t('date')} </h3>
                 <p className="separator"> {formData.form_data.date} </p>
-                {formQuestions.slice(1).map((question, index) => (
-                  <div key={question.id}>
-                    <h3>{question.question}</h3>
+                {formInputType.slice(1).map((question, index) => (
+                  <div key={index}>
+                    <h3>{t(`q${index + 1}`)}</h3>
                     <p className="separator">{formData.form_data[`q${index + 2}`]}</p>
                   </div>
                 ))}

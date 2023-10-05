@@ -53,5 +53,69 @@
             "saveButton": "Save changes",
             "avatarDialogHeader": "Choose your new avatar :D"
 
+        },
+
+    
+        "QualityForm": {
+
+            "chapter": "Chapters",
+            "customer": "Customer",
+            "consultant": "Consultant",
+            "manager": "Manager",
+            "salesperson": "Salesperson",
+            "date": "Date",
+            "inputPlaceholder": "Write your answer here ...",
+            "summary": "Summary",
+            "noAnswer": "No answer.",
+            "generateLinkButton": "Create link",
+            "copyLinkAlert": "Copied!",
+            "goBackButton": "Go back",
+            "nextButton": "Next",
+            "doneButton": "Done",
+            "sendButton": "Send",
+
+            "q0": "Info",
+            "d0": "",
+        
+            "q1": "Start-up",
+            "d1": "Knowledge, right conditions to complete the assignment, computer and environment.",
+        
+            "q2": "Results",
+            "d2": "Competence, delivery, quality, time.",
+        
+            "q3": "Responsibility",
+            "d3": "Collaboration, helpful, asks questions, commited, signals if something is wrong.",
+        
+            "q4": "Simplicity",
+            "d4": "Making the difficult simple, simple communication.",
+        
+            "q5": "Joy",
+            "d5": "Brings energy, fun to work with.",
+        
+            "q6": "Innovation",
+            "d6": "Creativity, comes up with new suggestions and ideas.",
+        
+            "q7": "Satisfaction (consultant)",
+            "d7": "How satisfied is the customer with the consultant on a scale of 1-10?",
+        
+            "q8": "Satisfaction (HiQ)",
+            "d8": "How satisfied is the customer with HiQ on a scale of 1-10?",
+        
+            "q9": "Improvements",
+            "d9": "What can be improved?",
+        
+            "q10": "Feedback (positive)",
+            "d10": "Positive feedback/praise from customers or users.",
+        
+            "q11": "Feedback (negative)",
+            "d11": "Negative feedback/criticism from customers or users.",
+        
+            "q12": "Other",
+            "d12": "General space for additional comments or topics not covered by other questions.",
+        
+            "q13": "Next Follow-up",
+            "d13": "Planned date or actions for the next follow-up."
         }
+        
+          
 }

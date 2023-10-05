@@ -53,5 +53,67 @@
                 "regretButton": "Ångra ändringar",
                 "saveButton": "Spara ändringar",
                 "avatarDialogHeader": "Välj din nya avatar :D"
+            },
+
+            "QualityForm":{
+
+                "chapter": "Kapitel",
+                "customer": "Kund",
+                "consultant": "Konsult",
+                "manager": "Konsultchef",
+                "salesperson": "Säljare",
+                "date": "Datum",
+                "inputPlaceholder": "Skriv ditt svar här ...",
+                "summary": "Sammanfattning",
+                "noAnswer": "Inget svar.",
+                "generateLinkButton": "Generera länk",
+                "copyLinkAlert": "Kopierad!",
+                "goBackButton": "Tillbaka",
+                "nextButton": "Nästa",
+                "doneButton": "Klar",
+                "sendButton": "Skicka",
+
+                "q0": "Info",
+                "d0": "",
+
+                "q1": "Uppstart",
+                "d1": "Förståelse, startsträcka, rätt förutsättningar för att klara uppdraget, dator och miljöer.",
+                
+                "q2": "Resultat",
+                "d2": "Kompetens, levererans, kvalitet, tid.",
+                
+                "q3": "Ansvar",
+                "d3": "Samarbete, hjälpsam, ställer frågar, står för åtaganden, flaggar.",
+
+                "q4": "Enkelhet",
+                "d4": "Göra det svåra enkelt, enkel kommunikation.",
+
+                "q5": "Glädje",
+                "d5": "Tillför energi, kul att jobba med",
+
+                "q6": "Innovation",
+                "d6": "Kreativitet, kommer med förslag och idéer, kliver fram.",
+
+                "q7": "Nöjdhet (konsult)",
+                "d7": "Hur nöjd är kunden med konsulten på en skala 1-10?",
+
+                "q8": "Nöjdhet (HiQ)",
+                "d8": "Hur nöjd är kunden med HiQ på en skala 1-10?",
+
+                "q9": "Förbättringar",
+                "d9": "Vad kan förbättras?",
+
+                "q10": "Värdeomdömen (positivt)",
+                "d10": "Positiv feedback/beröm från kunder eller användare.",
+                
+                "q11": "Värdeomdömen (negativt)",
+                "d11": "Negativ feedback/kritik från kunder eller användare.",
+
+                "q12": "Övrigt",
+                "d12": "Allmänt utrymme för ytterligare kommentarer eller ämnen som inte täcks av andra frågor.",
+
+                "q13": "Nästa uppföljning",
+                "d13": "Planerad tidpunkt, eller åtgärder för nästa uppföljning."
+
             }
     }
