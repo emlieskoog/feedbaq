@@ -16,7 +16,7 @@ import "../../../styles/form.css";
 import { API_BASE_URL } from "../../../constants";
 import { useParams } from "next/navigation";
 import DialogBox from "./dialogbox";
-import HeaderCustomerForm from "@/app/components/header-customerform";
+import HeaderCustomerForm from "@/app/components/headercustomerform";
 import { useLocale } from "next-intl";
 import { usePathname, useRouter } from "next-intl/client";
 
@@ -285,114 +285,118 @@ export default function CustomerFormGrid() {
           />
         </Grid>
         {/* Second row */}
-        <Grid
-          item
-          xs={false}
-          sm={3}
-          md={3}
-          sx={{ flexDirection: "column" }}
-          className="middleRow"
-        >
-          {questions.map((q, index) => {
-            return (
-              <div
-                key={q.id}
-                className="formChapterList"
-                onClick={() => setActiveStep(index)}
-                style={{
-                  padding: "0.1em",
-                  marginLeft: "5em",
-                }}
-              >
-                {index === activeStep ? (
-                  <Typography
-                    variant="overline"
-                    sx={{
-                      color: "#ff329f",
-                    }}
-                  >
-                    {q.question}
-                  </Typography>
-                ) : (
-                  <Typography variant="overline">{q.question}</Typography>
-                )}
-              </div>
-            );
-          })}
-        </Grid>
-
-        <Grid
-          item
-          xs={12}
-          sm={9}
-          md={6}
-          sx={{ flexDirection: "column", overflowY: "auto" }}
-          className="middleRow"
-        >
-          {activeStep < questions.length ? (
-            <>
-              <Typography variant="h5" sx={{ textAlign: "center" }}>
-                {questions[activeStep].description}
-              </Typography>
-              <Box className="centerContent">
-                {questions[activeStep].inputType === "rating" && (
-                  <Box sx={{ "& button": { m: 4, marginTop: "4em" } }}>
-                    <ToggleButtonGroup
-                      onChange={(event, newAlignment) =>
-                        handleButtonChange(event, newAlignment, activeStep)
-                      }
-                      exclusive
-                      value={buttonValues[activeStep]}
+        <Grid container spacing={4}>
+          <Grid
+            item
+            xs={false}
+            sm={3}
+            md={3}
+            sx={{ flexDirection: "column" }}
+            className="middleRow"
+          >
+            {questions.map((q, index) => {
+              return (
+                <div
+                  key={q.id}
+                  className="formChapterList"
+                  onClick={() => setActiveStep(index)}
+                  style={{
+                    padding: "0.1em",
+                    marginLeft: "5em",
+                  }}
+                >
+                  {index === activeStep ? (
+                    <Typography
+                      variant="overline"
+                      fontSize={14}
+                      sx={{
+                        color: "#ff329f",
+                      }}
                     >
-                      <ToggleButton value="Jag håller inte med alls">
-                        Jag håller inte med alls
-                      </ToggleButton>
-                      <ToggleButton value="Jag håller inte med">
-                        Jag håller inte med
-                      </ToggleButton>
-                      <ToggleButton value="Jag håller med">
-                        Jag håller med
-                      </ToggleButton>
-                      <ToggleButton value="Jag håller med helt och hållet">
-                        Jag håller med helt och hållet
-                      </ToggleButton>
-                    </ToggleButtonGroup>
-                  </Box>
-                )}
-                {questions[activeStep].inputType === "text" && (
-                  <TextField
-                    value={inputValues[activeStep]}
-                    onChange={handleInputChange}
-                    placeholder="Kommentar"
-                    multiline
-                    fullWidth
-                    rows={4}
-                    variant="outlined"
-                  />
-                )}
-              </Box>
-            </>
-          ) : (
-            <>
-              <h2>Sammanfattning</h2>
-              {questions.map((q, index) => {
-                return (
-                  <>
-                    <h4>{q.question}</h4>
-                    <Box sx={{ marginBottom: "10px" }}>
-                      {inputValues[index] ? (
-                        <p>{inputValues[index]}</p>
-                      ) : (
-                        <p>Inget svar...</p>
-                      )}
-                    </Box>
-                  </>
-                );
-              })}
-            </>
-          )}
-        </Grid>
+                      {q.question}
+                    </Typography>
+                  ) : (
+                    <Typography variant="overline" fontSize={14}>
+                      {q.question}
+                    </Typography>
+                  )}
+                </div>
+              );
+            })}
+          </Grid>
 
+          <Grid
+            item
+            xs={12}
+            sm={9}
+            md={6}
+            sx={{ flexDirection: "column", overflowY: "auto" }}
+            className="middleRow"
+          >
+            {activeStep < questions.length ? (
+              <>
+                <Typography variant="h5" sx={{ textAlign: "center" }}>
+                  {questions[activeStep].description}
+                </Typography>
+                <Box className="centerContent">
+                  {questions[activeStep].inputType === "rating" && (
+                    <Box sx={{ "& button": { m: 4, marginTop: "4em" } }}>
+                      <ToggleButtonGroup
+                        onChange={(event, newAlignment) =>
+                          handleButtonChange(event, newAlignment, activeStep)
+                        }
+                        exclusive
+                        value={buttonValues[activeStep]}
+                      >
+                        <ToggleButton value="Jag håller inte med alls">
+                          Jag håller inte med alls
+                        </ToggleButton>
+                        <ToggleButton value="Jag håller inte med">
+                          Jag håller inte med
+                        </ToggleButton>
+                        <ToggleButton value="Jag håller med">
+                          Jag håller med
+                        </ToggleButton>
+                        <ToggleButton value="Jag håller med helt och hållet">
+                          Jag håller med helt och hållet
+                        </ToggleButton>
+                      </ToggleButtonGroup>
+                    </Box>
+                  )}
+                  {questions[activeStep].inputType === "text" && (
+                    <TextField
+                      value={inputValues[activeStep]}
+                      onChange={handleInputChange}
+                      placeholder="Kommentar"
+                      multiline
+                      fullWidth
+                      rows={4}
+                      variant="outlined"
+                    />
+                  )}
+                </Box>
+              </>
+            ) : (
+              <>
+                <h2>Sammanfattning</h2>
+                {questions.map((q, index) => {
+                  return (
+                    <>
+                      <h4>{q.question}</h4>
+                      <Box sx={{ marginBottom: "10px" }}>
+                        {inputValues[index] ? (
+                          <p>{inputValues[index]}</p>
+                        ) : (
+                          <p>Inget svar...</p>
+                        )}
+                      </Box>
+                    </>
+                  );
+                })}
+              </>
+            )}
+          </Grid>
+        </Grid>
         {/* Third row */}
         <Grid item xs={4} className="bottomRow centerContent">
           {activeStep != 0 && (
