@@ -202,7 +202,7 @@ export default function CustomerFormGrid() {
       value={buttonValues[activeStep]}
       className={divType}
     >
-      <div className="boxPadding">
+      <div>
         <ToggleButton
           className="toggleButtonStyle"
           value={t(`doNotAgreeAtAll`)}
@@ -236,7 +236,7 @@ export default function CustomerFormGrid() {
         {/* Info boxes / First row */}
 
         <Grid container>
-          <Grid item xs={10} md={2}>
+          <Grid item xs={10} sm={8} md={2}>
             <Box className="infoBoxes">
               {t("consultant")}: {consultantName}
             </Box>
@@ -267,15 +267,26 @@ export default function CustomerFormGrid() {
           </Grid>
           {/* Question/answer column */}
 
-          <Grid item md={8} className="middleRow">
+          <Grid item xs={12} md={7} className="middleRow">
             {activeStep < customerFormInput.length ? (
               <>
-                <Typography variant="h5" sx={{ textAlign: "center" }}>
+                <Typography
+                  sx={{
+                    fontSize: {
+                      md: 24,
+                      sm: 15,
+                      xs: 18,
+                    },
+                    textAlign: "center",
+                    mb: "10px",
+                  }}
+                  variant="h5"
+                >
                   {t(`d${activeStep}`)}
                 </Typography>
                 {/* Buttons */}
                 {customerFormInput[activeStep] === "rating" && (
-                  <div className="centerContent">
+                  <div>
                     <Grid
                       item
                       xs={false}
@@ -311,7 +322,7 @@ export default function CustomerFormGrid() {
                       placeholder="Kommentar"
                       multiline
                       fullWidth
-                      rows={4}
+                      rows={8}
                       variant="outlined"
                     />
                   </div>
@@ -339,43 +350,47 @@ export default function CustomerFormGrid() {
           </Grid>
         </Grid>
         {/* Third row */}
-
-        <Grid item xs={3} className="bottomRow centerContent">
-          {activeStep != 0 && (
-            <Button variant="contained" onClick={handleBack}>
-              {t("goBackButton")}
-            </Button>
-          )}
-        </Grid>
-        <Grid item xs={6} className="bottomRow centerContent">
-          <Box sx={{ width: "100%" }}>
-            <LinearProgressWithLabel
-              value={(activeStep / customerFormInput.length) * 100}
+        <Grid container>
+          <Grid item xs={3} className="bottomRow centerContent">
+            {activeStep != 0 && (
+              <Button variant="contained" onClick={handleBack}>
+                {t("goBackButton")}
+              </Button>
+            )}
+          </Grid>
+          <Grid item xs={6} className="bottomRow centerContent">
+            <Box sx={{ width: "100%" }}>
+              <LinearProgressWithLabel
+                value={(activeStep / customerFormInput.length) * 100}
+              />
+            </Box>
+          </Grid>
+          <Grid item xs={3} className="bottomRow centerContent">
+            {activeStep < customerFormInput.length - 1 && (
+              <Button variant="contained" onClick={handleNext}>
+                {t("nextButton")}
+              </Button>
+            )}
+            {activeStep == customerFormInput.length - 1 && (
+              <Button variant="contained" onClick={handleNext}>
+                {t("doneButton")}
+              </Button>
+            )}
+            {activeStep == customerFormInput.length && (
+              <Button
+                variant="contained"
+                onClick={sendJsonCustomerFormResponses}
+              >
+                {t("sendButton")}
+              </Button>
+            )}
+            <DialogBox
+              open={dialogOpen}
+              handleClose={handleCloseDialog}
+              dialogMessage={dialogMessage}
+              dialogTitle={dialogTitle}
             />
-          </Box>
-        </Grid>
-        <Grid item xs={3} className="bottomRow centerContent">
-          {activeStep < customerFormInput.length - 1 && (
-            <Button variant="contained" onClick={handleNext}>
-              {t("nextButton")}
-            </Button>
-          )}
-          {activeStep == customerFormInput.length - 1 && (
-            <Button variant="contained" onClick={handleNext}>
-              {t("doneButton")}
-            </Button>
-          )}
-          {activeStep == customerFormInput.length && (
-            <Button variant="contained" onClick={sendJsonCustomerFormResponses}>
-              {t("sendButton")}
-            </Button>
-          )}
-          <DialogBox
-            open={dialogOpen}
-            handleClose={handleCloseDialog}
-            dialogMessage={dialogMessage}
-            dialogTitle={dialogTitle}
-          />
+          </Grid>
         </Grid>
         {/* Chapter Drawer shown on small screens/mobile and on all pages not info*/}
         <Grid

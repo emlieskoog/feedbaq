@@ -94,17 +94,23 @@
 
 .toggleButtonGroupColumn {
   flex-flow: column wrap;
-  margin-top: 20px;
-  margin-left: 20px;
-  margin-right: 20px;
+  margin-top: 10px;
+  margin-left: 50px;
+  margin-right: 50px;
+  justify-content: center;
+  align-items: flex-start;
+  display: flex;
 }
 
 .toggleButtonGroupRow {
   flex-flow: row wrap;
   margin-top: 20px;
-  margin-left: 1px;
+  justify-content: center;
+  align-items: flex-start;
+  display: flex;
 }
 
 .toggleButtonStyle {
-  margin: 6px;
+  margin: 4px;
+  font-size: 13px;
 }
