@@ -144,7 +144,7 @@ export default function LandingPage() {
           <Grid
             item
             xs={false}
-            sm={6}
+            sm={false}
             md={6}
             lg={6}
             sx={{
