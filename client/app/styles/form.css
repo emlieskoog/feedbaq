@@ -18,6 +18,16 @@
   margin-right: 20px;
   height: 50vh;
 }
+.middleRow {
+  height: 70%;
+  margin: 0 !important;
+}
+
+.topRow {
+  height: 10%;
+  margin: 0 !important;
+  padding: 10px 10px !important;
+}
 
 .bottomRow {
   margin: 0 !important;
@@ -77,8 +87,24 @@
 .infoBoxes {
   background-color: #ededed;
   border-color: "black";
-  width: "20vh";
-  margin: 10px;
-  padding: 15px;
-  border-radius: 5px;
+  width: "10vh";
+  margin: 5px;
+  border-radius: 3px;
+}
+
+.toggleButtonGroupColumn {
+  flex-flow: column wrap;
+  margin-top: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.toggleButtonGroupRow {
+  flex-flow: row wrap;
+  margin-top: 20px;
+  margin-left: 1px;
+}
+
+.toggleButtonStyle {
+  margin: 6px;
 }
