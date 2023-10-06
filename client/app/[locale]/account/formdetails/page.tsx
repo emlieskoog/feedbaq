@@ -1,16 +1,14 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Box, CircularProgress } from "@mui/material";
+import { Box, CircularProgress, Typography } from "@mui/material";
 import "../../../styles/form.css";
 import { formInputType } from "../../../constants";
 import { useTranslations } from "next-intl";
 
 export default function FormDetails() {
-
   const t = useTranslations("QualityForm");
   const [formData, setFormData] = useState<any>([]);
-
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -25,19 +23,19 @@ export default function FormDetails() {
       const id = urlParams.get("id");
 
       const responseFormData = await fetch(
-        "http://localhost:8080/api/forms/" + id, { credentials: "include" }
+        "http://localhost:8080/api/forms/" + id,
+        { credentials: "include" }
       );
       const data = await responseFormData.json();
       setFormData(data);
       setIsLoading(false);
-
     } catch (error) {
-      console.log("An error occured when trying to retrieve form data.", error);
+      console.log("An error occurred when trying to retrieve form data.", error);
     }
   }
 
   return (
-    <Box sx={{ marginTop: "5em" }}>
+    <Box sx={{ marginTop: "1em" }}>
       {isLoading ? (
         <div className="centerCircularProgress">
           <CircularProgress size="5rem" />
@@ -46,15 +44,15 @@ export default function FormDetails() {
         <>
           <Box
             sx={{
-              flexDirection: "row",
+              flexDirection: "column",
               display: "flex",
-              margin: "15px 300px",
               justifyContent: "space-evenly",
+              alignItems: "center"
             }}
           >
-            <h2> {formData.customer_name} </h2>
-            <h2> {formData.consultant_name} </h2>
-            <h2> {formData.form_data.date} </h2>
+            <Typography variant="h4">{formData.customer_name}</Typography>
+            <Typography variant="h7">{formData.consultant_name}</Typography>
+            <Typography variant="h7">{formData.form_data.date}</Typography>
           </Box>
           <div className="centerContent">
             <Box
@@ -66,24 +64,36 @@ export default function FormDetails() {
                 borderColor: "lightgrey",
                 m: 1,
                 p: 2,
-                width: "70%",
+                width: "90%"
               }}
             >
               <div>
-                <h3>{t('customer')}</h3>
-                <p className="separator"> {formData.customer_name} </p>
-                <h3> {t('consultant')} </h3>
-                <p className="separator"> {formData.consultant_name} </p>
-                <h3> {t('manager')} </h3>
-                <p className="separator"> {formData.manager_name} </p>
-                <h3> {t('salesperson')} </h3>
-                <p className="separator"> {formData.sales_name} </p>
-                <h3> {t('date')} </h3>
-                <p className="separator"> {formData.form_data.date} </p>
+                <Typography variant="h6">{t('customer')}</Typography>
+                <Typography variant="body2" className="separator">
+                  {formData.customer_name}
+                </Typography>
+                <Typography variant="h6">{t('consultant')}</Typography>
+                <Typography variant="body2" className="separator">
+                  {formData.consultant_name}
+                </Typography>
+                <Typography variant="h6">{t('manager')}</Typography>
+                <Typography variant="body2" className="separator">
+                  {formData.manager_name}
+                </Typography>
+                <Typography variant="h6">{t('salesperson')}</Typography>
+                <Typography variant="body2" className="separator">
+                  {formData.sales_name}
+                </Typography>
+                <Typography variant="h6">{t('date')}</Typography>
+                <Typography variant="body2" className="separator">
+                  {formData.form_data.date}
+                </Typography>
                 {formInputType.slice(1).map((question, index) => (
                   <div key={index}>
-                    <h3>{t(`q${index + 1}`)}</h3>
-                    <p className="separator">{formData.form_data[`q${index + 2}`]}</p>
+                    <Typography variant="h6">{t(`q${index + 1}`)}</Typography>
+                    <Typography variant="body2" className="separator">
+                      {formData.form_data[`q${index + 2}`]}
+                    </Typography>
                   </div>
                 ))}
               </div>
