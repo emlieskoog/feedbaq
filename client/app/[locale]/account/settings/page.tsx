@@ -104,8 +104,8 @@ export default function Settings() {
         );
     } else {
         return (
-            <Grid container spacing={2} sx={{ marginTop: 2 }}>
-                <Grid item xs={3} sm={3} md={3} sx={{ flexDirection: "column", position: 'relative' }}>
+            <Grid container spacing={1} sx={{ marginTop: 2 }}>
+                <Grid item xs={4} sm={2} md={2} sx={{ flexDirection: "column", position: 'relative' }}>
                     <AvatarGroup max={1} sx={{
                         display: 'flex',
                         flexDirection: 'column',
@@ -118,7 +118,7 @@ export default function Settings() {
                     </AvatarGroup>
                     {isDialogOpen && <AvatarDialog isOpen={isDialogOpen} onClose={handleCloseDialog} />}
                 </Grid>
-                <Grid item xs={6} sm={6} md={6} sx={{ flexDirection: "column" }}>
+                <Grid item xs={7} sm={8} md={8} sx={{ flexDirection: "column" }}>
                     <Box
                         sx={{
                             display: 'flex',
@@ -129,7 +129,7 @@ export default function Settings() {
                         <Typography component="h3" variant="h4">
                             {t('settingsHeading')}
                         </Typography>
-                        <form onSubmit={handleSubmit}>
+                        <form onSubmit={handleSubmit} >
                             <TextField
                                 margin="normal"
                                 variant="standard"
@@ -180,12 +180,12 @@ export default function Settings() {
                                 disabled={!isPasswordChanged}
                                 sx={{ mb: 2 }}
                             />
-                            <Button variant="outlined" color="primary" sx={{ marginRight: 2 }}>{t('regretButton')}</Button>
-                            <Button type="submit" variant="contained">{t('saveButton')}</Button>
+                            <Button variant="outlined" color="primary" sx={{ mb: 1, mt: 1, mr: 1 }}>{t('regretButton')}</Button>
+                            <Button type="submit" variant="contained" sx={{ mb: 1, mt: 1, mr: 1 }}>{t('saveButton')}</Button>
                         </form>
                     </Box>
                 </Grid>
-            </Grid>
+            </Grid >
         );
     }
 }
