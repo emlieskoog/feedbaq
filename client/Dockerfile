@@ -1,13 +1,12 @@
-FROM node:18-alpine
-WORKDIR /react-app
+FROM node:18-alpine as builder
+WORKDIR /app
 
-COPY package.json /react-app
-COPY package-lock.json /react-app
-
+COPY package.json /app
+COPY package-lock.json /app
 RUN npm install
-
 COPY . .
+RUN npm run build
 
-EXPOSE 3000
-
-CMD ["npm", "run", "dev"]
+FROM nginx
+EXPOSE 80
+COPY --from=builder /app/.next /usr/share/nginx/html
