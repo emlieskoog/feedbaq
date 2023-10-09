@@ -2,7 +2,6 @@
 
 import {
   createTheme,
-  responsiveFontSizes,
   Shadows,
   Theme,
 } from "@mui/material/styles";
@@ -90,7 +89,22 @@ let theme: Theme = createTheme({
         },
       },
     },
+
+    MuiTableRow: {
+      styleOverrides: {
+        root: {
+
+          "&:hover": {
+            cursor: "pointer",
+
+            backgroundColor: "rgba(255, 204, 204, 0.20)",
+          },
+        },
+      },
+    },
   },
+
+
 });
 
 export default theme;

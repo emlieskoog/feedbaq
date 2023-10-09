@@ -68,7 +68,7 @@ export default function Header(props: any) {
           </Grid>
 
           {/* Header for Large screen */}
-          <Grid item xs={false} sm={false} md={8} lg={10} sx={{
+          <Grid item xs={false} sm={false} sx={{
             display: { xs: 'none', sm: 'none', md: 'block' },
           }}>
             <Typography variant="h5" component="div" sx={{ color: "#353435", ml: 2 }}>
@@ -84,14 +84,8 @@ export default function Header(props: any) {
             </Typography>
           </Grid>
 
-
-          {/* <Grid item xs={false} sm={false} md={6} lg={8} sx={{
-            display: { xs: 'none', sm: 'none', md: 'block' },
-          }}></Grid>
- */}
-
           {/* LocaleSwitcher for Large/Small screens */}
-          <Grid item xs={false} sm={false} sx={{
+          <Grid item xs={false} sm={false} md={8} lg={8} sx={{
             display: { xs: 'none', sm: 'none', md: 'block' },
           }}>
             <div style={{ justifyContent: 'flex-end', display: 'flex' }}>

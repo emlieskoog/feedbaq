@@ -81,7 +81,9 @@ public class FormController {
             responseMap.put("customer_name", customerNameMap.get("customer_name").toString());
             responseMap.put("consultant_name", consultantNameMap.get("name").toString());
             responseMap.put("sales_name", salesNameMap.get("name").toString());
-            responseMap.put("manager_name", managerNameFromConsultantMap.get("manager_name").toString());
+            
+            Object managerNameObject = managerNameFromConsultantMap.get("manager_name");
+            responseMap.put("manager_name", managerNameObject != null ? managerNameObject.toString() : "");
 
             return new ResponseEntity<>(responseMap, HttpStatus.OK);
         } catch (IncorrectResultSizeDataAccessException e) {

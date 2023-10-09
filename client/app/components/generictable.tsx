@@ -36,7 +36,7 @@ export default function GenericTable(props: any) {
     <TableContainer>
       <Table size="small">
         <TableHead>
-          <TableRow>
+          <TableRow hover >
             {tableHeadings.map((heading: string, index: number) => (
               <TableCell key={index}>{heading}</TableCell>
             ))}
@@ -44,7 +44,7 @@ export default function GenericTable(props: any) {
         </TableHead>
         <TableBody>
           {formData.map((form: any, innerIndex: number) => (
-            <TableRow key={innerIndex} hover>
+            <TableRow key={innerIndex} onClick={(event) => handleOpenClick(event, form.id)}>
               {selectedOption === "SALES" ? (
                 <>
                   <TableCell>{form.name}</TableCell>
@@ -68,6 +68,6 @@ export default function GenericTable(props: any) {
           ))}
         </TableBody>
       </Table>
-    </TableContainer>
+    </TableContainer >
   );
 }

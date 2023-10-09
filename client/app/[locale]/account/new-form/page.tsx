@@ -23,7 +23,6 @@ import {
   DialogContent,
   DialogContentText,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -32,13 +31,12 @@ import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import Link from "next/link";
 import { API_BASE_URL, appRoutes, formInputType } from "../../../constants";
 import { useTranslations } from "next-intl";
-import { ConstructionOutlined } from "@mui/icons-material";
 
 export default function FormGrid() {
   const t = useTranslations("QualityForm");
   const [activeStep, setActiveStep] = useState(0);
   const [inputValues, setInputValues] = useState(
-    Array(formInputType.length).fill(null)
+    Array(formInputType.length).fill("")
   );
 
   const [consultants, setConsultants] = useState([]);
