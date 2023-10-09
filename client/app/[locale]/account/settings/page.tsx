@@ -44,14 +44,14 @@ export default function Settings() {
         setOpenDialog(false);
     };
 
-    const handleRoleChange = (event) => {
+    const handleRoleChange = (event: any) => {
         setFormData({
             ...formData,
             role: event.target.value
         });
     };
 
-    const handleInputChange = (event) => {
+    const handleInputChange = (event: any) => {
         const { name, value } = event.target;
         setFormData({
             ...formData,

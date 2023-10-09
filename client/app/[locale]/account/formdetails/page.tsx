@@ -51,8 +51,8 @@ export default function FormDetails() {
             }}
           >
             <Typography variant="h4">{formData.customer_name}</Typography>
-            <Typography variant="h7">{formData.consultant_name}</Typography>
-            <Typography variant="h7">{formData.form_data.date}</Typography>
+            <Typography variant="h6">{formData.consultant_name}</Typography>
+            <Typography variant="h6">{formData.form_data.date}</Typography>
           </Box>
           <div className="centerContent">
             <Box
