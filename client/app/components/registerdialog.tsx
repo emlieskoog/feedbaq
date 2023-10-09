@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react';
-import { Grid, Typography, Avatar, Button, Box, Dialog, TextField, DialogActions, DialogContent, DialogContentText, DialogTitle, Snackbar, Alert } from "@mui/material";
+import { Grid, Typography, Avatar, Button, Dialog, TextField, DialogActions, DialogContent, Snackbar, Alert } from "@mui/material";
 import SendIcon from '@mui/icons-material/Send';
 import { API_BASE_URL } from '../constants';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
@@ -9,12 +9,13 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { useTranslations } from 'next-intl';
 
 export default function RegisterDialog(props: any) {
-    const { isOpen, onClose } = props;
+    const { isOpen, onClose, setOpenRegisterSuccessSnackbar } = props;
 
     const t = useTranslations('Login');
 
     const [role, setRole] = React.useState('SALES');
-    const [openSnackbar, setOpenSnackbar] = React.useState(false);
+    const [openErrorSnackbar, setOpenErrorSnackbar] = React.useState(false);
+
 
     const handleRoleChange = (event: any) => {
         setRole(event.target.value as string);
@@ -37,12 +38,12 @@ export default function RegisterDialog(props: any) {
             .then(async (response) => {
                 if (response.status === 400) {
                     console.error('Email is already in use.');
-                    setOpenSnackbar(true);
+                    setOpenErrorSnackbar(true);
                 } else if (!response.ok) {
                     console.error('HTTP error! Status:', response.status);
                 }
                 else {
-                    console.log('User registered successfully!');
+                    setOpenRegisterSuccessSnackbar(true);
                     onClose();
                 }
             });
@@ -122,11 +123,12 @@ export default function RegisterDialog(props: any) {
                     </DialogActions>
                 </DialogContent>
             </form>
-            <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={() => setOpenSnackbar(false)}>
-                <Alert severity='info'> 
-                    Det existerar redan ett konto med angiven mailadress.
+            <Snackbar open={openErrorSnackbar} autoHideDuration={6000} onClose={() => setOpenErrorSnackbar(false)}>
+                <Alert severity='info'>
+                    {t('emailAlreadyExist')}
                 </Alert>
             </Snackbar>
+
         </Dialog >
     );
 }

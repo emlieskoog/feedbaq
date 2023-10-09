@@ -30,6 +30,8 @@ export default function LoginPage() {
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [openRegisterSuccessSnackbar, setOpenRegisterSuccessSnackbar] = React.useState(false);
+
 
   const handleOpenDialog = () => {
     setIsDialogOpen(true);
@@ -141,6 +143,7 @@ export default function LoginPage() {
             <RegisterDialog
               isOpen={isDialogOpen}
               onClose={() => setIsDialogOpen(false)}
+              setOpenRegisterSuccessSnackbar={setOpenRegisterSuccessSnackbar}
             />
           )}
         </Box>
@@ -151,7 +154,12 @@ export default function LoginPage() {
         onClose={() => setOpenSnackbar(false)}
       >
         <Alert severity="info">
-          Fel mailadress eller lösenord, vänligen försök igen.
+          {t("wrongPasswordOrEmail")}
+        </Alert>
+      </Snackbar>
+      <Snackbar open={openRegisterSuccessSnackbar} autoHideDuration={6000} onClose={() => setOpenRegisterSuccessSnackbar(false)}>
+        <Alert >
+          {t('registerSuccessfull')}
         </Alert>
       </Snackbar>
     </Grid>

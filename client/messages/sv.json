@@ -11,7 +11,10 @@
     "manager": "Konsultchef",
     "consultant": "Konsult",
     "cancelButton": "Avbryt",
-    "registerButton": "Registrera"
+    "registerButton": "Registrera",
+    "wrongPasswordOrEmail": "Fel mailadress eller lösenord, vänligen försök igen.",
+    "registerSuccessfull": "Du är nu registrerad!",
+    "emailAlreadyExist": "Det existerar redan ett konto med angiven mailadress."
   },
 
   "Account": {

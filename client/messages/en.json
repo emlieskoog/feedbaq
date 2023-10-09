@@ -11,7 +11,10 @@
     "manager": "Manager",
     "consultant": "Consultant",
     "cancelButton": "Cancel",
-    "registerButton": "Register"
+    "registerButton": "Register",
+    "wrongPasswordOrEmail": "Wrong email or password, please try again!",
+    "registerSuccessfull": "You are now registered!",
+    "emailAlreadyExist": "A user with that email already exists!"
   },
   "Account": {
     "qualityHeader": "Quality Follow-up",
