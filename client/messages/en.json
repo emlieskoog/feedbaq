@@ -70,6 +70,7 @@
     "noAnswer": "No answer.",
     "generateLinkButton": "Create link",
     "generateLink": "If you wish to generate a link to a customer instead press here:",
+    "requiredMessage": "Please fill in the required fields before continuing!",
     "copyLinkAlert": "Copied!",
     "startButton": "Start",
     "goBackButton": "Go back",

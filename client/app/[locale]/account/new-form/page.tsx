@@ -417,7 +417,7 @@ export default function FormGrid() {
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <FormControl required fullWidth margin="normal">
                           <DatePicker
-                            label="Datum"
+                            label={t("date")}
                             value={createdDate}
                             format="YYYY-MM-DD"
                             onChange={handleDateChange}
@@ -515,9 +515,7 @@ export default function FormGrid() {
             autoHideDuration={6000}
             onClose={() => setOpenSnackbar(false)}
           >
-            <Alert severity="error">
-              Fyll i alla obligatoriska fält innan du fortsätter!
-            </Alert>
+            <Alert severity="error">{t("requiredMessage")}</Alert>
           </Snackbar>
 
           <Snackbar

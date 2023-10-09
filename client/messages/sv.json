@@ -71,6 +71,7 @@
     "noAnswer": "Inget svar.",
     "generateLinkButton": "Generera länk",
     "generateLink": "Om du istället önskar generera en länk till en kund klickar du här:",
+    "requiredMessage": "Fyll i alla obligatoriska fält innan du fortsätter!",
     "copyLinkAlert": "Kopierad!",
     "startButton": "Starta",
     "goBackButton": "Tillbaka",
