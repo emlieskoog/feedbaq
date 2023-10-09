@@ -202,26 +202,21 @@ export default function CustomerFormGrid() {
       value={buttonValues[activeStep]}
       className={divType}
     >
-      <div>
-        <ToggleButton
-          className="toggleButtonStyle"
-          value={t(`doNotAgreeAtAll`)}
-        >
-          {t(`doNotAgreeAtAll`)}
-        </ToggleButton>
-        <ToggleButton className="toggleButtonStyle" value={t(`doNotAgree`)}>
-          {t(`doNotAgree`)}
-        </ToggleButton>
-        <ToggleButton className="toggleButtonStyle" value={t(`doAgree`)}>
-          {t(`doAgree`)}
-        </ToggleButton>
-        <ToggleButton
-          className="toggleButtonStyle"
-          value={t(`doAgreeCompletely`)}
-        >
-          {t(`doAgreeCompletely`)}
-        </ToggleButton>
-      </div>
+      <ToggleButton className="toggleButtonStyle" value={t(`doNotAgreeAtAll`)}>
+        {t(`doNotAgreeAtAll`)}
+      </ToggleButton>
+      <ToggleButton className="toggleButtonStyle" value={t(`doNotAgree`)}>
+        {t(`doNotAgree`)}
+      </ToggleButton>
+      <ToggleButton className="toggleButtonStyle" value={t(`doAgree`)}>
+        {t(`doAgree`)}
+      </ToggleButton>
+      <ToggleButton
+        className="toggleButtonStyle"
+        value={t(`doAgreeCompletely`)}
+      >
+        {t(`doAgreeCompletely`)}
+      </ToggleButton>
     </ToggleButtonGroup>
   );
 
