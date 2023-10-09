@@ -11,6 +11,8 @@ import {
   Typography,
   ToggleButtonGroup,
   ToggleButton,
+  Drawer,
+  IconButton,
 } from "@mui/material";
 import "../../../styles/form.css";
 import { API_BASE_URL, customerFormInput } from "../../../constants";
@@ -20,6 +22,7 @@ import HeaderCustomerForm from "@/app/components/headercustomerform";
 import { useLocale } from "next-intl";
 import { usePathname, useRouter } from "next-intl/client";
 import { useTranslations } from "next-intl";
+import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 
 export default function CustomerFormGrid() {
   const router = useRouter();
@@ -54,6 +57,12 @@ export default function CustomerFormGrid() {
   const [dialogMessage, setDialogMessage] = useState("");
 
   const [dialogTitle, setDialogTitle] = useState("");
+
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
+  const toggleDrawer = () => {
+    setDrawerOpen(!drawerOpen);
+  };
 
   const handleCloseDialog = () => {
     setDialogOpen(false);
@@ -157,6 +166,60 @@ export default function CustomerFormGrid() {
       });
   };
 
+  const chapter = () => (
+    <>
+      {customerFormInput.map((q, index) => {
+        return (
+          <div
+            key={index}
+            className="formChapterList"
+            onClick={() => setActiveStep(index)}
+          >
+            {index === activeStep ? (
+              <Typography
+                variant="overline"
+                sx={{
+                  color: "#ff329f",
+                }}
+              >
+                {t(`q${index}`)}
+              </Typography>
+            ) : (
+              <Typography variant="overline">{t(`q${index}`)}</Typography>
+            )}
+          </div>
+        );
+      })}
+    </>
+  );
+
+  const buttons = (divType: string) => (
+    <ToggleButtonGroup
+      onChange={(event, newAlignment) =>
+        handleButtonChange(event, newAlignment, activeStep)
+      }
+      exclusive
+      value={buttonValues[activeStep]}
+      className={divType}
+    >
+      <ToggleButton className="toggleButtonStyle" value={t(`doNotAgreeAtAll`)}>
+        {t(`doNotAgreeAtAll`)}
+      </ToggleButton>
+      <ToggleButton className="toggleButtonStyle" value={t(`doNotAgree`)}>
+        {t(`doNotAgree`)}
+      </ToggleButton>
+      <ToggleButton className="toggleButtonStyle" value={t(`doAgree`)}>
+        {t(`doAgree`)}
+      </ToggleButton>
+      <ToggleButton
+        className="toggleButtonStyle"
+        value={t(`doAgreeCompletely`)}
+      >
+        {t(`doAgreeCompletely`)}
+      </ToggleButton>
+    </ToggleButtonGroup>
+  );
+
   return (
     <>
       <HeaderCustomerForm
@@ -164,10 +227,11 @@ export default function CustomerFormGrid() {
         currentPathname={currentPathname}
         locale={locale}
       />
-      <Grid container spacing={4} className="outerGrid">
-        {/* First row */}
-        <Grid item xs={10} md={10} className="topRow">
-          <Box sx={{ flexDirection: "row", display: "flex" }}>
+      <Grid container className="outerGrid">
+        {/* Info boxes / First row */}
+
+        <Grid container>
+          <Grid item xs={10} sm={8} md={2}>
             <Box className="infoBoxes">
               {t("consultant")}: {consultantName}
             </Box>
@@ -180,99 +244,84 @@ export default function CustomerFormGrid() {
             <Box className="infoBoxes">
               {t("date")}: {createdDate}
             </Box>
-          </Box>
+          </Grid>
         </Grid>
         {/* Second row */}
-        <Grid container spacing={4}>
+        <Grid container>
+          {/* Question/answer column */}
           <Grid
             item
             xs={false}
             sm={3}
             md={3}
-            sx={{ flexDirection: "column" }}
-            className="middleRow"
+            sx={{
+              display: { xs: "none", sm: "block" },
+            }}
           >
-            {customerFormInput.map((q, index) => {
-              return (
-                <div
-                  key={index}
-                  className="formChapterList"
-                  onClick={() => setActiveStep(index)}
-                  style={{
-                    padding: "0.1em",
-                    marginLeft: "5em",
-                  }}
-                >
-                  {index === activeStep ? (
-                    <Typography
-                      variant="overline"
-                      fontSize={14}
-                      sx={{
-                        color: "#ff329f",
-                      }}
-                    >
-                      {t(`q${index}`)}
-                    </Typography>
-                  ) : (
-                    <Typography variant="overline" fontSize={14}>
-                      {t(`q${index}`)}
-                    </Typography>
-                  )}
-                </div>
-              );
-            })}
+            <div className="boxPadding">{chapter()}</div>
           </Grid>
+          {/* Question/answer column */}
 
-          <Grid
-            item
-            xs={12}
-            sm={9}
-            md={7}
-            sx={{ flexDirection: "column", overflowY: "auto" }}
-            className="middleRow"
-          >
+          <Grid item xs={12} md={7} className="middleRow">
             {activeStep < customerFormInput.length ? (
               <>
-                <Typography variant="h5" sx={{ textAlign: "center" }}>
+                <Typography
+                  sx={{
+                    fontSize: {
+                      md: 24,
+                      sm: 15,
+                      xs: 18,
+                    },
+                    textAlign: "center",
+                    mb: "10px",
+                  }}
+                  variant="h5"
+                >
                   {t(`d${activeStep}`)}
                 </Typography>
-                <Box className="centerContent">
-                  {customerFormInput[activeStep] === "rating" && (
-                    <Box sx={{ "& button": { m: 3, marginTop: "4em" } }}>
-                      <ToggleButtonGroup
-                        onChange={(event, newAlignment) =>
-                          handleButtonChange(event, newAlignment, activeStep)
-                        }
-                        exclusive
-                        value={buttonValues[activeStep]}
-                      >
-                        <ToggleButton value={t(`doNotAgreeAtAll`)}>
-                          {t(`doNotAgreeAtAll`)}
-                        </ToggleButton>
-                        <ToggleButton value={t(`doNotAgree`)}>
-                          {t(`doNotAgree`)}
-                        </ToggleButton>
-                        <ToggleButton value={t(`doAgree`)}>
-                          {t(`doAgree`)}
-                        </ToggleButton>
-                        <ToggleButton value={t(`doAgreeCompletely`)}>
-                          {t(`doAgreeCompletely`)}
-                        </ToggleButton>
-                      </ToggleButtonGroup>
-                    </Box>
-                  )}
-                  {customerFormInput[activeStep] === "text" && (
+                {/* Buttons */}
+                {customerFormInput[activeStep] === "rating" && (
+                  <div>
+                    <Grid
+                      item
+                      xs={false}
+                      sm={12}
+                      md={12}
+                      sx={{
+                        flexDirection: "column",
+                        overflowY: "auto",
+                        display: { xs: "none", sm: "block" },
+                      }}
+                    >
+                      {buttons("toggleButtonGroupRow")}
+                    </Grid>
+                    <Grid
+                      item
+                      xs={12}
+                      sm={false}
+                      md={false}
+                      sx={{
+                        overflowY: "auto",
+                        display: { xs: "block", sm: "none" },
+                      }}
+                    >
+                      {buttons("toggleButtonGroupColumn")}
+                    </Grid>
+                  </div>
+                )}
+                {customerFormInput[activeStep] === "text" && (
+                  <div className="centerContent">
                     <TextField
                       value={inputValues[activeStep]}
                       onChange={handleInputChange}
                       placeholder="Kommentar"
                       multiline
                       fullWidth
-                      rows={4}
+                      rows={8}
                       variant="outlined"
                     />
-                  )}
-                </Box>
+                  </div>
+                )}
               </>
             ) : (
               <>
@@ -296,43 +345,84 @@ export default function CustomerFormGrid() {
           </Grid>
         </Grid>
         {/* Third row */}
-
-        <Grid item xs={4} className="bottomRow centerContent">
-          {activeStep != 0 && (
-            <Button variant="contained" onClick={handleBack}>
-              {t("goBackButton")}
-            </Button>
-          )}
-        </Grid>
-        <Grid item xs={4} className="bottomRow centerContent">
-          <Box sx={{ width: "100%" }}>
-            <LinearProgressWithLabel
-              value={(activeStep / customerFormInput.length) * 100}
+        <Grid container>
+          <Grid item xs={3} className="bottomRow centerContent">
+            {activeStep != 0 && (
+              <Button variant="contained" onClick={handleBack}>
+                {t("goBackButton")}
+              </Button>
+            )}
+          </Grid>
+          <Grid item xs={6} className="bottomRow centerContent">
+            <Box sx={{ width: "100%" }}>
+              <LinearProgressWithLabel
+                value={(activeStep / customerFormInput.length) * 100}
+              />
+            </Box>
+          </Grid>
+          <Grid item xs={3} className="bottomRow centerContent">
+            {activeStep < customerFormInput.length - 1 && (
+              <Button variant="contained" onClick={handleNext}>
+                {t("nextButton")}
+              </Button>
+            )}
+            {activeStep == customerFormInput.length - 1 && (
+              <Button variant="contained" onClick={handleNext}>
+                {t("doneButton")}
+              </Button>
+            )}
+            {activeStep == customerFormInput.length && (
+              <Button
+                variant="contained"
+                onClick={sendJsonCustomerFormResponses}
+              >
+                {t("sendButton")}
+              </Button>
+            )}
+            <DialogBox
+              open={dialogOpen}
+              handleClose={handleCloseDialog}
+              dialogMessage={dialogMessage}
+              dialogTitle={dialogTitle}
             />
-          </Box>
+          </Grid>
         </Grid>
-        <Grid item xs={4} className="bottomRow centerContent">
-          {activeStep < customerFormInput.length - 1 && (
-            <Button variant="contained" onClick={handleNext}>
-              {t("nextButton")}
-            </Button>
+        {/* Chapter Drawer shown on small screens/mobile and on all pages not info*/}
+        <Grid
+          item
+          xs={12}
+          sx={{
+            display: { xs: "block", sm: "none" },
+          }}
+        >
+          {!(customerFormInput[activeStep] === "info") && (
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <Typography
+                variant="h6"
+                onClick={toggleDrawer}
+                style={{ cursor: "pointer", color: "#ff329f" }}
+              >
+                {t("chapterBottomToggler")}
+                <IconButton size="small">
+                  <ArrowDropUpIcon />
+                </IconButton>
+              </Typography>
+              <Drawer
+                anchor="bottom"
+                open={drawerOpen}
+                onClose={toggleDrawer}
+                sx={{ display: { xs: "block", sm: "none" } }}
+              >
+                <div className="boxPadding">{chapter()}</div>
+              </Drawer>
+            </Box>
           )}
-          {activeStep == customerFormInput.length - 1 && (
-            <Button variant="contained" onClick={handleNext}>
-              {t("doneButton")}
-            </Button>
-          )}
-          {activeStep == customerFormInput.length && (
-            <Button variant="contained" onClick={sendJsonCustomerFormResponses}>
-              {t("sendButton")}
-            </Button>
-          )}
-          <DialogBox
-            open={dialogOpen}
-            handleClose={handleCloseDialog}
-            dialogMessage={dialogMessage}
-            dialogTitle={dialogTitle}
-          />
         </Grid>
       </Grid>
     </>
