@@ -23,7 +23,7 @@
     "sales": "Salesperson",
     "manager": "Manager",
     "consultant": "Consultant",
-    "business": "Business",
+    "business": "Customer",
     "newQualityForm": "Create new quality form",
     "sortControl": "Sort by:",
     "myConsultants": "My Consultants",
@@ -123,11 +123,11 @@
   },
 
   "CustomerForm": {
-    "customer": "Business",
+    "customer": "Customer",
     "salesperson": "Salesperson",
     "manager": "Manager",
     "consultant": "Consultant",
-    "business": "Business",
+    "business": "Customer",
     "date": "Date",
     "chapterBottomToggler": "CHAPTERS",
     "summary": "Summary",
