@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { Box, CircularProgress, Typography } from "@mui/material";
 import "../../../styles/form.css";
-import { formInputType } from "../../../constants";
+import { API_BASE_URL, formInputType } from "../../../constants";
 import { useTranslations } from "next-intl";
 
 export default function FormDetails() {
@@ -23,7 +23,7 @@ export default function FormDetails() {
       const id = urlParams.get("id");
 
       const responseFormData = await fetch(
-        "http://localhost:8080/api/forms/" + id,
+        `${API_BASE_URL}/forms/` + id,
         { credentials: "include" }
       );
       const data = await responseFormData.json();
