@@ -99,9 +99,6 @@ export default function FormGrid() {
     const newInputValues = [...inputValues];
     const inputValue = event.target.value;
 
-    console.log("inputValues:", inputValues);
-    console.log("formInputType:", formInputType);
-
     if (formInputType[activeStep] === "rating") {
       newInputValues[activeStep] = parseFloat(inputValue);
     } else {
@@ -347,7 +344,7 @@ export default function FormGrid() {
                   )}
                   {formInputType[activeStep] === "rating" && (
                     <Rating
-                      value={inputValues[activeStep]}
+                      value={inputValues[activeStep] === '' ? 0 : inputValues[activeStep]}
                       onChange={handleInputChange}
                       max={10}
                       size="large"
