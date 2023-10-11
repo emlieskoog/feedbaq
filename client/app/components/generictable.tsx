@@ -28,7 +28,6 @@ export default function GenericTable(props: any) {
     event.preventDefault();
 
     // Navigate to the form details page with the selected form's ID
-
     router.replace(`account/formdetails?id=${formId}`);
   };
 

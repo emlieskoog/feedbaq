@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Grid,
   Button,
@@ -10,43 +10,50 @@ import {
   Box,
   Rating,
   Typography,
-  InputLabel,
-  Select,
-  MenuItem,
   Alert,
   IconButton,
-  FormControl,
   Snackbar,
   Drawer,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogContentText,
+
 } from "@mui/material";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import "../../../styles/form.css";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import Link from "next/link";
 import { API_BASE_URL, appRoutes, formInputType } from "../../../constants";
 import { useTranslations } from "next-intl";
+import InfoPageComponent from "./InfoPageComponent";
 
 export default function FormGrid() {
+
+  const dayjs = require("dayjs");
   const t = useTranslations("QualityForm");
+
+  const [formValues, setFormValues] = useState({
+    consultantId: '',
+    salesId: '',
+    customerId: '',
+    createdDate: dayjs(),
+  });
+
+
+  const onFormChange = (field, value) => {
+    setFormValues({ ...formValues, [field]: value });
+  };
+
+  const validateForm = (formValues) => {
+    const { consultantId, salesId, customerId } = formValues;
+    return consultantId && salesId && customerId;
+  };
+
+
   const [activeStep, setActiveStep] = useState(0);
   const [inputValues, setInputValues] = useState(
     Array(formInputType.length).fill("")
   );
-
-  const [consultants, setConsultants] = useState([]);
-  const [consultantId, setConsultantId] = useState("");
-
-  const [sales, setSales] = useState([]);
-  const [salesId, setSalesId] = useState("");
-
-  const [customers, setCustomers] = useState([]);
-  const [customerId, setCustomerId] = useState("");
 
   const [generatedLink, setGeneratedLink] = useState<any>("");
   const [copySuccess, setCopySuccess] = useState(false);
@@ -54,12 +61,6 @@ export default function FormGrid() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
 
-  const isFormValid = consultantId && salesId && customerId;
-
-  // Day.js is a minimalist JavaScript library that parses, validates, manipulates, and displays dates and times for modern browsers with a largely Moment.js-compatible API.
-  const dayjs = require("dayjs");
-
-  const [createdDate, setCreatedDate] = useState(dayjs()); // dayjs() = get the current time and date. Could be changed using .format("YYYY-MM-DD") if we need date to be string
 
   function LinearProgressWithLabel(
     props: LinearProgressProps & { value: number }
@@ -108,21 +109,6 @@ export default function FormGrid() {
     setInputValues(newInputValues);
   };
 
-  const handleConsultantChange = (event: any) => {
-    setConsultantId(event.target.value);
-  };
-
-  const handleSalesChange = (event: any) => {
-    setSalesId(event.target.value);
-  };
-
-  const handleCustomerChange = (event: any) => {
-    setCustomerId(event.target.value);
-  };
-
-  const handleDateChange = (event: any) => {
-    setCreatedDate(event);
-  };
 
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -132,11 +118,13 @@ export default function FormGrid() {
 
   const sendJsonCustomerForm = () => {
     const requestBody = {
-      consultantId: consultantId,
-      customerId: customerId,
-      salesId: salesId,
-      date: createdDate.format("YYYY-MM-DD"),
+      consultantId: formValues.consultantId,
+      customerId: formValues.customerId,
+      salesId: formValues.salesId,
+      date: formValues.createdDate.format("YYYY-MM-DD"),
     };
+    console.log(requestBody);
+
 
     fetch(`${API_BASE_URL}/customer-form`, {
       method: "POST",
@@ -163,12 +151,14 @@ export default function FormGrid() {
 
   const sendJsonForm = () => {
     const requestBody = {
-      consultantId: consultantId,
-      customerId: customerId,
-      salesId: salesId,
-      date: createdDate.format("YYYY-MM-DD"),
+      consultantId: formValues.consultantId,
+      customerId: formValues.customerId,
+      salesId: formValues.salesId,
+      date: formValues.createdDate.format("YYYY-MM-DD"),
       formResponseValues: inputValues,
     };
+
+    console.log(requestBody);
 
     fetch(`${API_BASE_URL}/save-form`, {
       method: "POST",
@@ -187,24 +177,6 @@ export default function FormGrid() {
       });
   };
 
-  useEffect(() => {
-    fetch(`${API_BASE_URL}/get-consultants-sales-customers`, {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setConsultants(data.consultants);
-        setSales(data.sales);
-        setCustomers(data.customers);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  }, []);
 
   const chapter = () => (
     <>
@@ -215,7 +187,7 @@ export default function FormGrid() {
             key={index}
             className="formChapterList"
             onClick={() =>
-              isFormValid ? setActiveStep(index) : setOpenSnackbar(true)
+              validateForm(formValues) ? setActiveStep(index) : setOpenSnackbar(true)
             }
           >
             {index === activeStep ? (
@@ -246,14 +218,30 @@ export default function FormGrid() {
         <Button
           variant="contained"
           onClick={
-            isFormValid ? sendJsonCustomerForm : () => setOpenSnackbar(true)
+            validateForm(formValues) ? sendJsonCustomerForm : () => setOpenSnackbar(true)
           }
           sx={{ width: "90%", height: "20%", m: "10px" }}
         >
           {t("generateLinkButton")}
         </Button>
       </Alert>
-      {linkAlert()}
+      <>
+        <Dialog
+          open={dialogOpen}
+          onClose={() => {
+            setDialogOpen(false);
+          }}
+        >
+          <DialogTitle>{t("linkDialogText")}</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              <Alert severity="info" sx={{ cursor: "pointer" }}>
+                <Typography onClick={handleCopyToClipboard}> {generatedLink}</Typography>
+              </Alert>
+            </DialogContentText>
+          </DialogContent>
+        </Dialog>
+      </>
     </>
   );
 
@@ -269,7 +257,7 @@ export default function FormGrid() {
         <DialogContent>
           <DialogContentText>
             <Alert severity="info" sx={{ cursor: "pointer" }}>
-              <p onClick={handleCopyToClipboard}> {generatedLink}</p>
+              <Typography onClick={handleCopyToClipboard}> {generatedLink}</Typography>
             </Alert>
           </DialogContentText>
         </DialogContent>
@@ -352,76 +340,7 @@ export default function FormGrid() {
                   )}
 
                   {formInputType[activeStep] === "info" && (
-                    <Box>
-                      <FormControl required fullWidth margin="normal">
-                        <InputLabel id="select-label-consultant">
-                          {t("consultant")}
-                        </InputLabel>
-
-                        <Select
-                          labelId="select-label-consultant"
-                          fullWidth
-                          value={consultantId}
-                          onChange={handleConsultantChange}
-                        >
-                          {consultants.map((consultant: any) => (
-                            <MenuItem value={consultant.id} key={consultant.id}>
-                              {consultant.name}
-                            </MenuItem>
-                          ))}
-                        </Select>
-                      </FormControl>
-
-                      <FormControl required fullWidth margin="normal">
-                        <InputLabel id="select-label-sales">
-                          {t("salesperson")}
-                        </InputLabel>
-                        <Select
-                          labelId="select-label-sales"
-                          fullWidth
-                          value={salesId}
-                          onChange={handleSalesChange}
-                        >
-                          {sales.map((salesperson: any) => (
-                            <MenuItem
-                              value={salesperson.id}
-                              key={salesperson.id}
-                            >
-                              {salesperson.name}
-                            </MenuItem>
-                          ))}
-                        </Select>
-                      </FormControl>
-
-                      <FormControl required fullWidth margin="normal">
-                        <InputLabel id="select-label-customer">
-                          {t("customer")}
-                        </InputLabel>
-                        <Select
-                          labelId="select-label-customer"
-                          fullWidth
-                          value={customerId}
-                          onChange={handleCustomerChange}
-                        >
-                          {customers.map((customer: any) => (
-                            <MenuItem value={customer.id} key={customer.id}>
-                              {customer.customer_name}
-                            </MenuItem>
-                          ))}
-                        </Select>
-                      </FormControl>
-
-                      <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <FormControl required fullWidth margin="normal">
-                          <DatePicker
-                            label={t("date")}
-                            value={createdDate}
-                            format="YYYY-MM-DD"
-                            onChange={handleDateChange}
-                          />
-                        </FormControl>
-                      </LocalizationProvider>
-                    </Box>
+                    <InfoPageComponent formValues={formValues} onFormChange={onFormChange} t={t} />
                   )}
                 </Box>
               </>
@@ -430,7 +349,7 @@ export default function FormGrid() {
                 <h2>{t("summary")}</h2>
                 {formInputType.map((q, index) => {
                   return (
-                    <>
+                    <div key={index}>
                       <h4>{t(`q${index}`)}</h4>
                       <Box sx={{ marginBottom: "10px" }}>
                         {inputValues[index] ? (
@@ -439,7 +358,7 @@ export default function FormGrid() {
                           <p>{t("noAnswer")}</p>
                         )}
                       </Box>
-                    </>
+                    </div>
                   );
                 })}
               </>
@@ -484,7 +403,7 @@ export default function FormGrid() {
           {activeStep == 0 && (
             <Button
               variant="contained"
-              onClick={isFormValid ? handleNext : () => setOpenSnackbar(true)}
+              onClick={validateForm(formValues) ? handleNext : () => setOpenSnackbar(true)}
             >
               {t("startButton")}
             </Button>
