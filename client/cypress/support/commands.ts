@@ -35,3 +35,22 @@
 //     }
 //   }
 // }
+// commands.ts
+// export default function addCustomCommands() {
+//   Cypress.Commands.add('login' as any, (username, password) => {
+//     // Make a request to your login endpoint to obtain a JWT token
+//     cy.request({
+//       method: 'POST',
+//       url: '/api/auth/sign-in', // baseUrl is prepend to URL
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//       body: {
+//         email: 'your_email@hiq.se',
+//         password: '123123',
+//       },
+//     }).then((response) => {
+//       expect(response.status).to.equal(200);
+//     });
+//   });
+// }
