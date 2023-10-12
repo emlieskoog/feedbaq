@@ -7,12 +7,16 @@ phases:
   pre_build:
     commands:
       - echo Nothing to do in the pre_build phase...
+      - npm run cy:verify
+      - npm run cy:info
   build:
     commands:
       - echo Starting the build phase...
       - cd server/
       - gradle clean test
       - gradle clean build
+      - npm run start:ci &
+      - npx cypress run --record
   post_build:
     commands:
       - echo Build phase completed.
