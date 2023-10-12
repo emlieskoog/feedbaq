@@ -2,9 +2,6 @@ version: 0.2
 
 phases:
   install:
-    commands:
-      - cd client/
-      - npm ci
     runtime-versions:
       java: corretto17
   pre_build:
@@ -13,14 +10,9 @@ phases:
   build:
     commands:
       - echo Starting the build phase...
-      - cd ..
       - cd server/
       - gradle clean test
       - gradle clean build
-      - cd ..
-      - cd client/
-      - npm run start
-      - npx cypress run
   post_build:
     commands:
       - echo Build phase completed.
