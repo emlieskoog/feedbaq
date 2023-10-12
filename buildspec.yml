@@ -7,8 +7,6 @@ phases:
   pre_build:
     commands:
       - echo Nothing to do in the pre_build phase...
-      - npm run cy:verify
-      - npm run cy:info
   build:
     commands:
       - echo Starting the build phase...
