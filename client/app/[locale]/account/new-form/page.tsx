@@ -18,7 +18,6 @@ import {
   DialogTitle,
   DialogContent,
   DialogContentText,
-
 } from "@mui/material";
 import "../../../styles/form.css";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
@@ -28,27 +27,24 @@ import { useTranslations } from "next-intl";
 import InfoPageComponent from "./InfoPageComponent";
 
 export default function FormGrid() {
-
   const dayjs = require("dayjs");
   const t = useTranslations("QualityForm");
 
   const [formValues, setFormValues] = useState({
-    consultantId: '',
-    salesId: '',
-    customerId: '',
+    consultantId: "",
+    salesId: "",
+    customerId: "",
     createdDate: dayjs(),
   });
 
-
-  const onFormChange = (field, value) => {
+  const onFormChange = (field: any, value: any) => {
     setFormValues({ ...formValues, [field]: value });
   };
 
-  const validateForm = (formValues) => {
+  const validateForm = (formValues: any) => {
     const { consultantId, salesId, customerId } = formValues;
     return consultantId && salesId && customerId;
   };
-
 
   const [activeStep, setActiveStep] = useState(0);
   const [inputValues, setInputValues] = useState(
@@ -60,7 +56,6 @@ export default function FormGrid() {
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
-
 
   function LinearProgressWithLabel(
     props: LinearProgressProps & { value: number }
@@ -109,7 +104,6 @@ export default function FormGrid() {
     setInputValues(newInputValues);
   };
 
-
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const toggleDrawer = () => {
@@ -124,7 +118,6 @@ export default function FormGrid() {
       date: formValues.createdDate.format("YYYY-MM-DD"),
     };
     console.log(requestBody);
-
 
     fetch(`${API_BASE_URL}/customer-form`, {
       method: "POST",
@@ -177,7 +170,6 @@ export default function FormGrid() {
       });
   };
 
-
   const chapter = () => (
     <>
       <Typography variant="h6">{t("chapter")}</Typography>
@@ -187,7 +179,9 @@ export default function FormGrid() {
             key={index}
             className="formChapterList"
             onClick={() =>
-              validateForm(formValues) ? setActiveStep(index) : setOpenSnackbar(true)
+              validateForm(formValues)
+                ? setActiveStep(index)
+                : setOpenSnackbar(true)
             }
           >
             {index === activeStep ? (
@@ -218,7 +212,9 @@ export default function FormGrid() {
         <Button
           variant="contained"
           onClick={
-            validateForm(formValues) ? sendJsonCustomerForm : () => setOpenSnackbar(true)
+            validateForm(formValues)
+              ? sendJsonCustomerForm
+              : () => setOpenSnackbar(true)
           }
           sx={{ width: "90%", height: "20%", m: "10px" }}
         >
@@ -236,7 +232,10 @@ export default function FormGrid() {
           <DialogContent>
             <DialogContentText>
               <Alert severity="info" sx={{ cursor: "pointer" }}>
-                <Typography onClick={handleCopyToClipboard}> {generatedLink}</Typography>
+                <Typography onClick={handleCopyToClipboard}>
+                  {" "}
+                  {generatedLink}
+                </Typography>
               </Alert>
             </DialogContentText>
           </DialogContent>
@@ -257,7 +256,10 @@ export default function FormGrid() {
         <DialogContent>
           <DialogContentText>
             <Alert severity="info" sx={{ cursor: "pointer" }}>
-              <Typography onClick={handleCopyToClipboard}> {generatedLink}</Typography>
+              <Typography onClick={handleCopyToClipboard}>
+                {" "}
+                {generatedLink}
+              </Typography>
             </Alert>
           </DialogContentText>
         </DialogContent>
@@ -332,7 +334,11 @@ export default function FormGrid() {
                   )}
                   {formInputType[activeStep] === "rating" && (
                     <Rating
-                      value={inputValues[activeStep] === '' ? 0 : inputValues[activeStep]}
+                      value={
+                        inputValues[activeStep] === ""
+                          ? 0
+                          : inputValues[activeStep]
+                      }
                       onChange={handleInputChange}
                       max={10}
                       size="large"
@@ -340,7 +346,11 @@ export default function FormGrid() {
                   )}
 
                   {formInputType[activeStep] === "info" && (
-                    <InfoPageComponent formValues={formValues} onFormChange={onFormChange} t={t} />
+                    <InfoPageComponent
+                      formValues={formValues}
+                      onFormChange={onFormChange}
+                      t={t}
+                    />
                   )}
                 </Box>
               </>
@@ -403,7 +413,11 @@ export default function FormGrid() {
           {activeStep == 0 && (
             <Button
               variant="contained"
-              onClick={validateForm(formValues) ? handleNext : () => setOpenSnackbar(true)}
+              onClick={
+                validateForm(formValues)
+                  ? handleNext
+                  : () => setOpenSnackbar(true)
+              }
             >
               {t("startButton")}
             </Button>

@@ -16,7 +16,7 @@ phases:
       - cd ..
       - cd client/
       - npm ci
-      - npm run dev
+      - npm run dev &
       - npx cypress run
   post_build:
     commands:
