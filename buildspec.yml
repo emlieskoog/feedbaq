@@ -13,7 +13,9 @@ phases:
       - cd server/
       - gradle clean test
       - gradle clean build
-      - npm run start:ci &
+      - cd ..
+      - cd client/
+      - npm ci
       - npx cypress run --record
   post_build:
     commands:
