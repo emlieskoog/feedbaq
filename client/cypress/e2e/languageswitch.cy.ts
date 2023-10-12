@@ -18,12 +18,6 @@ describe('Language switch', () => {
         expect(elem.text()).to.equal('Log in');
       });
 
-    cy.url().then(($url) => {
-      if ($url.includes('en')) {
-        cy.log('Yes');
-      } else {
-        cy.log('No');
-      }
-    });
+    cy.url().should('include', '/en');
   });
 });
