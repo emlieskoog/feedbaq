@@ -101,6 +101,7 @@ export default function LoginPage() {
               required
               fullWidth
               id="email"
+              data-testid="email"
               label={t("email")}
               name="email"
               autoComplete="email"
@@ -114,6 +115,7 @@ export default function LoginPage() {
               label={t("password")}
               type="password"
               id="password"
+              data-testid="password"
               autoComplete="current-password"
             />
             <Button

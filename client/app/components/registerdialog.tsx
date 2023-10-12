@@ -74,6 +74,7 @@ export default function RegisterDialog(props: any) {
                         autoComplete="email"
                         margin="dense"
                         id="email"
+                        data-testid="email"
                         name="email"
                         label={t('email')}
                         type="email"
@@ -84,6 +85,7 @@ export default function RegisterDialog(props: any) {
                         autoComplete="current-password"
                         margin="dense"
                         id="password"
+                        data-testid="password"
                         name="password"
                         label={t('password')}
                         type="password"
@@ -95,6 +97,7 @@ export default function RegisterDialog(props: any) {
                         autoComplete="name"
                         margin="dense"
                         id="name"
+                        data-testid="name"
                         name="name"
                         label={t('name')}
                         type="text"
