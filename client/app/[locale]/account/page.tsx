@@ -132,7 +132,11 @@ export default function LandingPage() {
                 alignItems: "left",
               }}
             >
-              <Typography variant="h5" component="div">
+              <Typography
+                data-test-id="profileName"
+                variant="h5"
+                component="div"
+              >
                 {profileName}
               </Typography>
               <Typography variant="caption" component="div">
