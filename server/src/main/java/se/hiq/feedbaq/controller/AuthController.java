@@ -6,6 +6,8 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import se.hiq.feedbaq.security.JWTGenerator;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
@@ -17,6 +19,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -59,6 +62,28 @@ public class AuthController {
 
         return new ResponseEntity<>("User registered successfully!", HttpStatus.OK);
 
+    }
+
+    @PostMapping("/remove-user/{email}")
+    public ResponseEntity<String> removeUser(@PathVariable String email) {
+        
+        String sql = "DELETE FROM users WHERE email = ?";
+        Object[] args = new Object[] { email };
+
+        try {
+            int rowsAffected = jdbcTemplate.update(sql, args);
+            
+            if(rowsAffected==0){
+                return new ResponseEntity<>("No user with that email..", HttpStatus.BAD_REQUEST);
+            }
+
+            return new ResponseEntity<>("User removed successfully!", HttpStatus.OK);
+
+        } catch (DataAccessException e) {
+            String errorMessage = "An error occurred while removing the user : " + e.getMessage();
+
+            return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 

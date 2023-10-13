@@ -244,29 +244,6 @@ export default function FormGrid() {
     </>
   );
 
-  const linkAlert = () => (
-    <>
-      <Dialog
-        open={dialogOpen}
-        onClose={() => {
-          setDialogOpen(false);
-        }}
-      >
-        <DialogTitle>{t("linkDialogText")}</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            <Alert severity="info" sx={{ cursor: "pointer" }}>
-              <Typography onClick={handleCopyToClipboard}>
-                {" "}
-                {generatedLink}
-              </Typography>
-            </Alert>
-          </DialogContentText>
-        </DialogContent>
-      </Dialog>
-    </>
-  );
-
   return (
     <Grid container className="outerGrid">
       {/* Generate link item, only visible on info page and small screens */}

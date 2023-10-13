@@ -16,9 +16,9 @@ phases:
       - cd server/
       - gradle clean test
       - gradle clean build
+      - gradle bootRun
       - cd ..
       - cd client/
-      - npm i
       - npm ci
       - npm run dev &
       - npx cypress run
