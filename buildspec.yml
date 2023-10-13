@@ -16,7 +16,7 @@ phases:
       - cd server/
       - gradle clean test
       - gradle clean build
-      - gradle bootRun
+      - gradle bootRun &
       - cd ..
       - cd client/
       - npm ci
