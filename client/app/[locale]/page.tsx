@@ -127,8 +127,7 @@ export default function LoginPage() {
               {t("login")}
             </Button>
           </form>
-
-          <Link href="#" onClick={handleOpenDialog} sx={{ mb: "20px" }}>
+          <Link data-cy="registerLink" onClick={handleOpenDialog} sx={{ mb: "20px" }}>
             {t("registerNewButton")}
           </Link>
           <LocaleSwitcher
@@ -159,11 +158,11 @@ export default function LoginPage() {
           {t("wrongPasswordOrEmail")}
         </Alert>
       </Snackbar>
-      <Snackbar open={openRegisterSuccessSnackbar} autoHideDuration={6000} onClose={() => setOpenRegisterSuccessSnackbar(false)}>
+      <Snackbar data-cy="registerSuccessSnackbar" open={openRegisterSuccessSnackbar} autoHideDuration={6000} onClose={() => setOpenRegisterSuccessSnackbar(false)}>
         <Alert >
           {t('registerSuccessfull')}
         </Alert>
       </Snackbar>
-    </Grid>
+    </Grid >
   );
 }

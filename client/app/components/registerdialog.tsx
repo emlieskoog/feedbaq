@@ -53,7 +53,9 @@ export default function RegisterDialog(props: any) {
         <Dialog open={isOpen}
             onClose={onClose}
             maxWidth="sm"
-            fullWidth>
+            fullWidth
+            data-cy="registerDialog"
+        >
             <form onSubmit={handleRegister}>
                 <DialogContent>
                     <Grid container spacing={3} alignItems="center" sx={{ mt: 1, mb: 2 }}>
@@ -75,10 +77,12 @@ export default function RegisterDialog(props: any) {
                         margin="dense"
                         id="email"
                         data-testid="email"
+                        data-id="registerEmail"
                         name="email"
                         label={t('email')}
                         type="email"
                         fullWidth
+                        data-cy="registerEmail"
                     />
                     <TextField
                         required
@@ -91,6 +95,7 @@ export default function RegisterDialog(props: any) {
                         type="password"
                         fullWidth
                         sx={{ mb: 2 }}
+                        data-cy="registerPassword"
                     />
                     <TextField
                         required
@@ -103,6 +108,7 @@ export default function RegisterDialog(props: any) {
                         type="text"
                         fullWidth
                         sx={{ mb: 2 }}
+                        data-cy="registerName"
                     />
                     <FormControl fullWidth>
                         <InputLabel>{t('role')}</InputLabel>
@@ -122,11 +128,12 @@ export default function RegisterDialog(props: any) {
                     </FormControl>
                     <DialogActions>
                         <Button onClick={onClose} variant="outlined" color="primary">{t('cancelButton')}</Button>
-                        <Button type="submit" variant="contained" endIcon={<SendIcon />}>{t('registerButton')}</Button>
+                        <Button data-cy="registerSubmit" type="submit" variant="contained" endIcon={<SendIcon />} data-cy="registerSubmit">{t('registerButton')}</Button>
                     </DialogActions>
                 </DialogContent>
             </form>
-            <Snackbar open={openErrorSnackbar} autoHideDuration={6000} onClose={() => setOpenErrorSnackbar(false)}>
+            <Snackbar data-cy="registerErrorSnackbar"
+                open={openErrorSnackbar} autoHideDuration={6000} onClose={() => setOpenErrorSnackbar(false)}>
                 <Alert severity='info'>
                     {t('emailAlreadyExist')}
                 </Alert>
