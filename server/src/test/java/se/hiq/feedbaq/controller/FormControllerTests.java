@@ -42,7 +42,7 @@ public class FormControllerTests {
         int consultantId = 1;
         int salesId = 1; 
         
-        String formDataQuery = "SELECT * FROM forms_metadata fm JOIN form_responses fr ON fm.form_response_id=fr.id WHERE fm.id=?";
+        String formDataQuery = "SELECT * FROM form_metadata fm JOIN form_responses fr ON fm.form_response_id=fr.id WHERE fm.id=?";
         
         Map<String, Object> formData = new HashMap<>();
         formData.put("customer_id", 1);
@@ -78,7 +78,7 @@ public class FormControllerTests {
     public void testGetFormByIdNotFound() {
     
         // Mock the behavior of jdbcTemplate.queryForMap to throw a IncorrectResultSizeDataAccessException
-        String formDataQuery = "SELECT * FROM forms_metadata fm JOIN form_responses fr ON fm.form_response_id=fr.id WHERE fm.id=?";
+        String formDataQuery = "SELECT * FROM form_metadata fm JOIN form_responses fr ON fm.form_response_id=fr.id WHERE fm.id=?";
 
         int id = 1;
         IncorrectResultSizeDataAccessException exception = new IncorrectResultSizeDataAccessException("Form with ID " + id + " not found.", id);
@@ -97,7 +97,7 @@ public class FormControllerTests {
     public void testGetFormByIdThrowsDataAccessException() {
         
         // Mock the behavior of jdbcTemplate.queryForMap to throw a DataAccessException
-        String formDataQuery = "SELECT * FROM forms_metadata fm JOIN form_responses fr ON fm.form_response_id=fr.id WHERE fm.id=?";
+        String formDataQuery = "SELECT * FROM form_metadata fm JOIN form_responses fr ON fm.form_response_id=fr.id WHERE fm.id=?";
         int id = 1;
         doThrow(new DataAccessException("Test DataAccessException") {}).when(jdbcTemplate).queryForMap(formDataQuery, id);
 
@@ -124,7 +124,7 @@ public class FormControllerTests {
     
         String responseQuery = "INSERT INTO form_responses (q0, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13) " 
             + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id";
-        String formQuery = "INSERT INTO forms_metadata (consultant_id, customer_id, sales_id, date, form_response_id) " 
+        String formQuery = "INSERT INTO form_metadata (consultant_id, customer_id, sales_id, date, form_response_id) " 
             + "VALUES (?::int,?::int,?::int,?::date,?::int)";
 
         Long expectedResponseId = 1L;
@@ -156,7 +156,7 @@ public class FormControllerTests {
     
         String responseQuery = "INSERT INTO form_responses (q0, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13) " 
             + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id";
-        String formQuery = "INSERT INTO forms_metadata (consultant_id, customer_id, sales_id, date, form_response_id) " 
+        String formQuery = "INSERT INTO form_metadata (consultant_id, customer_id, sales_id, date, form_response_id) " 
             + "VALUES (?::int,?::int,?::int,?::date,?::int)";
 
         Long expectedResponseId = 1L;

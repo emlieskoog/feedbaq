@@ -22,15 +22,18 @@ export default function FormDetails() {
       const urlParams = new URLSearchParams(queryString);
       const id = urlParams.get("id");
 
-      const responseFormData = await fetch(
-        `${API_BASE_URL}/forms/` + id,
-        { credentials: "include" }
-      );
+      const responseFormData = await fetch(`${API_BASE_URL}/forms/` + id, {
+        credentials: "include",
+      });
       const data = await responseFormData.json();
+      console.log(data);
       setFormData(data);
       setIsLoading(false);
     } catch (error) {
-      console.log("An error occurred when trying to retrieve form data.", error);
+      console.log(
+        "An error occurred when trying to retrieve form data.",
+        error
+      );
     }
   }
 
@@ -47,7 +50,7 @@ export default function FormDetails() {
               flexDirection: "column",
               display: "flex",
               justifyContent: "space-evenly",
-              alignItems: "center"
+              alignItems: "center",
             }}
           >
             <Typography variant="h4">{formData.customer_name}</Typography>
@@ -64,27 +67,27 @@ export default function FormDetails() {
                 borderColor: "lightgrey",
                 m: 1,
                 p: 2,
-                width: "90%"
+                width: "90%",
               }}
             >
               <div>
-                <Typography variant="h6">{t('customer')}</Typography>
+                <Typography variant="h6">{t("customer")}</Typography>
                 <Typography variant="body2" className="separator">
                   {formData.customer_name}
                 </Typography>
-                <Typography variant="h6">{t('consultant')}</Typography>
+                <Typography variant="h6">{t("consultant")}</Typography>
                 <Typography variant="body2" className="separator">
                   {formData.consultant_name}
                 </Typography>
-                <Typography variant="h6">{t('manager')}</Typography>
+                <Typography variant="h6">{t("manager")}</Typography>
                 <Typography variant="body2" className="separator">
                   {formData.manager_name}
                 </Typography>
-                <Typography variant="h6">{t('salesperson')}</Typography>
+                <Typography variant="h6">{t("salesperson")}</Typography>
                 <Typography variant="body2" className="separator">
                   {formData.sales_name}
                 </Typography>
-                <Typography variant="h6">{t('date')}</Typography>
+                <Typography variant="h6">{t("date")}</Typography>
                 <Typography variant="body2" className="separator">
                   {formData.form_data.date}
                 </Typography>

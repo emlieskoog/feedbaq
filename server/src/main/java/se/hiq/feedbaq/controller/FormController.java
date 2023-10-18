@@ -37,7 +37,7 @@ public class FormController {
             Long generatedResponseId = jdbcTemplate.queryForObject(responseQuery, Long.class, formResponseValues.toArray());
 
             //Create a new entity in the form table
-            String formQuery = "INSERT INTO forms_metadata (consultant_id, customer_id, sales_id, date, form_response_id) " 
+            String formQuery = "INSERT INTO form_metadata (consultant_id, customer_id, sales_id, date, form_response_id) " 
                 + "VALUES (?::int,?::int,?::int,?::date,?::int)";
 
             jdbcTemplate.update(formQuery, requestBody.get("consultantId"), requestBody.get("customerId"), 
@@ -55,7 +55,7 @@ public class FormController {
     @GetMapping("/forms/{id}")
     public ResponseEntity<Object> getFormById(@PathVariable int id) {
         try {
-            String formDataQuery = "SELECT * FROM forms_metadata fm JOIN form_responses fr ON fm.form_response_id=fr.id WHERE fm.id=?";
+            String formDataQuery = "SELECT * FROM form_metadata fm JOIN form_responses fr ON fm.form_response_id=fr.id WHERE fm.id=?";
             Map<String, Object> formData = jdbcTemplate.queryForMap(formDataQuery, id);
             int customerId = (int) formData.get("customer_id");
             int consultantId = (int) formData.get("consultant_id");

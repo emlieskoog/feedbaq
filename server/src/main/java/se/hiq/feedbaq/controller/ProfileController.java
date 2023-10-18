@@ -46,15 +46,15 @@ public class ProfileController {
         String formQuery = null;
 
         if (role.equals("CONSULTANT")) {
-            formQuery = "SELECT f.id, c.customer_name, f.date FROM forms_metadata f JOIN customers c ON f.customer_id=c.id WHERE f.consultant_id=?";
+            formQuery = "SELECT f.id, c.customer_name, f.date FROM form_metadata f JOIN customers c ON f.customer_id=c.id WHERE f.consultant_id=?";
         }
 
         if (role.equals("MANAGER")) {
-            formQuery = "SELECT f.id, u.name, cu.customer_name, f.date FROM forms_metadata f JOIN users u ON f.consultant_id=u.id JOIN customers cu ON f.customer_id=cu.id JOIN consultants_managers cm ON f.consultant_id=cm.consultant_id WHERE cm.manager_id=?";
+            formQuery = "SELECT f.id, u.name, cu.customer_name, f.date FROM form_metadata f JOIN users u ON f.consultant_id=u.id JOIN customers cu ON f.customer_id=cu.id JOIN consultants_managers cm ON f.consultant_id=cm.consultant_id WHERE cm.manager_id=?";
         }
         
         if (role.equals("SALES")) {
-            formQuery = "SELECT f.id, u.name, cu.customer_name, f.date FROM forms_metadata f JOIN users u ON f.consultant_id=u.id JOIN customers cu ON f.customer_id=cu.id WHERE f.sales_id=?";            
+            formQuery = "SELECT f.id, u.name, cu.customer_name, f.date FROM form_metadata f JOIN users u ON f.consultant_id=u.id JOIN customers cu ON f.customer_id=cu.id WHERE f.sales_id=?";            
         }
 
         List<Map<String, Object>> forms = jdbcTemplate.queryForList(formQuery, userId);
